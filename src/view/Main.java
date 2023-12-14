@@ -1,9 +1,14 @@
 package view;
 
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
 
@@ -11,8 +16,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        // ROOT NODE
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/startscene.fxml"));
+        // SCENE ROOT NODES
+        Parent startScene = FXMLLoader.load(getClass().getResource("fxml/StartScene.fxml"));
 
         // STAGE
         // a) Icon
@@ -24,49 +29,36 @@ public class Main extends Application {
         primaryStage.setResizable(false);
 
         // Set Scene
-        primaryStage.setScene(new Scene(root));
-        // Show
+        primaryStage.setScene(new Scene(startScene));
+        // Show Stage
         primaryStage.show();
 
+        // Exit Stage
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume();
+            exit(primaryStage);
+        });
+
+    }
+
+    public void exit(Stage stage) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Exit");
+        alert.setHeaderText("You're about to exit the game!");
+        alert.setContentText("Do you want to leave?");
+
+        ButtonType YES = new ButtonType("Yes");
+        ButtonType CANCEL = new ButtonType("Cancel");
+
+        alert.getButtonTypes().setAll(YES, CANCEL);
+        Optional <ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == YES) {
+            stage.close();
+        }
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-
-// Line line = new Line();
-// line.setStroke(Color.BLUE);
-// line.setStartX(50);
-// line.setStartY(50);
-// line.setEndX(100);
-// line.setEndY(50);
-// line.setStrokeWidth(5);
-// line.setRotate(45);
-// line.setOpacity(0.5);
-
-// root.getChildren().add(line);
-
-// Scene Arg --> , 400, 300, Color.WHEAT
-
-// // SCENE
-// // a) Text
-// Text text = new Text();
-// text.setText("Lucida Console");
-// text.setX(50);
-// text.setY(50);
-// text.setFont(Font.font("Lucida Console", 50));
-// text.setFill(Color.GRAY);
-// root.getChildren().add(text);
-// // b) Image
-// Image image = new Image("static/testicon.png");
-// ImageView imageView = new ImageView(image);
-// imageView.setX(0);
-// imageView.setY(0);
-// root.getChildren().add(imageView);
-
-// import javafx.scene.paint.Color;
-// import javafx.scene.text.Font;
-// import javafx.scene.text.Text;
-// import javafx.scene.shape.*;;
-// import javafx.scene.Group;
