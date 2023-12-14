@@ -1,5 +1,7 @@
 package view.controller;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Optional;
 
 import javafx.event.ActionEvent;
@@ -17,9 +19,10 @@ public class BoardSceneController {
     @FXML
     private Stage stage;
     private Scene scene;
+    private int saveFileNumber = 1;
+    private boolean saveFileExists;
 
     public void saveExit(ActionEvent event) throws Exception {
-
         // Alert
         Alert alert = new Alert(AlertType.CONFIRMATION);
 
@@ -38,9 +41,12 @@ public class BoardSceneController {
 
         if (result.isPresent() && result.get() == YES) {
             // Save
-            // *insert save sequence*
-            // Exit
-            backToStartScene(event);
+            createSaveFile(event);
+            // Test
+            if (checkSaveFile()) {
+                // Exit
+                backToStartScene(event);
+            }
         }
         // Exit
         else if (result.isPresent() && result.get() == NO) {
@@ -48,12 +54,57 @@ public class BoardSceneController {
         }
 
     }
-    public void backToStartScene(ActionEvent event) throws Exception{
+    public void backToStartScene(ActionEvent event) throws Exception {
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/StartScene.fxml"));
         this.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         this.scene = new Scene(startScene);
         stage.setScene(this.scene);
         stage.show();
+    }
+    public void createSaveFile(ActionEvent event) throws Exception {
+        // issues: does not update saveFileNumber nor does it create a new file after the first
+        // add feat: sortSaveFile --> method to sort and fill in empty save file numbers after deletion
+        // add feat: deleteSaveFile --> method to delete save files
+        String fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".txt";
+        File dir = new File("src/view/saves");
+
+        if (dir.listFiles() != null) {
+            for (int i = 0; i < dir.listFiles().length; i ++) {
+                if (fileName.equals(dir.listFiles()[i].getName())) {
+                    this.saveFileNumber++;
+                    fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".txt";
+                }
+            }
+        }
+
+        File file = new File(fileName);
+        file.createNewFile();
+        this.saveFileNumber++;
+        // maybe save files need to be stored in local?
+        
+        FileWriter writer = new FileWriter(fileName);
+        writer.write("*insert save file data*");
+        writer.close();
+
+        if (!file.exists() || file.getTotalSpace() == 0) {
+            this.saveFileExists = false;
+
+            Alert errorAlert = new Alert(AlertType.ERROR);
+            errorAlert.setHeaderText("Error!");
+            errorAlert.setContentText("Save failed. Please retry.");
+            errorAlert.show();
+        }
+        else {
+            this.saveFileExists = true;
+
+            Alert successAlert = new Alert(AlertType.INFORMATION);
+            successAlert.setHeaderText("Success!");
+            successAlert.setContentText("Your current game has been saved.");
+            successAlert.show();
+        }
+    }
+    public boolean checkSaveFile() {
+        return saveFileExists;
     }
 
     public void swap(ActionEvent event) {
