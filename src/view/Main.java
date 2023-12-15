@@ -21,11 +21,13 @@ public class Main extends Application {
 
         // STAGE
         // a) Icon
-        Image icon = new Image("static/testicon.png");
+        Image icon = new Image("model/static/image/apple.png");
         primaryStage.getIcons().add(icon);
 
         // b) Title
         primaryStage.setTitle("Happy Match");
+        primaryStage.setHeight(600);
+        primaryStage.setWidth(900);
         primaryStage.setResizable(false);
 
         // Set Scene
