@@ -63,30 +63,47 @@ public class BoardSceneController {
     }
     public void createSaveFile(ActionEvent event) throws Exception {
         // issues: does not update saveFileNumber nor does it create a new file after the first
-        // add feat: sortSaveFile --> method to sort and fill in empty save file numbers after deletion
-        // add feat: deleteSaveFile --> method to delete save files
+        // add feat: sortSaveFile --> method to sort and fill in empty save file numbers after deletion --> for the load game scene
+        // add feat: deleteSaveFile --> method to delete save files --> for the load game scene
+        // add feat: loadSaveFile --> for the load game scene
         String fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".txt";
+        
         File dir = new File("src/view/saves");
-
         if (dir.listFiles() != null) {
             for (int i = 0; i < dir.listFiles().length; i ++) {
-                if (fileName.equals(dir.listFiles()[i].getName())) {
+
+                int checkNumLen = dir.listFiles()[i].getName().length() - 13;
+                int numLen = fileName.length() - 28;
+                String fileCheckNumber = dir.listFiles()[i].getName().substring(8, 9 + checkNumLen);
+                String fileNumber = fileName.substring(23, 24 + numLen);
+
+                System.out.println("file no." + i + " : " + dir.listFiles()[i].getName());
+                System.out.println("fileName: " + fileName);
+                System.out.println("checkNumLen: " + checkNumLen);
+                System.out.println("numLen: " + numLen);
+                System.out.println("fileCheckNumber: " + fileCheckNumber);
+                System.out.println("fileNumber: " + fileNumber);
+
+                if (fileNumber.equals(fileCheckNumber)) {
                     this.saveFileNumber++;
                     fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".txt";
+                    i = 0;
                 }
+
             }
         }
 
+        System.out.println("fileName after loop: " + fileName);
+
         File file = new File(fileName);
         file.createNewFile();
-        this.saveFileNumber++;
         // maybe save files need to be stored in local?
         
         FileWriter writer = new FileWriter(fileName);
         writer.write("*insert save file data*");
         writer.close();
 
-        if (!file.exists() || file.getTotalSpace() == 0) {
+        if (!file.exists()) {
             this.saveFileExists = false;
 
             Alert errorAlert = new Alert(AlertType.ERROR);
@@ -102,6 +119,9 @@ public class BoardSceneController {
             successAlert.setContentText("Your current game has been saved.");
             successAlert.show();
         }
+
+        this.saveFileNumber++;
+
     }
     public boolean checkSaveFile() {
         return saveFileExists;
