@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
 
@@ -46,13 +47,16 @@ public class Main extends Application {
         alert.setHeaderText("You're about to exit the game!");
         alert.setContentText("Do you want to leave?");
 
-        ButtonType YES = new ButtonType("Yes");
-        ButtonType CANCEL = new ButtonType("Cancel");
+        alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
 
-        alert.getButtonTypes().setAll(YES, CANCEL);
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Yes");
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("No");
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setDefaultButton(false);
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setDefaultButton(true);
+
         Optional <ButtonType> result = alert.showAndWait();
 
-        if (result.isPresent() && result.get() == YES) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             stage.close();
         }
     }

@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class BoardSceneController {
@@ -30,16 +31,13 @@ public class BoardSceneController {
         alert.setHeaderText("You're about to exit the current game!");
         alert.setContentText("Do you want to save?");
 
-        ButtonType YES = new ButtonType("Yes");
-        ButtonType NO = new ButtonType("No");
-        ButtonType CANCEL = new ButtonType("Cancel");
-
-        alert.getButtonTypes().setAll(YES, NO, CANCEL);
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.YES)).setDefaultButton(true);
 
         // Save & Exit
         Optional <ButtonType> result = alert.showAndWait();
 
-        if (result.isPresent() && result.get() == YES) {
+        if (result.isPresent() && result.get() == ButtonType.YES) {
             // Save
             createSaveFile(event);
             // Test
@@ -49,7 +47,7 @@ public class BoardSceneController {
             }
         }
         // Exit
-        else if (result.isPresent() && result.get() == NO) {
+        else if (result.isPresent() && result.get() == ButtonType.NO) {
             backToStartScene(event);
         }
 
@@ -62,7 +60,6 @@ public class BoardSceneController {
         stage.show();
     }
     public void createSaveFile(ActionEvent event) throws Exception {
-        // issues: does not update saveFileNumber nor does it create a new file after the first
         // add feat: sortSaveFile --> method to sort and fill in empty save file numbers after deletion --> for the load game scene
         // add feat: deleteSaveFile --> method to delete save files --> for the load game scene
         // add feat: loadSaveFile --> for the load game scene
@@ -77,13 +74,6 @@ public class BoardSceneController {
                 String fileCheckNumber = dir.listFiles()[i].getName().substring(8, 9 + checkNumLen);
                 String fileNumber = fileName.substring(23, 24 + numLen);
 
-                System.out.println("file no." + i + " : " + dir.listFiles()[i].getName());
-                System.out.println("fileName: " + fileName);
-                System.out.println("checkNumLen: " + checkNumLen);
-                System.out.println("numLen: " + numLen);
-                System.out.println("fileCheckNumber: " + fileCheckNumber);
-                System.out.println("fileNumber: " + fileNumber);
-
                 if (fileNumber.equals(fileCheckNumber)) {
                     this.saveFileNumber++;
                     fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".txt";
@@ -92,8 +82,6 @@ public class BoardSceneController {
 
             }
         }
-
-        System.out.println("fileName after loop: " + fileName);
 
         File file = new File(fileName);
         file.createNewFile();
