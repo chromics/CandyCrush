@@ -3,10 +3,12 @@ package view.controller;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,13 +17,28 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import model.components.Chessboard;
+import model.components.Constant;
+import model.components.Cell;
+import javafx.scene.image.*;
+import javafx.scene.layout.GridPane;
+import java.net.URL;
 
-public class BoardSceneController {
-    @FXML
+public class BoardSceneController implements Initializable {
     private Stage stage;
     private Scene scene;
     private int saveFileNumber = 1;
     private boolean saveFileExists;
+    private static final Chessboard board = new Chessboard();
+    private static final Cell[][] grid = board.getGrid();
+    private String saveData = "";
+
+    @FXML
+    GridPane boardView;
+
+    public void initialize(URL location, ResourceBundle resourceBundle) {
+        initiateBoard();
+    }
 
     public void saveExit(ActionEvent event) throws Exception {
         // Alert
@@ -63,7 +80,7 @@ public class BoardSceneController {
         // add feat: sortSaveFile --> method to sort and fill in empty save file numbers after deletion --> for the load game scene
         // add feat: deleteSaveFile --> method to delete save files --> for the load game scene
         // add feat: loadSaveFile --> for the load game scene
-        String fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".txt";
+        String fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".csv";
         
         File dir = new File("src/view/saves");
         if (dir.listFiles() != null) {
@@ -76,7 +93,7 @@ public class BoardSceneController {
 
                 if (fileNumber.equals(fileCheckNumber)) {
                     this.saveFileNumber++;
-                    fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".txt";
+                    fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".csv";
                     i = 0;
                 }
 
@@ -88,7 +105,7 @@ public class BoardSceneController {
         // maybe save files need to be stored in local?
         
         FileWriter writer = new FileWriter(fileName);
-        writer.write("*insert save file data*");
+        writer.write(getSaveData());
         writer.close();
 
         if (!file.exists()) {
@@ -114,6 +131,41 @@ public class BoardSceneController {
     public boolean checkSaveFile() {
         return saveFileExists;
     }
+    public String getSaveData() {
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                this.saveData += grid[i][j].getPiece().getName() + " ";
+            }
+        }
+        return this.saveData;
+    }
+
+    public void initiateBoard() {
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                Image bigPatch = new Image(Constant.DECORATIONS.get("bigPatch"));
+                ImageView bigPatchView = new ImageView(bigPatch);
+                bigPatchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
+                bigPatchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
+                boardView.add(bigPatchView, j, i);
+
+                if (grid[i][j].isPlayable()) {
+                    Image patch = new Image(Constant.DECORATIONS.get("patch"));
+                    ImageView patchView = new ImageView(patch);
+                    patchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
+                    patchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
+                    this.boardView.add(patchView, j, i);
+                    
+                    Image fruit = new Image(grid[i][j].getPiece().getImagePath());
+                    ImageView fruitView = new ImageView(fruit);
+                    fruitView.setFitWidth(Constant.PICTURE_SIZE.getNum());
+                    fruitView.setFitHeight(Constant.PICTURE_SIZE.getNum());
+                    this.boardView.add(fruitView, j, i);
+                }
+            }
+        }
+        
+    }
 
     public void swap(ActionEvent event) {
         System.out.println("swap");
@@ -128,3 +180,24 @@ public class BoardSceneController {
     }
 
 }
+
+// public Node getChildByRowColumn(GridPane gridPane, int row, int col) {
+    //     // ty c0der from stackexchange
+    //     for (Node node : gridPane.getChildren()){
+    //         if (GridPane.getRowIndex(node) == null) continue ; //ignore Group 
+    //         if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+    //             return node;
+    //         }
+    //     }
+    //     return null;
+    // } 
+    // public void setImageViewByRowColumn(GridPane gridPane, int row, int col, Image image) {
+    //     Node node = getChildByRowColumn(gridPane, row, col);
+    //     if (node instanceof ImageView) {
+    //         ((ImageView)node).setImage(image);;
+    //     }
+    //     else {
+    //         gridPane.getChildren().remove(node);
+    //         gridPane.add(new ImageView(image), col, row);
+    //     }
+    // }
