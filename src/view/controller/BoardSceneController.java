@@ -29,17 +29,47 @@ public class BoardSceneController implements Initializable {
     private Scene scene;
     private int saveFileNumber = 1;
     private boolean saveFileExists;
-    private static final Chessboard board = new Chessboard();
-    private static final Cell[][] grid = board.getGrid();
+    private static Cell[][] grid;
     private String saveData = "";
 
     @FXML
     GridPane boardView;
 
+    // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
         initiateBoard();
     }
+    public void initiateBoard() {
+        Chessboard currentBoard = new Chessboard();
+        Cell[][] currentGrid = currentBoard.getGrid();
+        grid = currentGrid;
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                Image bigPatch = new Image(Constant.DECORATIONS.get("bigPatch"));
+                ImageView bigPatchView = new ImageView(bigPatch);
+                bigPatchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
+                bigPatchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
+                boardView.add(bigPatchView, j, i);
 
+                if (grid[i][j].isPlayable()) {
+                    Image patch = new Image(Constant.DECORATIONS.get("patch"));
+                    ImageView patchView = new ImageView(patch);
+                    patchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
+                    patchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
+                    this.boardView.add(patchView, j, i);
+                    
+                    Image fruit = new Image(grid[i][j].getPiece().getImagePath());
+                    ImageView fruitView = new ImageView(fruit);
+                    fruitView.setFitWidth(Constant.PICTURE_SIZE.getNum());
+                    fruitView.setFitHeight(Constant.PICTURE_SIZE.getNum());
+                    this.boardView.add(fruitView, j, i);
+                }
+            }
+        }
+        
+    }
+
+    // SAVE & EXIT
     public void saveExit(ActionEvent event) throws Exception {
         // Alert
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -140,43 +170,19 @@ public class BoardSceneController implements Initializable {
         return this.saveData;
     }
 
-    public void initiateBoard() {
-        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
-            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
-                Image bigPatch = new Image(Constant.DECORATIONS.get("bigPatch"));
-                ImageView bigPatchView = new ImageView(bigPatch);
-                bigPatchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
-                bigPatchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
-                boardView.add(bigPatchView, j, i);
-
-                if (grid[i][j].isPlayable()) {
-                    Image patch = new Image(Constant.DECORATIONS.get("patch"));
-                    ImageView patchView = new ImageView(patch);
-                    patchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
-                    patchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
-                    this.boardView.add(patchView, j, i);
-                    
-                    Image fruit = new Image(grid[i][j].getPiece().getImagePath());
-                    ImageView fruitView = new ImageView(fruit);
-                    fruitView.setFitWidth(Constant.PICTURE_SIZE.getNum());
-                    fruitView.setFitHeight(Constant.PICTURE_SIZE.getNum());
-                    this.boardView.add(fruitView, j, i);
-                }
-            }
-        }
-        
-    }
-
+    // SWAP
     public void swap(ActionEvent event) {
         System.out.println("swap");
     }
+
 
     public void replant(ActionEvent event) {
         System.out.println("replant");
     }
 
+    // SHUFFLE
     public void shuffle(ActionEvent event) {
-        System.out.println("shuffle");
+        initiateBoard();
     }
 
 }
