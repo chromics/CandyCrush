@@ -31,6 +31,7 @@ public class BoardSceneController implements Initializable {
     private boolean saveFileExists;
     private static Cell[][] grid;
     private String saveData = "";
+    private int shuffleCount = 3;
 
     @FXML
     GridPane boardView;
@@ -175,35 +176,22 @@ public class BoardSceneController implements Initializable {
         System.out.println("swap");
     }
 
-
     public void replant(ActionEvent event) {
         System.out.println("replant");
     }
 
     // SHUFFLE
     public void shuffle(ActionEvent event) {
-        initiateBoard();
+        if (this.shuffleCount > 0) {
+            initiateBoard();
+            this.shuffleCount--;
+        }
+        else {
+            Alert errorAlert = new Alert(AlertType.ERROR);
+            errorAlert.setHeaderText("Shuffle unavailable.");
+            errorAlert.setContentText("You have used all of the shuffle props for this game!");
+            errorAlert.show();
+        }
     }
 
 }
-
-// public Node getChildByRowColumn(GridPane gridPane, int row, int col) {
-    //     // ty c0der from stackexchange
-    //     for (Node node : gridPane.getChildren()){
-    //         if (GridPane.getRowIndex(node) == null) continue ; //ignore Group 
-    //         if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
-    //             return node;
-    //         }
-    //     }
-    //     return null;
-    // } 
-    // public void setImageViewByRowColumn(GridPane gridPane, int row, int col, Image image) {
-    //     Node node = getChildByRowColumn(gridPane, row, col);
-    //     if (node instanceof ImageView) {
-    //         ((ImageView)node).setImage(image);;
-    //     }
-    //     else {
-    //         gridPane.getChildren().remove(node);
-    //         gridPane.add(new ImageView(image), col, row);
-    //     }
-    // }
