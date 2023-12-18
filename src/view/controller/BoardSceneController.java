@@ -254,6 +254,8 @@ public class BoardSceneController implements Initializable {
             errorAlert.setHeaderText("Unable to swap.");
             errorAlert.setContentText("Please select adjacent fruits to swap!");
             errorAlert.show();
+            errorAlert.setX(725);
+            errorAlert.setY(45);
         }
         
     }
