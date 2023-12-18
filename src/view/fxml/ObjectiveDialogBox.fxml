@@ -36,22 +36,22 @@
       </Label>
       <ImageView fitHeight="23.0" fitWidth="23.0" layoutX="57.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../model/static/image/apple.png" />
+            <Image url="@../../data/constant/image/apple.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="23.0" fitWidth="23.0" layoutX="114.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../model/static/image/banana.png" />
+            <Image url="@../../data/constant/image/banana.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="23.0" fitWidth="23.0" layoutX="165.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../model/static/image/pear.png" />
+            <Image url="@../../data/constant/image/pear.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="23.0" fitWidth="23.0" layoutX="216.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../model/static/image/orange.png" />
+            <Image url="@../../data/constant/image/orange.png" />
          </image>
       </ImageView>
       <Label layoutX="55.0" layoutY="143.0" text="20 pts">

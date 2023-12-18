@@ -15,7 +15,7 @@
    <children>
       <ImageView fitHeight="325.0" fitWidth="325.0" layoutX="77.0" layoutY="60.0" pickOnBounds="true">
          <image>
-            <Image url="@../../model/static/image/bigPatch.png" />
+            <Image url="@../../data/constant/image/bigPatch.png" />
          </image>
       </ImageView>
       <GridPane fx:id="boardView" alignment="CENTER" layoutX="90.0" layoutY="73.0" prefHeight="300.0" prefWidth="300.0">
