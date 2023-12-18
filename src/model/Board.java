@@ -2,7 +2,7 @@ package model;
 
 import mechanism.CreateBoard;
 import model.piece.*;
-import data.Constant;
+import data.constant.Constant;
 
 
 public class Board {

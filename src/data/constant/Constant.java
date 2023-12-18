@@ -1,9 +1,9 @@
-package data;
+package data.constant;
 
 import java.util.HashMap;
 
 public enum Constant{
-    BOARD_ROW_SIZE(8), BOARD_COL_SIZE(8), PICTURE_SIZE(50);
+    BOARD_ROW_SIZE(8), BOARD_COL_SIZE(8), PICTURE_SIZE(35);
 
     private final int num;
     Constant(int num){
@@ -15,18 +15,18 @@ public enum Constant{
     }
 
     public static HashMap<String,String> decorations = new HashMap<>(){{
-        put("patch","data/static/image/patch.png");
-        put("bigPatch","data/static/image/bigPatch.png");
-        put("fence","data/static/image/fence.png");
+        put("patch","data/constant/image/patch.png");
+        put("bigPatch","data/constant/image/bigPatch.png");
+        put("fence","data/constant/image/fence.png");
     }};
 
     public static String[] fruitsName = {"apple", "banana", "orange", "pear"};
 
     public static HashMap<String,String> fruitsHashMap = new HashMap<>(){{
-        put("apple","data/static/image/apple.png");
-        put("banana","data/static/image/banana.png");
-        put("orange","data/static/image/orange.png");
-        put("pear","data/static/image/pear.png");
+        put("apple","data/constant/image/apple.png");
+        put("banana","data/constant/image/banana.png");
+        put("orange","data/constant/image/orange.png");
+        put("pear","data/constant/image/pear.png");
     }};
 
     public static int[][] potentialMatchPatterns = {

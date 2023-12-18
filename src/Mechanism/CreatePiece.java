@@ -1,6 +1,6 @@
 package mechanism;
 
-import data.Constant;
+import data.constant.Constant;
 
 public class CreatePiece {
     public static String createPiece(){

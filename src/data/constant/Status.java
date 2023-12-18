@@ -1,4 +1,4 @@
-package data;
+package data.constant;
 
 public enum Status {
     PLAYABLE, NOTPLAYABLE,

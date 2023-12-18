@@ -1,6 +1,6 @@
 package model.piece;
 
-import data.Constant;
+import data.constant.Constant;
 
 public class Piece {
     protected String name;

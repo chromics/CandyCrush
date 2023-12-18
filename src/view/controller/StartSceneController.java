@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class StartSceneController {
@@ -19,6 +21,7 @@ public class StartSceneController {
         this.scene = new Scene(boardScene);
         stage.setScene(this.scene);
         stage.show();
+        gameObjective(event);
     }
     
     public void loadGame(ActionEvent event) {
@@ -27,6 +30,23 @@ public class StartSceneController {
 
     public void settings(ActionEvent event) {
         System.out.println("settings");
+    }
+
+    public void gameObjective(ActionEvent event) throws Exception {
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(this.stage);
+        dialog.setResizable(false);
+        dialog.setX(545);
+        dialog.setY(250);
+
+        Image dialogIcon = new Image("data/constant/image/apple.png");
+        dialog.getIcons().add(dialogIcon);
+
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
+        Scene scene = new Scene(boardScene);
+        dialog.setScene(scene);
+        dialog.show();
     }
 }
 

@@ -1,6 +1,6 @@
 package model;
 
-import data.Status;
+import data.constant.Status;
 import model.piece.*;
 public class Cell {
     private Piece piece;

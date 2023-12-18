@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import data.Constant;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,14 +20,16 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import model.Cell;
 import model.Board;
 import model.BoardPoint;
+import data.constant.Constant;
+import model.Cell;
 import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 
 import java.net.URL;
@@ -41,16 +42,19 @@ public class BoardSceneController implements Initializable {
     private static Cell[][] grid;
     private String saveData = "";
     private int shuffleCount = 3;
-    private BoardPoint[] selectedPoints = new BoardPoint[2];
+    private BoardPoint[] points = new BoardPoint[2];
     private int pointIndex = 0;
-    private Board chessboard;
+    private Board Board;
 
     @FXML
     GridPane boardView;
+    @FXML
+    Label shuffleLabel;
 
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
         initiateBoard();
+        this.shuffleLabel.setText(Integer.toString(this.shuffleCount));
     }
     public void initiateBoard() {
         Board currentBoard = new Board();
@@ -101,7 +105,7 @@ public class BoardSceneController implements Initializable {
             }
         }
 
-        this.chessboard = currentBoard;
+        this.Board = currentBoard;
         
     }
 
@@ -113,6 +117,8 @@ public class BoardSceneController implements Initializable {
         alert.setTitle("Save & Exit");
         alert.setHeaderText("You're about to exit the current game!");
         alert.setContentText("Do you want to save?");
+        alert.setX(725);
+        alert.setY(45);
 
         alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
         ((Button) alert.getDialogPane().lookupButton(ButtonType.YES)).setDefaultButton(true);
@@ -209,15 +215,15 @@ public class BoardSceneController implements Initializable {
     // SWAP
     public void swap(ActionEvent event) {
         System.out.println("swap() fired");
-        System.out.println(this.selectedPoints[0].getRow() + " " + this.selectedPoints[0].getCol());
-        System.out.println(this.selectedPoints[1].getRow() + " " + this.selectedPoints[1].getCol());
-        this.chessboard.swapPiece(this.selectedPoints[0], this.selectedPoints[1]);
-        swapImage(this.selectedPoints[0], this.selectedPoints[1]);
+        System.out.println(this.points[0].getRow() + " " + this.points[0].getCol());
+        System.out.println(this.points[1].getRow() + " " + this.points[1].getCol());
+        this.Board.swapPiece(this.points[0], this.points[1]);
+        swapImage(this.points[0], this.points[1]);
         this.pointIndex = 0;
         // correct
     }
     public void swapImage(BoardPoint p1, BoardPoint p2) {
-        // something wrong here most likely
+        // cannot swap after shuffle
         if (p1.getRow() == p2.getRow() - 1 || p1.getRow() == p2.getRow() + 1 || p1.getCol() == p2.getCol() - 1 || p1.getCol() == p2.getCol() + 1) {
             StackPane stackPane1 = (StackPane)((Button)getNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView)).getGraphic();
             ImageView fruitImageViewP1 = (ImageView)stackPane1.getChildren().get(1);
@@ -248,15 +254,17 @@ public class BoardSceneController implements Initializable {
             errorAlert.setHeaderText("Unable to swap.");
             errorAlert.setContentText("Please select adjacent fruits to swap!");
             errorAlert.show();
+            errorAlert.setX(725);
+            errorAlert.setY(45);
         }
         
     }
     public void buttonHandler(BoardPoint point) {
         if (this.pointIndex > 1) {
-            this.selectedPoints[0] = this.selectedPoints[1];
+            this.points[0] = this.points[1];
             this.pointIndex = 1;
         }
-        this.selectedPoints[this.pointIndex] = point;
+        this.points[this.pointIndex] = point;
         this.pointIndex++;
         // correct
     }
@@ -295,6 +303,7 @@ public class BoardSceneController implements Initializable {
         if (this.shuffleCount > 0) {
             initiateBoard();
             this.shuffleCount--;
+            this.shuffleLabel.setText(Integer.toString(this.shuffleCount));
         }
         else {
             Alert errorAlert = new Alert(AlertType.ERROR);

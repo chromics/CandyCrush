@@ -2,7 +2,7 @@ package mechanism;
 
 import model.Cell;
 import model.piece.Piece;
-import data.Constant;
+import data.constant.Constant;
 
 import java.util.Random;
 import java.util.HashSet;
