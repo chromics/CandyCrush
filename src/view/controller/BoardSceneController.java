@@ -20,10 +20,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import model.components.Chessboard;
-import model.components.ChessboardPoint;
-import model.components.Constant;
-import model.components.Cell;
+import model.Board;
+import model.BoardPoint;
+import data.constant.Constant;
+import model.Cell;
 import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -42,9 +42,9 @@ public class BoardSceneController implements Initializable {
     private static Cell[][] grid;
     private String saveData = "";
     private int shuffleCount = 3;
-    private ChessboardPoint[] points = new ChessboardPoint[2];
+    private BoardPoint[] points = new BoardPoint[2];
     private int pointIndex = 0;
-    private Chessboard chessboard;
+    private Board board;
 
     @FXML
     GridPane boardView;
@@ -57,15 +57,15 @@ public class BoardSceneController implements Initializable {
         this.shuffleLabel.setText(Integer.toString(this.shuffleCount));
     }
     public void initiateBoard() {
-        Chessboard currentBoard = new Chessboard();
+        Board currentBoard = new Board();
         Cell[][] currentGrid = currentBoard.getGrid();
         grid = currentGrid;
-        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
-            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+        for (int i = 0; i < Constant.BOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.BOARD_COL_SIZE.getNum(); j++) {
                 if (grid[i][j].isPlayable()) {
-                    ChessboardPoint currentPoint = new ChessboardPoint(i, j);
+                    BoardPoint currentPoint = new BoardPoint(i, j);
 
-                    Image patch = new Image(Constant.DECORATIONS.get("patch"));
+                    Image patch = new Image(Constant.decorations.get("patch"));
                     ImageView patchView = new ImageView(patch);
                     patchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
                     patchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
@@ -105,7 +105,7 @@ public class BoardSceneController implements Initializable {
             }
         }
 
-        this.chessboard = currentBoard;
+        this.board = currentBoard;
         
     }
 
@@ -204,8 +204,8 @@ public class BoardSceneController implements Initializable {
         return saveFileExists;
     }
     public String getSaveData() {
-        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
-            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+        for (int i = 0; i < Constant.BOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.BOARD_COL_SIZE.getNum(); j++) {
                 this.saveData += grid[i][j].getPiece().getName() + " ";
             }
         }
@@ -217,12 +217,12 @@ public class BoardSceneController implements Initializable {
         System.out.println("swap() fired");
         System.out.println(this.points[0].getRow() + " " + this.points[0].getCol());
         System.out.println(this.points[1].getRow() + " " + this.points[1].getCol());
-        this.chessboard.swapChessPiece(this.points[0], this.points[1]);
+        this.board.swapPiece(this.points[0], this.points[1]);
         swapImage(this.points[0], this.points[1]);
         this.pointIndex = 0;
         // correct
     }
-    public void swapImage(ChessboardPoint p1, ChessboardPoint p2) {
+    public void swapImage(BoardPoint p1, BoardPoint p2) {
         // cannot swap after shuffle
         if (p1.getRow() == p2.getRow() - 1 || p1.getRow() == p2.getRow() + 1 || p1.getCol() == p2.getCol() - 1 || p1.getCol() == p2.getCol() + 1) {
             StackPane stackPane1 = (StackPane)((Button)getNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView)).getGraphic();
@@ -235,7 +235,7 @@ public class BoardSceneController implements Initializable {
             fruitImageViewP2.setFitWidth(Constant.PICTURE_SIZE.getNum());
             fruitImageViewP2.setFitHeight(Constant.PICTURE_SIZE.getNum());
 
-            Image patch = new Image(Constant.DECORATIONS.get("patch"));
+            Image patch = new Image(Constant.decorations.get("patch"));
             ImageView patchView1 = new ImageView(patch);
             ImageView patchView2 = new ImageView(patch);
             patchView1.setFitWidth(Constant.PICTURE_SIZE.getNum());
@@ -259,7 +259,7 @@ public class BoardSceneController implements Initializable {
         }
         
     }
-    public void buttonHandler(ChessboardPoint point) {
+    public void buttonHandler(BoardPoint point) {
         if (this.pointIndex > 1) {
             this.points[0] = this.points[1];
             this.pointIndex = 1;

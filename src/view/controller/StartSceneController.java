@@ -40,7 +40,7 @@ public class StartSceneController {
         dialog.setX(545);
         dialog.setY(250);
 
-        Image dialogIcon = new Image("model/static/image/apple.png");
+        Image dialogIcon = new Image("data/constant/image/apple.png");
         dialog.getIcons().add(dialogIcon);
 
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
