@@ -5,10 +5,13 @@ import java.io.FileWriter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,10 +21,16 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import model.components.Chessboard;
+import model.components.ChessboardPoint;
 import model.components.Constant;
 import model.components.Cell;
 import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.control.ContentDisplay;
+import javafx.geometry.Insets;
+
 import java.net.URL;
 
 public class BoardSceneController implements Initializable {
@@ -32,6 +41,9 @@ public class BoardSceneController implements Initializable {
     private static Cell[][] grid;
     private String saveData = "";
     private int shuffleCount = 3;
+    private ChessboardPoint[] points = new ChessboardPoint[2];
+    private int pointIndex = 0;
+    private Chessboard chessboard;
 
     @FXML
     GridPane boardView;
@@ -46,27 +58,50 @@ public class BoardSceneController implements Initializable {
         grid = currentGrid;
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
-                Image bigPatch = new Image(Constant.DECORATIONS.get("bigPatch"));
-                ImageView bigPatchView = new ImageView(bigPatch);
-                bigPatchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
-                bigPatchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
-                boardView.add(bigPatchView, j, i);
-
                 if (grid[i][j].isPlayable()) {
+                    ChessboardPoint currentPoint = new ChessboardPoint(i, j);
+
                     Image patch = new Image(Constant.DECORATIONS.get("patch"));
                     ImageView patchView = new ImageView(patch);
                     patchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
                     patchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
-                    this.boardView.add(patchView, j, i);
+                    // this.boardView.add(patchView, j, i);
                     
                     Image fruit = new Image(grid[i][j].getPiece().getImagePath());
                     ImageView fruitView = new ImageView(fruit);
                     fruitView.setFitWidth(Constant.PICTURE_SIZE.getNum());
                     fruitView.setFitHeight(Constant.PICTURE_SIZE.getNum());
-                    this.boardView.add(fruitView, j, i);
+
+                    // StackPane stackPane = new StackPane();
+                    // stackPane.getChildren().addAll(patchView, fruitView);
+
+                    // CheckBox fruitCheckBox = new CheckBox();
+                    // fruitCheckBox.setBackground(null);
+                    Button fruitButton = new Button();
+                    // fruitButton.setBackground(null);
+
+                    StackPane stackPane = new StackPane();
+                    stackPane.getChildren().addAll(patchView, fruitView);
+
+                    fruitButton.setOnAction(e -> buttonHandler(currentPoint));
+                    fruitButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                    fruitButton.setGraphic(stackPane);
+                    fruitButton.maxWidth(Double.MAX_VALUE);
+                    fruitButton.maxHeight(Double.MAX_VALUE);
+                    fruitButton.setPadding(Insets.EMPTY);
+
+                    GridPane.setHalignment(stackPane, HPos.CENTER);
+                    GridPane.setHgrow(stackPane, Priority.ALWAYS);
+                    GridPane.setValignment(stackPane, VPos.CENTER);
+                    GridPane.setVgrow(stackPane, Priority.ALWAYS);
+
+                    this.boardView.add(fruitButton, j, i);
+
                 }
             }
         }
+
+        this.chessboard = currentBoard;
         
     }
 
@@ -173,9 +208,84 @@ public class BoardSceneController implements Initializable {
 
     // SWAP
     public void swap(ActionEvent event) {
-        System.out.println("swap");
+        System.out.println("swap() fired");
+        System.out.println(this.points[0].getRow() + " " + this.points[0].getCol());
+        System.out.println(this.points[1].getRow() + " " + this.points[1].getCol());
+        this.chessboard.swapChessPiece(this.points[0], this.points[1]);
+        swapImage(this.points[0], this.points[1]);
+        this.pointIndex = 0;
+        // correct
+    }
+    public void swapImage(ChessboardPoint p1, ChessboardPoint p2) {
+        // something wrong here most likely
+        if (p1.getRow() == p2.getRow() - 1 || p1.getRow() == p2.getRow() + 1 || p1.getCol() == p2.getCol() - 1 || p1.getCol() == p2.getCol() + 1) {
+            StackPane stackPane1 = (StackPane)((Button)getNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView)).getGraphic();
+            ImageView fruitImageViewP1 = (ImageView)stackPane1.getChildren().get(1);
+            fruitImageViewP1.setFitWidth(Constant.PICTURE_SIZE.getNum());
+            fruitImageViewP1.setFitHeight(Constant.PICTURE_SIZE.getNum());
+
+            StackPane stackPane2 = (StackPane)((Button)getNodeByRowColumnIndex(p2.getRow(), p2.getCol(), boardView)).getGraphic();
+            ImageView fruitImageViewP2 = (ImageView)stackPane2.getChildren().get(1);
+            fruitImageViewP2.setFitWidth(Constant.PICTURE_SIZE.getNum());
+            fruitImageViewP2.setFitHeight(Constant.PICTURE_SIZE.getNum());
+
+            Image patch = new Image(Constant.DECORATIONS.get("patch"));
+            ImageView patchView1 = new ImageView(patch);
+            ImageView patchView2 = new ImageView(patch);
+            patchView1.setFitWidth(Constant.PICTURE_SIZE.getNum());
+            patchView1.setFitHeight(Constant.PICTURE_SIZE.getNum());
+            patchView2.setFitWidth(Constant.PICTURE_SIZE.getNum());
+            patchView2.setFitHeight(Constant.PICTURE_SIZE.getNum());
+
+            StackPane newStackPane1 = new StackPane(patchView1, fruitImageViewP2);
+            StackPane newStackPane2 = new StackPane(patchView2, fruitImageViewP1);
+
+            ((Button)getNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView)).setGraphic(newStackPane1);
+            ((Button)getNodeByRowColumnIndex(p2.getRow(), p2.getCol(), boardView)).setGraphic(newStackPane2);
+        }
+        else {
+            Alert errorAlert = new Alert(AlertType.ERROR);
+            errorAlert.setHeaderText("Unable to swap.");
+            errorAlert.setContentText("Please select adjacent fruits to swap!");
+            errorAlert.show();
+        }
+        
+    }
+    public void buttonHandler(ChessboardPoint point) {
+        if (this.pointIndex > 1) {
+            this.points[0] = this.points[1];
+            this.pointIndex = 1;
+        }
+        this.points[this.pointIndex] = point;
+        this.pointIndex++;
+        // correct
+    }
+    public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+        Node result = null;
+        ObservableList<Node> childrens = gridPane.getChildren();
+    
+        for (Node node : childrens) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                result = node;
+                break;
+            }
+        }
+    
+        return result;
+    }
+    public void setNodeByRowColumnIndex (final int row, final int column, GridPane gridPane, Node node) {
+        ObservableList<Node> childrens = gridPane.getChildren();
+    
+        for (int i = 0; i < gridPane.getChildren().size(); i++) {
+            Node currentNode = childrens.get(i);
+            if (GridPane.getRowIndex(currentNode) == row && GridPane.getColumnIndex(currentNode) == column) {
+                gridPane.getChildren().set(i, node);
+                break;
+            }
+        }
     }
 
+    // NEXT STEP
     public void replant(ActionEvent event) {
         System.out.println("replant");
     }
