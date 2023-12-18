@@ -65,7 +65,7 @@
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
       </Button>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="703.0" layoutY="395.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="30.0" prefWidth="30.0" text="Shuffle">
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="707.0" layoutY="54.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="30.0" prefWidth="30.0" text="Shuffle">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
@@ -80,10 +80,15 @@
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="shuffleLabel" layoutX="738.0" layoutY="389.0" text="3">
+      <Label fx:id="shuffleLabel" layoutX="742.0" layoutY="48.0" text="3">
          <font>
             <Font name="HP Simplified Hans Regular" size="14.0" />
          </font>
       </Label>
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="704.0" layoutY="385.0" mnemonicParsing="false" onAction="#saveExit" prefHeight="30.0" prefWidth="31.0" text="Save &amp; Exit">
+         <font>
+            <Font name="HP Simplified Hans Regular" size="10.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
