@@ -3,7 +3,7 @@ package model.components;
 import java.util.HashMap;
 
 public enum Constant{
-    CHESSBOARD_ROW_SIZE(8),CHESSBOARD_COL_SIZE(8), PICTURE_SIZE(50);
+    CHESSBOARD_ROW_SIZE(8),CHESSBOARD_COL_SIZE(8), PICTURE_SIZE(35);
 
     private final int num;
     Constant(int num){

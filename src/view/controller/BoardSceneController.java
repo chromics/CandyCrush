@@ -29,6 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 
 import java.net.URL;
@@ -47,10 +48,13 @@ public class BoardSceneController implements Initializable {
 
     @FXML
     GridPane boardView;
+    @FXML
+    Label shuffleLabel;
 
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
         initiateBoard();
+        this.shuffleLabel.setText(Integer.toString(this.shuffleCount));
     }
     public void initiateBoard() {
         Chessboard currentBoard = new Chessboard();
@@ -217,7 +221,7 @@ public class BoardSceneController implements Initializable {
         // correct
     }
     public void swapImage(ChessboardPoint p1, ChessboardPoint p2) {
-        // something wrong here most likely
+        // cannot swap after shuffle
         if (p1.getRow() == p2.getRow() - 1 || p1.getRow() == p2.getRow() + 1 || p1.getCol() == p2.getCol() - 1 || p1.getCol() == p2.getCol() + 1) {
             StackPane stackPane1 = (StackPane)((Button)getNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView)).getGraphic();
             ImageView fruitImageViewP1 = (ImageView)stackPane1.getChildren().get(1);
@@ -295,6 +299,7 @@ public class BoardSceneController implements Initializable {
         if (this.shuffleCount > 0) {
             initiateBoard();
             this.shuffleCount--;
+            this.shuffleLabel.setText(Integer.toString(this.shuffleCount));
         }
         else {
             Alert errorAlert = new Alert(AlertType.ERROR);

@@ -13,32 +13,36 @@ import javafx.stage.Stage;
 import javafx.scene.image.*;
 
 public class Main extends Application {
+    private Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        this.stage = primaryStage;
         // SCENE ROOT NODES
         Parent startScene = FXMLLoader.load(getClass().getResource("fxml/StartScene.fxml"));
 
         // STAGE
         // a) Icon
         Image icon = new Image("model/static/image/apple.png");
-        primaryStage.getIcons().add(icon);
+        this.stage.getIcons().add(icon);
 
         // b) Title
-        primaryStage.setTitle("Happy Match");
-        primaryStage.setHeight(600);
-        primaryStage.setWidth(900);
-        primaryStage.setResizable(false);
+        this.stage.setTitle("Happy Match");
+        this.stage.setHeight(500);
+        this.stage.setWidth(800);
+        this.stage.setX(100);
+        this.stage.setY(100);
+        this.stage.setResizable(false);
 
         // Set Scene
-        primaryStage.setScene(new Scene(startScene));
+        this.stage.setScene(new Scene(startScene));
         // Show Stage
-        primaryStage.show();
+        this.stage.show();
 
         // Exit Stage
-        primaryStage.setOnCloseRequest(event -> {
+        this.stage.setOnCloseRequest(event -> {
             event.consume();
-            exit(primaryStage);
+            exit(this.stage);
         });
 
     }
