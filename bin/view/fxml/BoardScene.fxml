@@ -55,7 +55,7 @@
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="556.0" layoutY="365.0" mnemonicParsing="false" onAction="#replant" prefHeight="20.0" prefWidth="90.0" text="Replant">
+      <Button layoutX="556.0" layoutY="365.0" mnemonicParsing="false" onAction="#next" prefHeight="20.0" prefWidth="90.0" text="Next">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
@@ -100,5 +100,10 @@
             <Font name="HP Simplified Hans Regular" size="20.0" />
          </font>
       </Text>
+      <ImageView fitHeight="244.0" fitWidth="244.0" layoutX="426.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../data/constant/image/defaultCat.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

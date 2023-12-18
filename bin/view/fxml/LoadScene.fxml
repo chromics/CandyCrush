@@ -8,32 +8,37 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.LoadSceneController">
    <children>
-      <ScrollPane layoutX="37.0" layoutY="36.0" prefHeight="429.0" prefWidth="512.0">
+      <ScrollPane layoutX="84.0" layoutY="36.0" prefHeight="388.0" prefWidth="434.0">
          <content>
-            <ListView prefHeight="428.0" prefWidth="495.0" />
+            <ListView prefHeight="428.0" prefWidth="432.0" />
          </content>
       </ScrollPane>
-      <Label layoutX="581.0" layoutY="61.0" prefHeight="45.0" prefWidth="114.0" text="Load">
+      <Label layoutX="554.0" layoutY="61.0" prefHeight="45.0" prefWidth="114.0" text="Load">
          <font>
             <Font name="HP Simplified Hans Regular" size="35.0" />
          </font>
       </Label>
-      <Button layoutX="581.0" layoutY="401.0" mnemonicParsing="false" text="Load file">
+      <Button layoutX="551.0" layoutY="373.0" mnemonicParsing="false" text="Load file">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="668.0" layoutY="401.0" mnemonicParsing="false" text="Delete file">
+      <Button layoutX="638.0" layoutY="373.0" mnemonicParsing="false" text="Delete file">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Label layoutX="581.0" layoutY="103.0" prefHeight="45.0" prefWidth="230.0" text="save file...">
+      <Label layoutX="554.0" layoutY="103.0" prefHeight="45.0" prefWidth="230.0" text="save file...">
          <font>
             <Font name="HP Simplified Hans Regular" size="35.0" />
          </font>
       </Label>
+      <Button layoutX="33.0" layoutY="39.0" mnemonicParsing="false" onAction="#backToStartScene" prefHeight="30.0" prefWidth="29.0" text="Load file">
+         <font>
+            <Font name="HP Simplified Hans Regular" size="15.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

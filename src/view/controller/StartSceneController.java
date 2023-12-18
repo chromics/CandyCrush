@@ -24,8 +24,12 @@ public class StartSceneController {
         gameObjective(event);
     }
     
-    public void loadGame(ActionEvent event) {
-        System.out.println("loadGame");
+    public void loadGame(ActionEvent event) throws Exception {
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/LoadScene.fxml"));
+        this.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
+        this.scene = new Scene(boardScene);
+        stage.setScene(this.scene);
+        stage.show();
     }
 
     public void settings(ActionEvent event) {

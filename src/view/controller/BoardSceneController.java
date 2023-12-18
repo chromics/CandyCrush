@@ -99,6 +99,10 @@ public class BoardSceneController implements Initializable {
                     GridPane.setValignment(stackPane, VPos.CENTER);
                     GridPane.setVgrow(stackPane, Priority.ALWAYS);
 
+                    // if (this.boardView.getChildren().contains(fruitButton)) {
+                    //     this.boardView.getChildren().clear();
+                    // }
+
                     this.boardView.add(fruitButton, j, i);
 
                 }
@@ -106,7 +110,6 @@ public class BoardSceneController implements Initializable {
         }
 
         this.board = currentBoard;
-        
     }
 
     // SAVE & EXIT
@@ -214,17 +217,43 @@ public class BoardSceneController implements Initializable {
 
     // SWAP
     public void swap(ActionEvent event) {
-        System.out.println("swap() fired");
-        System.out.println(this.points[0].getRow() + " " + this.points[0].getCol());
-        System.out.println(this.points[1].getRow() + " " + this.points[1].getCol());
-        this.board.swapPiece(this.points[0], this.points[1]);
-        swapImage(this.points[0], this.points[1]);
-        this.pointIndex = 0;
+        if (this.points[0] != null && this.points[1] != null) {
+            System.out.println("swap() fired");
+            System.out.println(this.points[0].getRow() + " " + this.points[0].getCol());
+            System.out.println(this.points[1].getRow() + " " + this.points[1].getCol());
+
+            this.board.swapPiece(this.points[0], this.points[1]);
+            swapImage(this.points[0], this.points[1]);
+            this.pointIndex = 0;
+
+            System.out.println(this.board.getPieceAt(this.points[0]).getName() + this.board.getPieceAt(this.points[1]).getName());
+        }
+        else {
+            Alert errorAlert = new Alert(AlertType.ERROR);
+            errorAlert.setHeaderText("Unable to swap.");
+            errorAlert.setContentText("Please select adjacent fruits to swap!");
+            errorAlert.show();
+            errorAlert.setX(725);
+            errorAlert.setY(45);
+        }
+        for (int i = 0; i < 2; i++) {
+            this.points[i] = null;
+        }
         // correct
     }
     public void swapImage(BoardPoint p1, BoardPoint p2) {
         // cannot swap after shuffle
         if (board.calculateDistance(p1, p2) == 1) {
+
+            // Button button1 = (Button)getNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView);
+            // Button button2 = (Button)getNodeByRowColumnIndex(p2.getRow(), p2.getCol(), boardView);
+
+            // this.boardView.getChildren().remove(getNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView));
+            // this.boardView.getChildren().remove(getNodeByRowColumnIndex(p2.getRow(), p2.getCol(), boardView));
+
+            // setNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView, button2);
+            // setNodeByRowColumnIndex(p2.getRow(), p2.getCol(), boardView, button1);
+
             StackPane stackPane1 = (StackPane)((Button)getNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView)).getGraphic();
             ImageView fruitImageViewP1 = (ImageView)stackPane1.getChildren().get(1);
             fruitImageViewP1.setFitWidth(Constant.PICTURE_SIZE.getNum());
@@ -294,8 +323,8 @@ public class BoardSceneController implements Initializable {
     }
 
     // NEXT STEP
-    public void replant(ActionEvent event) {
-        System.out.println("replant");
+    public void next(ActionEvent event) {
+        System.out.println("next");
     }
 
     // SHUFFLE
@@ -310,6 +339,8 @@ public class BoardSceneController implements Initializable {
             errorAlert.setHeaderText("Shuffle unavailable.");
             errorAlert.setContentText("You have used all of the shuffle props for this game!");
             errorAlert.show();
+            errorAlert.setX(725);
+            errorAlert.setY(45);
         }
     }
 
