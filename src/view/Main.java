@@ -21,7 +21,7 @@ public class Main extends Application {
 
         // STAGE
         // a) Icon
-        Image icon = new Image("model/static/image/apple.png");
+        Image icon = new Image("data/static/image/apple.png");
         primaryStage.getIcons().add(icon);
 
         // b) Title
