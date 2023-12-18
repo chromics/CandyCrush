@@ -52,6 +52,8 @@ public class Main extends Application {
         alert.setTitle("Exit");
         alert.setHeaderText("You're about to exit the game!");
         alert.setContentText("Do you want to leave?");
+        alert.setX(725);
+        alert.setY(45);
 
         alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
 

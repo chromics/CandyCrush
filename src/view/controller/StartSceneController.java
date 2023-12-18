@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -36,6 +37,11 @@ public class StartSceneController {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(this.stage);
         dialog.setResizable(false);
+        dialog.setX(545);
+        dialog.setY(250);
+
+        Image dialogIcon = new Image("model/static/image/apple.png");
+        dialog.getIcons().add(dialogIcon);
 
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
         Scene scene = new Scene(boardScene);

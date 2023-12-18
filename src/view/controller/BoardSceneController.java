@@ -117,6 +117,8 @@ public class BoardSceneController implements Initializable {
         alert.setTitle("Save & Exit");
         alert.setHeaderText("You're about to exit the current game!");
         alert.setContentText("Do you want to save?");
+        alert.setX(725);
+        alert.setY(45);
 
         alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
         ((Button) alert.getDialogPane().lookupButton(ButtonType.YES)).setDefaultButton(true);
