@@ -224,7 +224,7 @@ public class BoardSceneController implements Initializable {
     }
     public void swapImage(BoardPoint p1, BoardPoint p2) {
         // cannot swap after shuffle
-        if (p1.getRow() == p2.getRow() - 1 || p1.getRow() == p2.getRow() + 1 || p1.getCol() == p2.getCol() - 1 || p1.getCol() == p2.getCol() + 1) {
+        if (board.calculateDistance(p1, p2) == 1) {
             StackPane stackPane1 = (StackPane)((Button)getNodeByRowColumnIndex(p1.getRow(), p1.getCol(), boardView)).getGraphic();
             ImageView fruitImageViewP1 = (ImageView)stackPane1.getChildren().get(1);
             fruitImageViewP1.setFitWidth(Constant.PICTURE_SIZE.getNum());

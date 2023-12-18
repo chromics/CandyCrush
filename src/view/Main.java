@@ -23,7 +23,7 @@ public class Main extends Application {
 
         // STAGE
         // a) Icon
-        Image icon = new Image("model/static/image/apple.png");
+        Image icon = new Image("data/constant/image/apple.png");
         this.stage.getIcons().add(icon);
 
         // b) Title
