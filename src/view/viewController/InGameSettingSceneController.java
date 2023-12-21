@@ -1,9 +1,11 @@
-package view.controller;
+package view.viewController;
 
+import controller.GameController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 
 public class InGameSettingSceneController {
+    private GameController gameController;
 
     @FXML
     private Slider sliderMusic;
@@ -17,6 +19,10 @@ public class InGameSettingSceneController {
 
     }
     public void toggleAutoMode() {
+        gameController.changeAutomaticMode();
+    }
 
+    public void setGameController(GameController gameController){
+        this.gameController = gameController;
     }
 }

@@ -1,6 +1,10 @@
 package model;
 
-public class BoardPoint {
+import java.io.*;
+
+import data.constant.Orientation;
+
+public class BoardPoint implements Serializable {
     private final int row;
     private final int col;
 
@@ -35,5 +39,12 @@ public class BoardPoint {
     @Override
     public String toString() {
         return "("+row + ","+col+") " + "on the board is clicked!";
+    }
+
+    public BoardPoint getAdjacentPoint(Orientation orientation){
+        int destRow = this.row + orientation.getRowChange();
+        int destCol = this.col + orientation.getColChange();
+
+        return new BoardPoint(destRow, destCol);
     }
 }
