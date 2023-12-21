@@ -1,19 +1,42 @@
 package view.controller;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import data.constant.Constant;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class StartSceneController {
-    @FXML
+public class StartSceneController implements Initializable {
     private Stage stage;
     private Scene scene;
+    // new File(this.mediaPath).toURI().toString()
+    private MediaPlayer mediaPlayer;
+
+    public void initialize(URL location, ResourceBundle resourceBundle) {
+        //!
+        // playMusic(this.mediaPlayer);
+    }
+
+    // public void playMusic(MediaPlayer mediaPlayer) {
+    //     String mediaPath = "springDay.wav";
+    //     // Constant.audio.get("springDay")
+    //     Media menuMusic = new Media(getClass().getResource(mediaPath).toExternalForm());
+    //     // Media menuMusic = new Media(new File(mediaPath).toURI().toString());
+    //     mediaPlayer = new MediaPlayer(menuMusic);
+    //     mediaPlayer.setVolume(0.5);
+    //     mediaPlayer.setAutoPlay(true);
+    // }
 
     public void newGame(ActionEvent event) throws Exception {
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/BoardScene.fxml"));
@@ -32,8 +55,21 @@ public class StartSceneController {
         stage.show();
     }
 
-    public void settings(ActionEvent event) {
-        System.out.println("settings");
+    public void settings(ActionEvent event) throws Exception {
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(this.stage);
+        dialog.setResizable(false);
+        dialog.setX(775);
+        dialog.setY(365);
+
+        Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
+        dialog.getIcons().add(dialogIcon);
+
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/MenuSetting.fxml"));
+        Scene scene = new Scene(boardScene);
+        dialog.setScene(scene);
+        dialog.show();
     }
 
     public void gameObjective(ActionEvent event) throws Exception {
@@ -44,7 +80,7 @@ public class StartSceneController {
         dialog.setX(545);
         dialog.setY(250);
 
-        Image dialogIcon = new Image("data/constant/image/apple.png");
+        Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
         dialog.getIcons().add(dialogIcon);
 
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));

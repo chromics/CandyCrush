@@ -29,6 +29,10 @@ public enum Constant{
         put("pear","data/constant/image/pear.png");
     }};
 
+    public static HashMap<String,String> audio = new HashMap<>() {{
+        put("springDay", "data/constant/audio/springDay.wav");
+    }};
+
     public static int[][] potentialMatchPatterns = {
         /*
          * {row1,col1,row2,col2}

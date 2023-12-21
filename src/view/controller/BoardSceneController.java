@@ -19,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Board;
 import model.BoardPoint;
@@ -50,6 +51,22 @@ public class BoardSceneController implements Initializable {
     GridPane boardView;
     @FXML
     Label shuffleLabel;
+    @FXML
+    Label currentScoreLabel;
+    // method: addScore()
+    // this method receives the additional points earned and adds it to this.score and updates the label accordingly
+    @FXML
+    Label movesLeftLabel;
+    // method: deductMovesLeft
+    // this method receives the moves the player has made and deducts it from this.movesLeft and updates the label accordingly
+    @FXML
+    Button hintsButton;
+    // method: provideHint()
+    // dunno how to do this yet need to learn css ¯\_(ツ)_/¯
+
+    private int score = 0;
+    // private int movesLeft = *insert the movesLeft for this level*;
+    // private int targetScore = *insert the score needed to pass level*
 
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -343,5 +360,36 @@ public class BoardSceneController implements Initializable {
             errorAlert.setY(45);
         }
     }
+
+    public void settings(ActionEvent event) throws Exception {
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(this.stage);
+        dialog.setResizable(false);
+        dialog.setX(775);
+        dialog.setY(365);
+
+        Image dialogIcon = new Image("data/constant/image/settingsIcon.png");
+        dialog.getIcons().add(dialogIcon);
+
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/InGameSettingScene.fxml"));
+        Scene scene = new Scene(boardScene);
+        dialog.setScene(scene);
+        dialog.show();
+    }
+
+    public void provideHint(ActionEvent event) {
+        System.out.println("hint");
+    }
+
+    public void addScore(int score) {
+        this.score += score;
+        this.currentScoreLabel = new Label(Integer.toString(this.score));
+    }
+    public void deductMovesLeft(int movesLeft) {
+        // this.movesLeft -= movesLeft;
+        // this.movesLeftLabel = new Label(Integer.toString(this.movesLeft));
+    }
+    
 
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.MenuSettingController">
+   <children>
+      <Label layoutX="10.0" layoutY="7.0" prefHeight="13.0" prefWidth="65.0" text="Adjust volume">
+         <font>
+            <Font name="HP Simplified Hans Regular" size="10.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="14.0" fitWidth="13.0" layoutX="77.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../data/constant/image/highVolumeIcon.png" />
+         </image>
+      </ImageView>
+      <Slider fx:id="musicSlider" layoutX="9.0" layoutY="22.0" prefHeight="13.0" prefWidth="127.0" value="70.0" />
+   </children>
+</AnchorPane>
