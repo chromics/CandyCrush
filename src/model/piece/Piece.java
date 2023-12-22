@@ -1,8 +1,11 @@
 package model.piece;
 
-import data.constant.Constant;
+import java.io.*;
 
-public class Piece {
+import data.constant.Constant;
+import data.MatchData;
+
+public class Piece implements Serializable {
     protected String name;
     protected String imagePath;
 
@@ -13,4 +16,6 @@ public class Piece {
 
     public String getName() { return name; }
     public String getImagePath() { return imagePath; }
+
+    // public abstract MatchData 
 }

@@ -1,6 +1,8 @@
 package data.constant;
 
-public enum Status {
+import java.io.*;
+
+public enum Status implements Serializable {
     PLAYABLE, NOTPLAYABLE,
     NORMAL, BOMB, VERTICALBOMB, HORIZONTALBOMB;
 }

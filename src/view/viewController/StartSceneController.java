@@ -1,10 +1,8 @@
-package view.controller;
+package view.viewController;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import data.constant.Constant;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,11 +15,17 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class StartSceneController implements Initializable {
+import data.constant.Constant;
+import controller.GameController;
+import view.viewController.BoardSceneController;
+
+public class StartSceneController {
+
     private Stage stage;
     private Scene scene;
-    // new File(this.mediaPath).toURI().toString()
     private MediaPlayer mediaPlayer;
+
+    // new File(this.mediaPath).toURI().toString()
 
     public void initialize(URL location, ResourceBundle resourceBundle) {
         //!
@@ -39,7 +43,12 @@ public class StartSceneController implements Initializable {
     // }
 
     public void newGame(ActionEvent event) throws Exception {
-        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/BoardScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));
+        Parent boardScene = loader.load();
+        
+        BoardSceneController view = loader.getController();
+        GameController gameController = new GameController(view);
+
         this.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         this.scene = new Scene(boardScene);
         stage.setScene(this.scene);
@@ -53,6 +62,7 @@ public class StartSceneController implements Initializable {
         this.scene = new Scene(boardScene);
         stage.setScene(this.scene);
         stage.show();
+        //! The boardScene and game will be loaded from loadScene, just like backToStartScene
     }
 
     public void settings(ActionEvent event) throws Exception {

@@ -1,6 +1,8 @@
 package data.constant;
 
-public enum Orientation {
+import java.io.*;
+
+public enum Orientation implements Serializable {
     UP(-1,0), DOWN(1,0), 
     LEFT(0,-1), RIGHT(0,1),
     UPLEFT(-1,-1), UPRIGHT(-1,1),

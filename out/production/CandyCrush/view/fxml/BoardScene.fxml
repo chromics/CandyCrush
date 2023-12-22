@@ -55,40 +55,61 @@
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="556.0" layoutY="365.0" mnemonicParsing="false" onAction="#replant" prefHeight="20.0" prefWidth="90.0" text="Replant">
+      <Button layoutX="556.0" layoutY="365.0" mnemonicParsing="false" onAction="#next" prefHeight="20.0" prefWidth="90.0" text="Next">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="28.0" layoutY="21.0" mnemonicParsing="false" onAction="#saveExit" prefHeight="30.0" prefWidth="31.0" text="Save &amp; Exit">
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="28.0" layoutY="23.0" mnemonicParsing="false" onAction="#saveExit" prefHeight="29.0" prefWidth="23.0" text="Save &amp; Exit">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../data/constant/image/homeIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="707.0" layoutY="54.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="30.0" prefWidth="30.0" text="Shuffle">
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="707.0" layoutY="54.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="30.0" prefWidth="24.0" text="Shuffle">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../data/constant/image/shuffleIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <Label layoutX="523.0" layoutY="85.0" text="-">
+      <Label fx:id="movesLeftLabel" layoutX="523.0" layoutY="85.0" text="-">
          <font>
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="544.0" layoutY="51.0" text="-">
+      <Label fx:id="currentScoreLabel" layoutX="544.0" layoutY="51.0" text="-">
          <font>
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="shuffleLabel" layoutX="742.0" layoutY="48.0" text="3">
+      <Label fx:id="shuffleLabel" layoutX="741.0" layoutY="44.0" text="3">
          <font>
             <Font name="HP Simplified Hans Regular" size="14.0" />
          </font>
       </Label>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="704.0" layoutY="385.0" mnemonicParsing="false" onAction="#saveExit" prefHeight="30.0" prefWidth="31.0" text="Save &amp; Exit">
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="704.0" layoutY="385.0" mnemonicParsing="false" onAction="#settings" prefHeight="30.0" prefWidth="31.0" text="Save &amp; Exit">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../data/constant/image/settingsIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Text layoutX="76.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Level">
          <font>
@@ -100,5 +121,22 @@
             <Font name="HP Simplified Hans Regular" size="20.0" />
          </font>
       </Text>
+      <ImageView fitHeight="244.0" fitWidth="244.0" layoutX="431.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../data/constant/image/defaultCat.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="hintsButton" contentDisplay="GRAPHIC_ONLY" layoutX="707.0" layoutY="93.0" mnemonicParsing="false" onAction="#provideHint" prefHeight="30.0" prefWidth="24.0" text="Shuffle">
+         <font>
+            <Font name="HP Simplified Hans Regular" size="10.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../data/constant/image/hintIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

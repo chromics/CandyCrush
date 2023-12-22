@@ -1,8 +1,11 @@
 package mechanism;
 
 import model.Cell;
+import model.Board;
+import model.BoardPoint;
 import model.piece.Piece;
 import data.constant.Constant;
+import data.constant.Orientation;
 
 import java.util.Random;
 import java.util.HashSet;
@@ -37,52 +40,51 @@ public class CreateBoard {
      *    A, B : the surrounding coordinate it checks
      */
 
-    public static void initiateBoard(Cell[][] grid){
-        initiate_First_Valid_Move(grid);
-        fill_The_Rest_Of_The_Board(grid);
+    public static void initiateBoard(Board board){
+        initiate_First_Valid_Move(board);
+        fill_The_Rest_Of_The_Board(board);
     }
 
-    public static void initiate_First_Valid_Move(Cell[][] grid){
-        int[] potentialMatchPattern = Util.RandomPick(Constant.potentialMatchPatterns);
+    public static void initiate_First_Valid_Move(Board board){
+        Orientation[] potentialMatchPattern = Util.RandomPick(Constant.potential_Match_Patterns);
 
         /*
          * 1. Randomize a coordinate (1 <= Row <= RowSize) && (1 <= Col <= ColSize)
          * 2. Check whether every coordinate of the pattern land on a playable Cell
          */
         Random rand = new Random();
-        int first_row, first_col;
-        int second_row, second_col;
-        int third_row, third_col;
+        BoardPoint point1;
+        BoardPoint point2;
+        BoardPoint point3;
 
         do{
-            first_row = rand.nextInt(Constant.BOARD_ROW_SIZE.getNum() - 2) + 1;
-            first_col = rand.nextInt(Constant.BOARD_COL_SIZE.getNum() - 2) + 1;
-            
-            second_row = first_row + potentialMatchPattern[0];
-            second_col = first_col + potentialMatchPattern[1];
+            int row = rand.nextInt( board.get_Board_Row_Size() - 2 ) + 1;
+            int col = rand.nextInt( board.get_Board_Col_Size() - 2 ) + 1;
 
-            third_row = first_row + potentialMatchPattern[2];
-            third_col = first_col + potentialMatchPattern[3];
+            point1 = new BoardPoint( row, col );
+            point2 = point1.getAdjacentPoint( potentialMatchPattern[0] );
+            point3 = point1.getAdjacentPoint( potentialMatchPattern[1] );
 
-        } while(!grid[first_row][first_col].isPlayable() ||
-                !grid[second_row][second_col].isPlayable() ||
-                !grid[third_row][third_col].isPlayable());
+        } while( ! board.is_Cell_Playable( point1 )
+                || ! board.is_Cell_Playable( point2 )
+                || ! board.is_Cell_Playable( point3 ) );
 
         /*
          * Randomize a piece and assign it to the pattern coordinate
          */
         String randomPieceName = CreatePiece.createPiece();
 
-        grid[first_row][first_col].setPiece(new Piece(randomPieceName));
-        grid[second_row][second_col].setPiece(new Piece(randomPieceName));
-        grid[third_row][third_col].setPiece(new Piece(randomPieceName));
+        board.setPiece( point1, new Piece( randomPieceName ) );
+        board.setPiece( point2, new Piece( randomPieceName ) );
+        board.setPiece( point3, new Piece( randomPieceName ) );
     }
 
 
-    public static void fill_The_Rest_Of_The_Board(Cell[][] grid){
+    public static void fill_The_Rest_Of_The_Board(Board board){
+        Cell[][] grid = board.getGrid();
 
-        for(int row = 0; row < Constant.BOARD_ROW_SIZE.getNum(); row++){
-            for(int col = 0; col < Constant.BOARD_COL_SIZE.getNum(); col++){
+        for(int row = 0; row < board.get_Board_Row_Size(); row++){
+            for(int col = 0; col < board.get_Board_Col_Size(); col++){
 
                 if(grid[row][col].isPlayable() && grid[row][col].getPiece() == null){
                     HashSet<String> excludeList = new HashSet<>();
@@ -91,44 +93,44 @@ public class CreateBoard {
                     if( row > 1
                         && grid[row-2][col].containPiece()
                         && grid[row-1][col].containPiece()
-                        && grid[row-1][col].equal(grid[row-2][col])){
+                        && grid[row-1][col].equalPiece(grid[row-2][col])){
 
                         excludeList.add(grid[row-1][col].getPiece().getName());
                     }
                     if( col > 1
                         && grid[row][col-2].containPiece()
                         && grid[row][col-1].containPiece()
-                        && grid[row][col-1].equal(grid[row][col-2])){
+                        && grid[row][col-1].equalPiece(grid[row][col-2])){
 
                         excludeList.add(grid[row][col-1].getPiece().getName());
                     }
-                    if( row < Constant.BOARD_ROW_SIZE.getNum() - 2
+                    if( row < board.get_Board_Row_Size() - 2
                         && grid[row+1][col].containPiece()
                         && grid[row+2][col].containPiece()
-                        && grid[row+1][col].equal(grid[row+2][col])){
+                        && grid[row+1][col].equalPiece(grid[row+2][col])){
                     
                         excludeList.add(grid[row+1][col].getPiece().getName());
                     }
-                    if( col < Constant.BOARD_COL_SIZE.getNum() - 2
+                    if( col < board.get_Board_Col_Size() - 2
                         && grid[row][col+1].getPiece() != null
                         && grid[row][col+2].getPiece() != null
-                        && grid[row][col+1].equal(grid[row][col+2])){
+                        && grid[row][col+1].equalPiece(grid[row][col+2])){
 
                         excludeList.add(grid[row][col+1].getPiece().getName());
                     }
 
                     //Check 2 : 
-                    if( row > 0 && row < Constant.BOARD_ROW_SIZE.getNum() - 1
+                    if( row > 0 && row < board.get_Board_Row_Size() - 1
                         && grid[row-1][col].containPiece()
                         && grid[row+1][col].containPiece() 
-                        && grid[row+1][col].equal(grid[row-1][col])){
+                        && grid[row+1][col].equalPiece(grid[row-1][col])){
                         
                         excludeList.add(grid[row-1][col].getPiece().getName());
                     }
-                    if( col > 0 && col < Constant.BOARD_COL_SIZE.getNum() - 1
+                    if( col > 0 && col < board.get_Board_Col_Size() - 1
                         && grid[row][col-1].containPiece()
                         && grid[row][col+1].containPiece()
-                        && grid[row][col+1].equal(grid[row][col-1])){
+                        && grid[row][col+1].equalPiece(grid[row][col-1])){
 
                         excludeList.add(grid[row][col-1].getPiece().getName());
                     }

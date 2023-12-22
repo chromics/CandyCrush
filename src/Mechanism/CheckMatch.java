@@ -1,53 +1,63 @@
 package mechanism;
 
 import model.BoardPoint;
+import model.Board;
 import model.Cell;
 import data.constant.Constant;
 import data.constant.Orientation;
 import data.GameData;
-import data.GameData;
 
 import java.util.ArrayList;
-
+import java.lang.Math;
 
 public class CheckMatch {
-    public static int match_length_at_direction(Orientation orientation, Cell[][] grid, int startRow, int startCol ){
+
+    public static void scan_and_save_matches(Board board, GameData gameData){
         
-        int curRow = startRow + orientation.getRowChange();
-        int curCol = startCol + orientation.getColChange();
-        int length = 1;
+        int board_Row_Size = gameData.getBoard_Row_Size();
+        int board_Col_Size = gameData.getBoard_Col_Size();
 
-        while ( 0 <= curRow  && curRow < Constant.BOARD_ROW_SIZE.getNum()
-                && 0 <= curCol && curCol < Constant.BOARD_COL_SIZE.getNum()
-                && grid[curRow][curCol].containPiece()
-                && grid[startRow][startCol].equal(grid[curRow][curCol]) ){
+        BoardPoint startPoint;
+        BoardPoint currentPoint;
 
-                length++;
-                curRow += orientation.getRowChange();
-                curCol += orientation.getColChange();
+        startPoint = new BoardPoint(1, 1);
+        currentPoint = new BoardPoint(2, 2);
+
+        //Horizontal Check
+        for(int row = 0; row < board_Row_Size; row++){
+            startPoint = new BoardPoint(row, 0);
+            for(int col = 0; col < board_Col_Size; col++){
+                currentPoint = new BoardPoint(row, col);
+
+                if(col == board_Col_Size - 1 || ! board.is_Equal_To_Adjacent(currentPoint, Orientation.RIGHT)){
+                    save_Match_If_Valid(board, gameData, startPoint, currentPoint, Orientation.RIGHT);
+                    startPoint = currentPoint.getAdjacentPoint(Orientation.RIGHT);
+                }
             }
-        
-        return length;
-    }
+        }
 
-    public static void scan_and_save_matches(Cell[][] grid, GameData gameData){
+        //Vertical Check
+        for(int col = 0; col < board_Col_Size; col++){
+            startPoint = new BoardPoint(0, col);
+            for(int row = 0; row < board_Row_Size; row++){
+                currentPoint = new BoardPoint(row, col);
 
-        //Loop from Bottom Left of the Board to Top Right
-        for(int row = Constant.BOARD_ROW_SIZE.getNum() - 1; row >= 0; row--){
-            for(int col = 0; col < Constant.BOARD_COL_SIZE.getNum(); col++){
-                if(grid[row][col].containPiece()){
-                    
-                    int tempLength = match_length_at_direction(Orientation.UP, grid, row, col);
-                    if(tempLength >= 3){
-                        gameData.saveMatchData(new BoardPoint(row, col), tempLength, Orientation.UP);
-                    }
-
-                    tempLength = match_length_at_direction(Orientation.RIGHT, grid, row, col);
-                    if(tempLength >= 3){
-                        gameData.saveMatchData(new BoardPoint(row, col), tempLength, Orientation.RIGHT);
-                    }                 
+                if(row == board_Row_Size - 1 || ! board.is_Equal_To_Adjacent(currentPoint, Orientation.DOWN)){
+                    // System.out.printf("%s | Start Point : (%d,%d),\tCurrent Point : (%d,%d)\n", board.getPieceAt(currentPoint).getName(), startPoint.getRow(), startPoint.getCol(), currentPoint.getRow(), currentPoint.getCol());
+                    save_Match_If_Valid(board, gameData, startPoint, currentPoint, Orientation.DOWN);
+                    startPoint = currentPoint.getAdjacentPoint(Orientation.DOWN);
                 }
             }
         }
     }
+
+    public static void save_Match_If_Valid( Board board, GameData gameData, BoardPoint startPoint, BoardPoint endPoint, Orientation orientation ){
+        
+        int matchLength = board.calculateDistance( startPoint, endPoint ) + 1;
+        
+        if(matchLength >= 3){
+            gameData.saveMatchData( startPoint, matchLength, orientation );
+        }
+    }    
 }
+

@@ -1,8 +1,11 @@
 package model;
 
+import java.io.*;
+
 import data.constant.Status;
 import model.piece.*;
-public class Cell {
+
+public class Cell implements Serializable{
     private Piece piece;
     private Status status = Status.PLAYABLE;
 
@@ -42,7 +45,7 @@ public class Cell {
         this.piece = null;
     }
     
-    public boolean equal(Cell otherPiece){
+    public boolean equalPiece(Cell otherPiece){
         return (this.piece.getName().equals(otherPiece.getPiece().getName()));
     }
     //===============================================================
