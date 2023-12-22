@@ -19,7 +19,7 @@ import data.constant.Constant;
 import controller.GameController;
 import view.viewController.BoardSceneController;
 
-public class StartSceneController {
+public class StartSceneController implements Initializable {
 
     private Stage stage;
     private Scene scene;
@@ -29,18 +29,60 @@ public class StartSceneController {
 
     public void initialize(URL location, ResourceBundle resourceBundle) {
         //!
-        // playMusic(this.mediaPlayer);
+        // playMusic();
     }
 
-    // public void playMusic(MediaPlayer mediaPlayer) {
-    //     String mediaPath = "springDay.wav";
-    //     // Constant.audio.get("springDay")
-    //     Media menuMusic = new Media(getClass().getResource(mediaPath).toExternalForm());
-    //     // Media menuMusic = new Media(new File(mediaPath).toURI().toString());
-    //     mediaPlayer = new MediaPlayer(menuMusic);
-    //     mediaPlayer.setVolume(0.5);
-    //     mediaPlayer.setAutoPlay(true);
-    // }
+    public void playMusic() {
+        // Constant.audio.get("springDay")
+        System.out.println("PlayMusic");
+        try{
+            String resourcePath = "src\\data\\constant\\audio\\springDay.mp3"; // Update this with the actual relative path
+            
+            System.out.println(Constant.audioHashMap.get("springDay"));
+            String filePath = "src\\data\\constant\\audio\\springDay.mp3"; // Update this with the actual relative path
+
+            File file = new File(filePath);
+        
+            if (file.exists() && !file.isDirectory()) {
+                System.out.println("File exists and is not a directory!");
+
+                // Check if the file is readable
+                if (file.canRead()) {
+                    System.out.println("File is readable.");
+                } else {
+                    System.out.println("File is not readable.");
+                }
+            } else {
+                System.out.println("File does not exist or is a directory!");
+            }
+
+            ClassLoader classLoader = getClass().getClassLoader();
+            URL resource = classLoader.getResource(filePath);
+            if (resource != null) {
+                System.out.println("Resource found: " + resource.getFile());
+            } else {
+                System.out.println("Resource not found.");
+            }
+
+
+            // Media menuMusic = new Media(getClass().getResource(resourcePath).toExternalForm());
+            // mediaPlayer = new MediaPlayer(menuMusic);
+            // mediaPlayer.setVolume(0.5);
+            // mediaPlayer.setAutoPlay(true);
+            // Media menuMusic = new Media(getClass().getResource(Constant.audioHashMap.get("springDay")).toExternalForm());
+            
+            // mediaPlayer = new MediaPlayer(menuMusic);
+            // mediaPlayer.setVolume(0.5);
+            // mediaPlayer.setAutoPlay(true);
+         } catch (NullPointerException e){
+             e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    
+        // Media menuMusic = new Media(new File(mediaPath).toURI().toString());
+    
+    }
 
     public void newGame(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));

@@ -90,7 +90,8 @@ public class BoardSceneController implements Initializable {
         board = gameData.getBoard();
 
         shuffleLabel.setText(Integer.toString(gameData.getShuffleLeft()));
-
+        currentScoreLabel.setText(Integer.toString(gameData.getScore()));
+        movesLeftLabel.setText(Integer.toString(gameData.getStepLeft()));
     }
 
     //-----------------------------------------------------------------------------------------------
@@ -221,10 +222,10 @@ public class BoardSceneController implements Initializable {
         System.out.println("hint");
     }
     public void addScore() {
-        currentScoreLabel = new Label(Integer.toString(gameData.getScore()));
+        currentScoreLabel.setText(Integer.toString(gameData.getScore()));
     }
     public void deductMovesLeft() {
-        this.movesLeftLabel = new Label(Integer.toString(gameData.getStepLeft()));
+        movesLeftLabel.setText(Integer.toString(gameData.getStepLeft()));
     }
     
     //Win
