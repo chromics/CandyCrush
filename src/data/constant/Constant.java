@@ -16,6 +16,10 @@ public enum Constant{
         return num;
     }
 
+    public  static  HashMap<String,String> audioHashMap = new HashMap<>() {{
+        put( "springDay","CandyCrush\\src\\data\\constant\\audio\\springDay.mp3" );
+    }};
+    
     public static HashMap<String,String> decorations = new HashMap<>(){{
         put( "patch","data/constant/image/patch.png" );
         put( "bigPatch","data/constant/image/bigPatch.png" );
