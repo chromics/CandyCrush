@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import data.constant.Constant;
 import controller.GameController;
+import view.Main;
 import view.viewController.BoardSceneController;
 
 public class StartSceneController implements Initializable {
@@ -112,12 +113,12 @@ public class StartSceneController implements Initializable {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(this.stage);
         dialog.setResizable(false);
-        dialog.setX(775);
-        dialog.setY(365);
+        dialog.setX(Main.stage.getX() + 700);
+        dialog.setY(Main.stage.getY() + 320);
 
         Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
         dialog.getIcons().add(dialogIcon);
-
+        System.out.println("Exe");
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/MenuSetting.fxml"));
         Scene scene = new Scene(boardScene);
         dialog.setScene(scene);
@@ -129,8 +130,8 @@ public class StartSceneController implements Initializable {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(this.stage);
         dialog.setResizable(false);
-        dialog.setX(545);
-        dialog.setY(250);
+        dialog.setX(Main.stage.getX() + 430);
+        dialog.setY(Main.stage.getY() + 160);
 
         Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
         dialog.getIcons().add(dialogIcon);

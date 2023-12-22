@@ -14,10 +14,8 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Board;
@@ -28,8 +26,6 @@ import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 import java.net.URL;
 
@@ -40,6 +36,7 @@ import model.BoardPoint;
 import data.GameData;
 import data.constant.Constant;
 import controller.GameController;
+import view.Main;
 
 public class BoardSceneController implements Initializable {
     private Stage stage;
@@ -65,6 +62,8 @@ public class BoardSceneController implements Initializable {
     Button hintsButton;
     // method: provideHint()
     // dunno how to do this yet need to learn css ¯\_(ツ)_/¯
+    @FXML
+    Label levelNumLabel;
 
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -201,8 +200,8 @@ public class BoardSceneController implements Initializable {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(this.stage);
         dialog.setResizable(false);
-        dialog.setX(775);
-        dialog.setY(365);
+        dialog.setX(Main.stage.getX() + 675);
+        dialog.setY(Main.stage.getY() + 265);
         
         Image dialogIcon = new Image("data/constant/image/settingsIcon.png");
         dialog.getIcons().add(dialogIcon);
@@ -228,32 +227,32 @@ public class BoardSceneController implements Initializable {
         movesLeftLabel.setText(Integer.toString(gameData.getStepLeft()));
     }
     
-    //Win
-    public void winAlert() throws Exception {
-        // Alert
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        
-        alert.setTitle("Game End");
-        alert.setHeaderText("Congratulation! You Won The Game");
-        alert.setContentText("Proceed to next level?");
-        alert.setX(725);
-        alert.setY(45);
-        
-        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
-        ((Button) alert.getDialogPane().lookupButton(ButtonType.YES)).setDefaultButton(true);
-        
-        // Proceed to next level?
-        Optional <ButtonType> result = alert.showAndWait();
-        
-        if (result.isPresent() && result.get() == ButtonType.YES) {
-            gameController.nextLevel();
-        }
-        // Exit
-        else if (result.isPresent() && result.get() == ButtonType.NO) {
-            // backToStartScene(event);
-        }
-
-    }
+//    //Win
+//    public void winAlert() throws Exception {
+//        // Alert
+//        Alert alert = new Alert(AlertType.CONFIRMATION);
+//
+//        alert.setTitle("Level Cleared");
+//        alert.setHeaderText("Congratulations! You Won The Game");
+//        alert.setContentText("Proceed to next level?");
+//        alert.setX(725);
+//        alert.setY(45);
+//
+//        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+//        ((Button) alert.getDialogPane().lookupButton(ButtonType.YES)).setDefaultButton(true);
+//
+//        // Proceed to next level?
+//        Optional <ButtonType> result = alert.showAndWait();
+//
+//        if (result.isPresent() && result.get() == ButtonType.YES) {
+//            gameController.nextLevel();
+//        }
+//        // Exit
+//        else if (result.isPresent() && result.get() == ButtonType.NO) {
+//            // backToStartScene(event);
+//        }
+//
+//    }
     // SAVE & EXIT
     public void saveExit(ActionEvent event) throws Exception {
         // Alert
@@ -262,8 +261,8 @@ public class BoardSceneController implements Initializable {
         alert.setTitle("Save & Exit");
         alert.setHeaderText("You're about to exit the current game!");
         alert.setContentText("Do you want to save?");
-        alert.setX(725);
-        alert.setY(45);
+        alert.setX(Main.stage.getX() + 625);
+        alert.setY(Main.stage.getY() - 55);
         
         alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
         ((Button) alert.getDialogPane().lookupButton(ButtonType.YES)).setDefaultButton(true);
@@ -367,8 +366,8 @@ public class BoardSceneController implements Initializable {
         errorAlert.setHeaderText(header);
         errorAlert.setContentText(content);
         errorAlert.show();
-        errorAlert.setX(725);
-        errorAlert.setY(45);
+        errorAlert.setX(Main.stage.getX() + 625);
+        errorAlert.setY(Main.stage.getY() - 55);
     }
     
     public void buttonHandler(BoardPoint point) {

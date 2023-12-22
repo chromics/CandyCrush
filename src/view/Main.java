@@ -13,47 +13,56 @@ import javafx.stage.Stage;
 import javafx.scene.image.*;
 
 public class Main extends Application {
-    private Stage stage;
+    public static Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        this.stage = primaryStage;
+        stage = primaryStage;
         // SCENE ROOT NODES
         Parent startScene = FXMLLoader.load(getClass().getResource("fxml/StartScene.fxml"));
 
         // STAGE
         // a) Icon
         Image icon = new Image("data/constant/image/apple.png");
-        this.stage.getIcons().add(icon);
+        stage.getIcons().add(icon);
 
         // b) Title
-        this.stage.setTitle("Happy Match");
-        this.stage.setHeight(500);
-        this.stage.setWidth(800);
-        this.stage.setX(100);
-        this.stage.setY(100);
-        this.stage.setResizable(false);
+        stage.setTitle("Happy Match");
+        stage.setHeight(500);
+        stage.setWidth(800);
+        stage.setResizable(false);
 
         // Set Scene
-        this.stage.setScene(new Scene(startScene));
+        stage.setScene(new Scene(startScene));
         // Show Stage
-        this.stage.show();
+        stage.show();
 
         // Exit Stage
-        this.stage.setOnCloseRequest(event -> {
+        stage.setOnCloseRequest(event -> {
             event.consume();
-            exit(this.stage);
+            try {
+                exit();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
 
     }
 
-    public void exit(Stage stage) {
+    public void exit() throws Exception {
+        // if scene is boardScene add save file notice before exiting
+        Parent boardScene = FXMLLoader.load(getClass().getResource("fxml/BoardScene.fxml"));
+        if (stage.getScene().equals(new Scene(boardScene))) {
+            exitBoardScene();
+        }
+
+        // else just confirm exit
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Exit");
         alert.setHeaderText("You're about to exit the game!");
         alert.setContentText("Do you want to leave?");
-        alert.setX(725);
-        alert.setY(45);
+        alert.setX(stage.getX() + 625);
+        alert.setY(stage.getY() - 55);
 
         alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
 
@@ -65,6 +74,36 @@ public class Main extends Application {
         Optional <ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            stage.close();
+        }
+    }
+    public void exitBoardScene() {
+        // Alert
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+
+        alert.setTitle("Save & Exit");
+        alert.setHeaderText("You're about to exit the current game!");
+        alert.setContentText("Do you want to save?");
+        alert.setX(Main.stage.getX() + 625);
+        alert.setY(Main.stage.getY() - 55);
+
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.YES)).setDefaultButton(true);
+
+        // Save & Exit
+        Optional <ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            // Save
+//            createSaveFile(event);
+            // Test
+//            if (checkSaveFile()) {
+//                // Exit
+//                stage.close();
+//            }
+        }
+        // Exit
+        else if (result.isPresent() && result.get() == ButtonType.NO) {
             stage.close();
         }
     }
