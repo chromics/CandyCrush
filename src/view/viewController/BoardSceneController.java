@@ -16,7 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Board;
@@ -24,9 +24,6 @@ import model.BoardPoint;
 import data.constant.Constant;
 import model.Cell;
 import javafx.scene.image.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.geometry.Insets;
 import java.net.URL;
 
@@ -74,6 +71,15 @@ public class BoardSceneController implements Initializable {
     }
     
     public void initiateBoard(Cell[][] grid) {
+        GridPane gridpane = new GridPane();
+        for (int i = 0; i < gameData.getBoard_Row_Size(); i++) {
+            RowConstraints rowConst = new RowConstraints(gameData.getBoard_Row_Size());
+            gridpane.getRowConstraints().add(rowConst);
+        }
+        for (int i = 0; i < gameData.getBoard_Col_Size(); i++) {
+            ColumnConstraints colConst = new ColumnConstraints(gameData.getBoard_Col_Size());
+            gridpane.getColumnConstraints().add(colConst);
+        }
         // initiate boardView with getBoard_Row_Size() & col
         for (int row = 0; row < gameData.getBoard_Row_Size(); row++) {
             for (int col = 0; col < gameData.getBoard_Col_Size(); col++) {
