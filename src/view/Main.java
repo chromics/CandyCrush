@@ -11,6 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
+import view.viewController.BoardSceneController;
 
 public class Main extends Application {
     public static Stage stage;
@@ -50,32 +51,20 @@ public class Main extends Application {
     }
 
     public void exit() throws Exception {
+//        System.out.println("attempt to close");
         // if scene is boardScene add save file notice before exiting
-        Parent boardScene = FXMLLoader.load(getClass().getResource("fxml/BoardScene.fxml"));
-        if (stage.getScene().equals(new Scene(boardScene))) {
+        Parent root = stage.getScene().getRoot();
+        String rootID = "boardPane";
+        if (rootID.equals(root.getId())) {
             exitBoardScene();
+//            System.out.println("current scene is boardscene");
         }
-
-        // else just confirm exit
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Exit");
-        alert.setHeaderText("You're about to exit the game!");
-        alert.setContentText("Do you want to leave?");
-        alert.setX(stage.getX() + 625);
-        alert.setY(stage.getY() - 55);
-
-        alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
-
-        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Yes");
-        ((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("No");
-        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setDefaultButton(false);
-        ((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setDefaultButton(true);
-
-        Optional <ButtonType> result = alert.showAndWait();
-
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            stage.close();
+        else {
+            // else just confirm exit
+            exitStage();
         }
+        stage.close();
+//        System.out.println("attempt to close 2");
     }
     public void exitBoardScene() {
         // Alert
@@ -101,9 +90,32 @@ public class Main extends Application {
 //                // Exit
 //                stage.close();
 //            }
+            stage.close();
         }
         // Exit
         else if (result.isPresent() && result.get() == ButtonType.NO) {
+            stage.close();
+        }
+    }
+
+    public void exitStage() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Exit");
+        alert.setHeaderText("You're about to exit the game!");
+        alert.setContentText("Do you want to leave?");
+        alert.setX(stage.getX() + 625);
+        alert.setY(stage.getY() - 55);
+
+        alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Yes");
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("No");
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setDefaultButton(false);
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setDefaultButton(true);
+
+        Optional <ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             stage.close();
         }
     }

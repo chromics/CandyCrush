@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Board;
@@ -29,18 +30,14 @@ import javafx.scene.layout.StackPane;
 import javafx.geometry.Insets;
 import java.net.URL;
 
-import model.Cell;
-import model.Board;
 import model.piece.*;
-import model.BoardPoint;
 import data.GameData;
-import data.constant.Constant;
 import controller.GameController;
 import view.Main;
 
 public class BoardSceneController implements Initializable {
-    private Stage stage;
-    private Scene scene;
+//    private Stage stage = Main.stage;
+    private static Scene scene;
     private int saveFileNumber = 1;
     private boolean saveFileExists;
     private String saveData = "";
@@ -51,27 +48,33 @@ public class BoardSceneController implements Initializable {
     private GameData gameData;
 
     @FXML
-    GridPane boardView;
+    private GridPane boardView;
     @FXML
-    Label shuffleLabel;
+    private Label shuffleLabel;
     @FXML
-    Label currentScoreLabel;
+    private Label currentScoreLabel;
     @FXML
-    Label movesLeftLabel;
+    private Label movesLeftLabel;
     @FXML
-    Button hintsButton;
+    private Button hintsButton;
     // method: provideHint()
     // dunno how to do this yet need to learn css ¯\_(ツ)_/¯
     @FXML
-    Label levelNumLabel;
+    private Label levelNumLabel;
+    @FXML
+    private static AnchorPane boardPane;
 
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
         selectedPoint1 = null;
         selectedPoint2 = null;        
     }
+    public static AnchorPane getBoardPane() {
+        return boardPane;
+    }
     
-    public void initiateBoard(Cell[][] grid) {        
+    public void initiateBoard(Cell[][] grid) {
+        // initiate boardView with getBoard_Row_Size() & col
         for (int row = 0; row < gameData.getBoard_Row_Size(); row++) {
             for (int col = 0; col < gameData.getBoard_Col_Size(); col++) {
                 if (grid[row][col].isPlayable()) {
@@ -198,7 +201,7 @@ public class BoardSceneController implements Initializable {
     public void settings(ActionEvent event) throws Exception {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(this.stage);
+        dialog.initOwner(Main.stage);
         dialog.setResizable(false);
         dialog.setX(Main.stage.getX() + 675);
         dialog.setY(Main.stage.getY() + 265);
@@ -287,10 +290,10 @@ public class BoardSceneController implements Initializable {
     }
     public void backToStartScene(ActionEvent event) throws Exception {
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/StartScene.fxml"));
-        this.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
-        this.scene = new Scene(startScene);
-        stage.setScene(this.scene);
-        stage.show();
+        Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
+        scene = new Scene(startScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
     }
     public void createSaveFile(ActionEvent event) throws Exception {
         // add feat: sortSaveFile --> method to sort and fill in empty save file numbers after deletion --> for the load game scene

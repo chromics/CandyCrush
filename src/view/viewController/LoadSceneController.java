@@ -1,15 +1,10 @@
 package view.viewController;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,9 +14,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import view.Main;
 
 public class LoadSceneController {
-    private Stage stage;
+//    private Stage stage;
     private Scene scene;
     
     @FXML
@@ -29,10 +25,10 @@ public class LoadSceneController {
 
     public void backToStartScene(ActionEvent event) throws Exception {
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/StartScene.fxml"));
-        this.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
+        Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         this.scene = new Scene(startScene);
-        stage.setScene(this.scene);
-        stage.show();
+        Main.stage.setScene(this.scene);
+        Main.stage.show();
     }
 
     public void initializeLoadListView(String fileName, Integer level) {

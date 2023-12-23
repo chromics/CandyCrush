@@ -35,6 +35,16 @@ public enum Constant{
         put( "pear","data/constant/image/pear.png" );
     }};
 
+    public static HashMap<String,String> specialPropsHashMap = new HashMap<>() {{
+
+    }};
+
+    public static HashMap<String,String> catHashMap = new HashMap<>() {{
+        put( "defaultCat","data/constant/image/defaultCat.png" );
+        put( "sadCat","data/constant/image/sadCat.png" );
+        put( "happyCat","data/constant/image/happyCat.png" );
+    }};
+
     public static Orientation[][] potential_Match_Patterns = {
 
         // {A, C}

@@ -21,9 +21,8 @@ import view.Main;
 import view.viewController.BoardSceneController;
 
 public class StartSceneController implements Initializable {
-
-    private Stage stage;
-    private Scene scene;
+//    private static Stage stage = Main.stage;
+    private static Scene scene;
     private MediaPlayer mediaPlayer;
 
     // new File(this.mediaPath).toURI().toString()
@@ -32,6 +31,13 @@ public class StartSceneController implements Initializable {
         //!
         // playMusic();
     }
+
+//    public static void setStage(Stage newStage) {
+//        stage = newStage;
+//    }
+//    public static Stage getStage() {
+//        return stage;
+//    }
 
     public void playMusic() {
         // Constant.audio.get("springDay")
@@ -84,34 +90,48 @@ public class StartSceneController implements Initializable {
         // Media menuMusic = new Media(new File(mediaPath).toURI().toString());
     
     }
-
-    public void newGame(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));
+    public static void newGame(ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
+        FXMLLoader loader = new FXMLLoader(mainURL);
         Parent boardScene = loader.load();
-        
+
         BoardSceneController view = loader.getController();
         GameController gameController = new GameController(view);
 
-        this.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
-        this.scene = new Scene(boardScene);
-        stage.setScene(this.scene);
-        stage.show();
-        gameObjective(event);
+        scene = new Scene(boardScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
+        gameObjective(event, dialogURL);
+    }
+    public static void gameObjective(ActionEvent event, URL url) throws Exception {
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(Main.stage);
+        dialog.setResizable(false);
+        dialog.setX(Main.stage.getX() + 430);
+        dialog.setY(Main.stage.getY() + 160);
+
+        Image dialogIcon = new Image(Constant.catHashMap.get("defaultCat"));
+        dialog.getIcons().add(dialogIcon);
+
+        Parent boardScene = FXMLLoader.load(url);
+        Scene scene = new Scene(boardScene);
+        dialog.setScene(scene);
+        dialog.show();
     }
     
     public void loadGame(ActionEvent event) throws Exception {
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/LoadScene.fxml"));
-        this.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
-        this.scene = new Scene(boardScene);
-        stage.setScene(this.scene);
-        stage.show();
+        Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
+        scene = new Scene(boardScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
         //! The boardScene and game will be loaded from loadScene, just like backToStartScene
     }
 
     public void settings(ActionEvent event) throws Exception {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(this.stage);
+        dialog.initOwner(Main.stage);
         dialog.setResizable(false);
         dialog.setX(Main.stage.getX() + 700);
         dialog.setY(Main.stage.getY() + 320);
@@ -125,22 +145,26 @@ public class StartSceneController implements Initializable {
         dialog.show();
     }
 
-    public void gameObjective(ActionEvent event) throws Exception {
+    public void newGameCustomize(ActionEvent event) throws Exception {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(this.stage);
+        dialog.initOwner(Main.stage);
         dialog.setResizable(false);
-        dialog.setX(Main.stage.getX() + 430);
-        dialog.setY(Main.stage.getY() + 160);
+//        dialog.setX(Main.stage.getX() + 430);
+//        dialog.setY(Main.stage.getY() + 160);
 
         Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
         dialog.getIcons().add(dialogIcon);
 
-        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/NewGameInputDialog.fxml"));
         Scene scene = new Scene(boardScene);
         dialog.setScene(scene);
         dialog.show();
+
+        NewGameInputDialogController.setStage(dialog);
     }
+
+
 }
 
 // @FXML
