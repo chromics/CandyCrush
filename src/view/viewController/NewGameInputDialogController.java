@@ -33,6 +33,7 @@ public class NewGameInputDialogController implements Initializable {
     public void initialize(URL location, ResourceBundle resourceBundle) {
         normalModeToggle.setToggleGroup(toggleGroup);
         specialModeToggle.setToggleGroup(toggleGroup);
+        normalModeToggle.setSelected(true);
     }
 
     public static void setStage(Stage dialogStage) {

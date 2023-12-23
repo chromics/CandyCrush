@@ -30,15 +30,19 @@
             </ImageView>
          </graphic>
       </ToggleButton>
-      <ToggleButton fx:id="specialModeToggle" contentDisplay="RIGHT" layoutX="204.0" layoutY="119.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="171.0" text="✨Special✨ game mode">
+      <ToggleButton fx:id="specialModeToggle" contentDisplay="RIGHT" layoutX="204.0" layoutY="118.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="171.0" text="✨Special✨ game mode">
          <font>
             <Font name="HP Simplified Hans Regular" size="12.0" />
          </font>
          <graphic>
-            <ImageView fitHeight="24.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="26.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../data/constant/image/specialCat.png" />
+               </image>
+            </ImageView>
          </graphic>
       </ToggleButton>
-      <Button layoutX="38.0" layoutY="212.0" mnemonicParsing="false" onAction="#startNewGame" prefHeight="24.0" prefWidth="60.0" text="Start !" wrapText="true">
+      <Button layoutX="38.0" layoutY="210.0" mnemonicParsing="false" onAction="#startNewGame" prefHeight="24.0" prefWidth="60.0" text="Start !" wrapText="true">
          <font>
             <Font name="HP Simplified Hans Regular" size="13.0" />
          </font>
@@ -53,6 +57,6 @@
             <Font name="HP Simplified Hans Regular" size="12.0" />
          </font>
       </CheckBox>
-      <TextField fx:id="customGridTextField" layoutX="175.0" layoutY="166.0" prefHeight="3.0" prefWidth="158.0" />
+      <TextField fx:id="customGridTextField" layoutX="175.0" layoutY="166.0" prefHeight="3.0" prefWidth="158.0" text="8 x 8" />
    </children>
 </AnchorPane>

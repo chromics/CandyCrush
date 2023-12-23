@@ -63,7 +63,6 @@ public class Main extends Application {
             // else just confirm exit
             exitStage();
         }
-        stage.close();
 //        System.out.println("attempt to close 2");
     }
     public void exitBoardScene() {
