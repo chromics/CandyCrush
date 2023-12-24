@@ -24,7 +24,7 @@
             <Font name="HP Simplified Hans Regular" size="30.0" />
          </font>
       </Label>
-      <Button fx:id="returnHome" contentDisplay="RIGHT" layoutX="105.0" layoutY="244.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="212.0" text="Return to Home">
+      <Button contentDisplay="RIGHT" layoutX="105.0" layoutY="244.0" mnemonicParsing="false" onAction="#returnHome" prefHeight="40.0" prefWidth="212.0" text="Return to Home">
          <font>
             <Font name="HP Simplified Hans Regular" size="20.0" />
          </font>

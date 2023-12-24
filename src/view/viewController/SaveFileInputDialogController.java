@@ -26,23 +26,34 @@ import data.GameFileInfo;
 public class SaveFileInputDialogController {
     private final static int MAXINPUTLENGTH = 15;
     @FXML
-    private static TextField saveFileName;
+    private static TextField textField;
 
     private static Stage dialog;
     private static String source;
 
-    // @Override
-    // public void initialize(URL url, ResourceBundle resourceBundle) {
-    //     saveFileName =  new TextField();
-    //     // saveFileName.setText("SaveFile");
-    // }
-    public static String getText() {
-        return saveFileName.getSelectedText();
-    }
+     public void initialize(URL url, ResourceBundle resourceBundle) {
+         textField.setText("SaveFile1");
+         textField.textProperty().addListener((observable, oldValue, newValue) -> {
+             // Restricting prohibited symbols
+             if (newValue.matches("[^#*]+")) {
+                 textField.setText(newValue.replaceAll("[^#*]+", ""));
+             }
+             // Limiting number of characters
+             if (textField.getText().length() > MAXINPUTLENGTH) {
+                 String limitedText = textField.getText().substring(0, MAXINPUTLENGTH);
+                 textField.setText(limitedText);
+             }
+
+             System.out.println("character error detected.");
+         });
+
+     }
+//    public static String getText() {
+//        return saveFileName.getSelectedText();
+//    }
 
     public static void generateSaveFileNameTextField(String sourceClass) throws Exception {
         source = sourceClass;
-        saveFileName = new TextField();
 
         dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -59,34 +70,11 @@ public class SaveFileInputDialogController {
     
     public void save() throws Exception {
 
-        String fileName = SaveFileInputDialogController.saveFileName.getText();
+        String fileName = SaveFileInputDialogController.textField.getText();
         System.out.println("Input Filed Name : " + fileName);
         if (fileName == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error!");
-            alert.setHeaderText("No content detected.");
-            alert.setContentText("Please input a save file name into the text field.");
-            alert.setX(Main.stage.getX() + 625);
-            alert.setY(Main.stage.getY() - 55);
-            alert.showAndWait();
-
-            System.out.println("null input detected");
+            inputError();
         }
-
-        // saveFileName.textProperty().addListener((observable, oldValue, newValue) -> {
-        //     // Restricting prohibited symbols
-        //     if (newValue.matches("[^#*]+")) {
-        //         saveFileName.setText(newValue.replaceAll("[^#*]+", ""));
-        //     }
-
-        //     // Limiting number of characters
-        //     if (saveFileName.getText().length() > MAXINPUTLENGTH) {
-        //         String limitedText = saveFileName.getText().substring(0, MAXINPUTLENGTH);
-        //         saveFileName.setText(limitedText);
-        //     }
-
-        //     System.out.println("character error detected.");
-        // });
 
         SaveLoadController.saveGame(BoardSceneController.getGameData(), fileName);
 
@@ -108,6 +96,17 @@ public class SaveFileInputDialogController {
             System.out.println("Back To Start Screen");
             backToStartScene();
         }
+    }
+    public void inputError() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error!");
+        alert.setHeaderText("No content detected.");
+        alert.setContentText("Please input a save file name into the text field.");
+        alert.setX(Main.stage.getX() + 625);
+        alert.setY(Main.stage.getY() - 55);
+        alert.showAndWait();
+
+        System.out.println("null input detected");
     }
 
     public void cancel() {

@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.viewController.WinSceneController">
    <children>
-      <Button fx:id="nextLevel" defaultButton="true" layoutX="105.0" layoutY="233.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="127.0" text="Continue">
+      <Button defaultButton="true" layoutX="105.0" layoutY="233.0" mnemonicParsing="false" onAction="#nextLevel" prefHeight="39.0" prefWidth="127.0" text="Continue">
          <font>
             <Font name="HP Simplified Hans Regular" size="20.0" />
          </font>
@@ -24,7 +24,7 @@
             <Font name="HP Simplified Hans Regular" size="65.0" />
          </font>
       </Label>
-      <Button fx:id="returnHome" contentDisplay="RIGHT" layoutX="105.0" layoutY="288.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="212.0" text="Return to Home">
+      <Button contentDisplay="RIGHT" layoutX="105.0" layoutY="288.0" mnemonicParsing="false" onAction="#returnHome" prefHeight="40.0" prefWidth="212.0" text="Return to Home">
          <font>
             <Font name="HP Simplified Hans Regular" size="20.0" />
          </font>

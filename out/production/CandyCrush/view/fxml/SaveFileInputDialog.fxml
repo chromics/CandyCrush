@@ -13,7 +13,7 @@
             <Font name="HP Simplified Hans Regular" size="35.0" />
          </font>
       </Label>
-      <TextField fx:id="saveFileName" layoutX="44.0" layoutY="98.0" prefHeight="30.0" prefWidth="293.0" promptText="Insert file name" text="SaveFile1" />
+      <TextField fx:id="textField" layoutX="44.0" layoutY="98.0" prefHeight="30.0" prefWidth="293.0" promptText="Insert file name..." />
       <Button defaultButton="true" layoutX="191.0" layoutY="146.0" mnemonicParsing="false" onAction="#save" prefHeight="21.0" prefWidth="63.0" text="Save">
          <font>
             <Font name="HP Simplified Hans Regular" size="13.0" />

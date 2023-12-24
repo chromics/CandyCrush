@@ -443,10 +443,44 @@ public class BoardSceneController implements Initializable {
         }
     }
 
-    public void win() {
-
+    // normal win/lose scenarios
+    public void win() throws Exception {
+        Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/WinScene.fxml"));
+        scene = new Scene(startScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
     }
-    public void lose() {
-
+    public void lose() throws Exception {
+        Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/LoseScene.fxml"));
+        scene = new Scene(startScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
     }
+    public void finalWin(ActionEvent event) throws Exception {
+        Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/FinalWinScene.fxml"));
+        scene = new Scene(startScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
+    }
+
+    // special win/lose scenarios
+    public void specialWin() throws Exception {
+        Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/SpecialWinScene.fxml"));
+        scene = new Scene(startScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
+    }
+    public void specialLose() throws Exception {
+        Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/SpecialLoseScene.fxml"));
+        scene = new Scene(startScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
+    }
+    public void specialFinalWin() throws Exception {
+        Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/FinalSpecialWinScene.fxml"));
+        scene = new Scene(startScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
+    }
+
 }
