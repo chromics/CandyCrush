@@ -21,12 +21,12 @@
             <Font name="HP Simplified Hans Regular" size="35.0" />
          </font>
       </Label>
-      <Button layoutX="546.0" layoutY="373.0" mnemonicParsing="false" text="Load file">
+      <Button layoutX="546.0" layoutY="373.0" mnemonicParsing="false" onAction="#loadFile" text="Load file">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="633.0" layoutY="373.0" mnemonicParsing="false" text="Delete file">
+      <Button layoutX="633.0" layoutY="373.0" mnemonicParsing="false" onAction="#deleteFile" text="Delete file">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>

@@ -1,7 +1,9 @@
 package view.viewController;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -22,15 +24,28 @@ import data.constant.Level;
 import controller.GameController;
 import view.viewController.BoardSceneController;
 
+import javax.sound.sampled.*;
+
 public class StartSceneController implements Initializable {
 
     private static Scene scene;
     private static BoardSceneController boardSceneController;
     private MediaPlayer mediaPlayer;
+    private Clip music;
 
     // new File(this.mediaPath).toURI().toString()
 
     public void initialize(URL location, ResourceBundle resourceBundle) {
+//        try {
+//            AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource("springDay.mp3")));
+//            music = AudioSystem.getClip();
+//            music.open(audioInput);
+//            music.loop(Clip.LOOP_CONTINUOUSLY);
+//            music.start();
+//        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+//            e.printStackTrace();
+//            System.out.println("Error initializing background music.");
+//        }
         //!
         // playMusic();
     }

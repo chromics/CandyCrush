@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.viewController.SaveFileInputDialogController">
    <children>
       <Label layoutX="43.0" layoutY="41.0" text="Insert File Name:">
@@ -20,7 +19,7 @@
             <Font name="HP Simplified Hans Regular" size="13.0" />
          </font>
       </Button>
-      <Button cancelButton="true" layoutX="268.0" layoutY="146.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="70.0" text="Cancel">
+      <Button cancelButton="true" layoutX="268.0" layoutY="146.0" mnemonicParsing="false" onAction="#cancel" prefHeight="24.0" prefWidth="70.0" text="Cancel">
          <font>
             <Font name="HP Simplified Hans Regular" size="13.0" />
          </font>

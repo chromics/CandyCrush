@@ -2,6 +2,7 @@ package view;
 
 import java.util.Optional;
 
+import controller.SaveLoadController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -90,7 +91,9 @@ public class Main extends Application {
         Optional <ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
-//            SaveFileInputDialogController.generateSaveFileNameTextField();
+            SaveFileInputDialogController.generateSaveFileNameTextField("mainStage");
+//            SaveLoadController.saveGame(BoardSceneController.getGameData(), SaveFileInputDialogController.getText());
+            stage.close();
         }
         // Exit
         else if (result.isPresent() && result.get() == ButtonType.NO) {

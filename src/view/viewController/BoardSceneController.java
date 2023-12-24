@@ -1,5 +1,7 @@
 package view.viewController;
 
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
@@ -15,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Board;
@@ -31,6 +34,8 @@ import controller.GameController;
 import controller.SaveLoadController;
 import view.Main;
 
+import javax.sound.sampled.*;
+
 public class BoardSceneController implements Initializable {
     private static Image patchImage = new Image(Constant.decorations.get("patch"));
     
@@ -42,8 +47,10 @@ public class BoardSceneController implements Initializable {
     private BoardPoint selectedPoint2;
     private Board board;
     private GameController gameController;
-    private GameData gameData;
+    private static GameData gameData;
     private int pictureSize;
+    private AudioClip sFX;
+    private Clip music;
 
     @FXML
     private GridPane boardView;
@@ -69,6 +76,19 @@ public class BoardSceneController implements Initializable {
     }
     public static AnchorPane getBoardPane() {
         return boardPane;
+    }
+    public static Scene getScene() {
+        return scene;
+    }
+    public static void setScene(Scene newScene) {
+        scene = newScene;
+    }
+    public static GameData getGameData() {
+        return gameData;
+    }
+
+    private void initializeBackgroundMusic() {
+
     }
 
     public void initiateBoard(Cell[][] grid) {
@@ -147,6 +167,7 @@ public class BoardSceneController implements Initializable {
     
         this.boardView.add(fruitButton, col, row);
     }
+
     public void swapImage(BoardPoint point1, BoardPoint point2) {
         Piece piece1 = board.getPieceAt(point1);
         Piece piece2 = board.getPieceAt(point2);
@@ -267,7 +288,7 @@ public class BoardSceneController implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             // Save
             System.out.println("Save Action");
-//            SaveFileInputDialogController.generateSaveFileNameTextField();
+            SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
         }
         else if (result.isPresent() && result.get() == ButtonType.NO){
             // Exit
@@ -339,5 +360,12 @@ public class BoardSceneController implements Initializable {
                 break;
             }
         }
+    }
+
+    public void win() {
+
+    }
+    public void lose() {
+
     }
 }
