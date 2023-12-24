@@ -25,9 +25,11 @@ public class Fall {
                 src = src.getAdjacentPoint(Orientation.UP);
             }
 
-            while(board.is_Within_Boundary(dest)){
-                board.generatePieceAt(dest);
-                view.setPieceImageAt(board.getPieceAt(dest).getImagePath(), dest);
+            while (board.is_Within_Boundary(dest)) {
+                if ( ! board.any_piece(dest)) {
+                    board.generatePieceAt(dest);
+                    view.setPieceImageAt(board.getPieceAt(dest).getImagePath(), dest);
+                }
                 dest = dest.getAdjacentPoint(Orientation.UP);
             }
         }

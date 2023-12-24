@@ -1,6 +1,7 @@
 package view;
 
 import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,19 +10,25 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
 import view.viewController.BoardSceneController;
+import view.viewController.InGameSettingSceneController;
+import view.viewController.SaveFileInputDialogController;
+import view.viewController.StartSceneController;
+import data.GameData;
+import data.GameFileInfo;
 
 public class Main extends Application {
     public static Stage stage;
+    private static GameData gameData;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         stage = primaryStage;
         // SCENE ROOT NODES
         Parent startScene = FXMLLoader.load(getClass().getResource("fxml/StartScene.fxml"));
-
         // STAGE
         // a) Icon
         Image icon = new Image("data/constant/image/apple.png");
@@ -51,21 +58,22 @@ public class Main extends Application {
     }
 
     public void exit() throws Exception {
-//        System.out.println("attempt to close");
+        System.out.println("Save & Exit from Main");
+        // System.out.println("attempt to close");
         // if scene is boardScene add save file notice before exiting
         Parent root = stage.getScene().getRoot();
         String rootID = "boardPane";
         if (rootID.equals(root.getId())) {
             exitBoardScene();
-//            System.out.println("current scene is boardscene");
+            // System.out.println("current scene is boardscene");
         }
         else {
             // else just confirm exit
             exitStage();
         }
-//        System.out.println("attempt to close 2");
+        // System.out.println("attempt to close 2");
     }
-    public void exitBoardScene() {
+    public void exitBoardScene() throws Exception {
         // Alert
         Alert alert = new Alert(AlertType.CONFIRMATION);
 
@@ -82,21 +90,14 @@ public class Main extends Application {
         Optional <ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
-            // Save
-//            createSaveFile(event);
-            // Test
-//            if (checkSaveFile()) {
-//                // Exit
-//                stage.close();
-//            }
-            stage.close();
+//            SaveFileInputDialogController.generateSaveFileNameTextField();
         }
         // Exit
         else if (result.isPresent() && result.get() == ButtonType.NO) {
             stage.close();
         }
     }
-
+    
     public void exitStage() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Exit");
@@ -119,6 +120,9 @@ public class Main extends Application {
         }
     }
 
+    public static void saveGame(String fileName){
+//        startSceneController.getBoardSceneController().saveGame(fileName);
+    }
     public static void main(String[] args) {
         launch(args);
     }

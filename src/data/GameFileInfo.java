@@ -14,7 +14,9 @@ public class GameFileInfo implements Serializable {
     String saveDate;
     String saveName;
     String fileName;
-    String level;
+    String levelDisplay;
+    String saveDateDisplay;
+    String fileNameDisplay;
 
     //-----------------------------------------------------------------------------------------------
     // Constructor
@@ -23,13 +25,16 @@ public class GameFileInfo implements Serializable {
         this.gameData = gameData;
         this.saveName = saveName;
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        SimpleDateFormat sdfDisplay = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date currentDate = new Date();
         saveDate = sdf.format(currentDate);
+        saveDateDisplay = sdfDisplay.format(currentDate);
 
-        level = gameData.getLevel().getLevelString();
+        levelDisplay = "Level-" + String.valueOf(gameData.getLevel());
 
-        this.fileName = (this.saveName + "_" + level + "_" + this.saveDate + ".ser");
+        fileName = (this.saveName + "_" + levelDisplay + "_" + this.saveDate + ".ser");
+        fileNameDisplay = String.format("%-15s   %s    %s", this.saveName, levelDisplay, saveDateDisplay);
     }
     //===============================================================================================
     
@@ -37,11 +42,12 @@ public class GameFileInfo implements Serializable {
     //-----------------------------------------------------------------------------------------------
     // Getter
     //-----------------------------------------------------------------------------------------------
-    public GameData getGameData(){ return gameData; }
-    public String getFileName(){ return fileName; }
-    public String getSaveName(){ return saveName; }
-    public String getSaveDate(){ return saveDate; }
-    public String getLevel(){ return level; }
+    public GameData getGameData() { return gameData; }
+    public String getFileName() { return fileName; }
+    public String getSaveName() { return saveName; }
+    public String getSaveDate() { return saveDate; }
+    public String getLevelDisplay() { return levelDisplay; }
+    public String getFileNameDisplay() { return fileNameDisplay; }
     //===============================================================================================
 
 }

@@ -15,14 +15,17 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import data.constant.Constant;
-import controller.GameController;
 import view.Main;
+import data.constant.Constant;
+import data.constant.GameMode;
+import data.constant.Level;
+import controller.GameController;
 import view.viewController.BoardSceneController;
 
 public class StartSceneController implements Initializable {
-//    private static Stage stage = Main.stage;
+
     private static Scene scene;
+    private static BoardSceneController boardSceneController;
     private MediaPlayer mediaPlayer;
 
     // new File(this.mediaPath).toURI().toString()
@@ -31,7 +34,7 @@ public class StartSceneController implements Initializable {
         //!
         // playMusic();
     }
-
+    
 //    public static void setStage(Stage newStage) {
 //        stage = newStage;
 //    }
@@ -90,18 +93,19 @@ public class StartSceneController implements Initializable {
         // Media menuMusic = new Media(new File(mediaPath).toURI().toString());
     
     }
-    public static void newGame(ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
+    public static void newGame(GameMode gameMode, ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
         FXMLLoader loader = new FXMLLoader(mainURL);
         Parent boardScene = loader.load();
-
-        BoardSceneController view = loader.getController();
-        GameController gameController = new GameController(view);
-
+        
+        boardSceneController = loader.getController();
+        GameController gameController = new GameController(gameMode, 0, boardSceneController);
+    
         scene = new Scene(boardScene);
         Main.stage.setScene(scene);
         Main.stage.show();
         gameObjective(event, dialogURL);
     }
+
     public static void gameObjective(ActionEvent event, URL url) throws Exception {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -125,7 +129,6 @@ public class StartSceneController implements Initializable {
         scene = new Scene(boardScene);
         Main.stage.setScene(scene);
         Main.stage.show();
-        //! The boardScene and game will be loaded from loadScene, just like backToStartScene
     }
 
     public void settings(ActionEvent event) throws Exception {
@@ -138,7 +141,7 @@ public class StartSceneController implements Initializable {
 
         Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
         dialog.getIcons().add(dialogIcon);
-        System.out.println("Exe");
+
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/MenuSetting.fxml"));
         Scene scene = new Scene(boardScene);
         dialog.setScene(scene);
@@ -164,7 +167,9 @@ public class StartSceneController implements Initializable {
         NewGameInputDialogController.setStage(dialog);
     }
 
-
+    public BoardSceneController getBoardSceneController(){
+        return boardSceneController;
+    }
 }
 
 // @FXML

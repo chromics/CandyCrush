@@ -132,6 +132,10 @@ public class Board implements Serializable{
     public boolean is_Cell_Playable(BoardPoint point){
         return getGridAt(point).isPlayable();
     }
+
+    public boolean any_piece(BoardPoint point){
+        return getGridAt(point).containPiece();
+    }
     //===============================================================================================
     
     

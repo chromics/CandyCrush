@@ -1,6 +1,8 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.Arrays;
 import java.io.*;
 
@@ -8,21 +10,25 @@ import model.Board;
 import model.BoardPoint;
 import data.constant.MapTemplate;
 import data.constant.Orientation;
+import javafx.scene.control.Cell;
+import data.constant.GameMode;
 import data.constant.Level;
 
 public class GameData implements Serializable{
-    private ArrayList<MatchData> matchDatas;
+    private List<MatchData> matchDatas;
     private int[] fallData;
+    private BoardPoint[] hint;
     private Board board;
     private Level level;
     private int levelIndex;
+    private GameMode gameMode;
     private final int BOARD_ROW_SIZE;
     private final int BOARD_COL_SIZE;
     private int score;
     private int targetScore;
-    private int stepLeft;
-    private int hintsLeft;
-    private int shuffleLeft;
+    private int remainingStep;
+    private int remainingHints;
+    private int remainingShuffle;
     private MapTemplate mapTemplate;
     private boolean automaticMode;
     private boolean specialMode;
@@ -30,18 +36,19 @@ public class GameData implements Serializable{
     //-----------------------------------------------------------------------------------------------
     // Constructor
     //-----------------------------------------------------------------------------------------------
-    public GameData(Level level, boolean automaticMode, boolean specialMode){
+    public GameData(GameMode gameMode, int levelIndex){
         //Level Settings
-        this.automaticMode = automaticMode;
-        this.specialMode = specialMode;
-        this.level = level;
+        this.gameMode = gameMode;
+        this.automaticMode = gameMode.getAutomaticMode();
+        this.specialMode = gameMode.getSpecialMode();
+        this.level = gameMode.getLevelList().get(levelIndex);
         this.levelIndex = level.getLevelIndex();
         this.BOARD_ROW_SIZE = level.getBoard_Row_Size();
         this.BOARD_COL_SIZE = level.getBoard_Col_Size();
         this.targetScore = level.getTargetScore();
-        this.stepLeft = level.getInitStep();
-        this.hintsLeft = level.getInitHints();
-        this.shuffleLeft = level.getInitShuffle();
+        this.remainingStep = level.getInitStep();
+        this.remainingHints = level.getInitHints();
+        this.remainingShuffle = level.getInitShuffle();
         this.mapTemplate = level.getMapTemplate();
         score = 0;
 
@@ -52,6 +59,20 @@ public class GameData implements Serializable{
         matchDatas = new ArrayList<>();
         fallData = new int[BOARD_COL_SIZE];
         resetFallData();
+
+        System.out.println("\nInitiate Game Data : ");
+        System.out.println("GameMode : " + gameMode);
+        System.out.println("Automatic Mode : " + automaticMode);
+        System.out.println("Special Mode : " + specialMode);
+        System.out.println("Level : " + level.toString());
+        System.out.println("Board Row Size : " + BOARD_ROW_SIZE);
+        System.out.println("Board Col Size : " + BOARD_COL_SIZE);
+        System.out.println("Target Score : " + targetScore);
+        System.out.println("Remaining Step : " + remainingStep);
+        System.out.println("Remaining Hints : " + remainingHints);
+        System.out.println("Remaining Shuffle : " + remainingShuffle);
+        System.out.println("Map Template : " + mapTemplate.toString());
+        System.out.println();
     }
     //===============================================================================================
 
@@ -59,20 +80,23 @@ public class GameData implements Serializable{
     //-----------------------------------------------------------------------------------------------
     // Getter
     //-----------------------------------------------------------------------------------------------
-    public ArrayList<MatchData> getMatchDatas() { return matchDatas; }
+    public List<MatchData> getMatchDatas() { return matchDatas; }
+    public BoardPoint[] getHint() { return hint; }
     public Board getBoard() { return board; }
     public int getScore() { return score; }
     public int getBoard_Row_Size() { return BOARD_ROW_SIZE; }
     public int getBoard_Col_Size() { return BOARD_COL_SIZE; }
     public int getTargetScore() { return targetScore; }
-    public int getStepLeft() { return stepLeft; }
-    public int getHintsLeft() { return hintsLeft; }
-    public int getShuffleLeft() { return shuffleLeft; }
+    public int getRemainingStep() { return remainingStep; }
+    public int getRemainingHints() { return remainingHints; }
+    public int getRemainingShuffle() { return remainingShuffle; }
     public MapTemplate getMapTemplate() { return mapTemplate; }
     public boolean getAutomaticMode() { return automaticMode; }
     public boolean getSpecialMode() { return specialMode; }
-    public Level getLevel() { return level; }
+    public int getLevel() { return (levelIndex + 1); }
     public int getLevelIndex() { return levelIndex; }
+    public Level getNextLevel() { return gameMode.getNextLevel(level); }
+    public GameMode getGameMode() { return gameMode; }
     //===============================================================================================
     
     
@@ -85,11 +109,11 @@ public class GameData implements Serializable{
     public void setSpecialMode(boolean specialMode){
         this.specialMode = specialMode;
     }
-    public void setShuffleLeft(int shuffleLeft){
-        this.shuffleLeft = shuffleLeft;
+    public void setRemainingShuffle(int remainingShuffle){
+        this.remainingShuffle = remainingShuffle;
     }
-    public void setStepLeft(int stepLeft){
-        this.stepLeft = stepLeft;
+    public void setRemainingStep(int remainingStep){
+        this.remainingStep = remainingStep;
     }
     public void setScore(int score){
         this.score = score;
@@ -101,10 +125,22 @@ public class GameData implements Serializable{
     // Update Data Methods
     //-----------------------------------------------------------------------------------------------
     public void decreaseStepLeft(){
-        this.stepLeft--;
+        this.remainingStep--;
     }
     public void updateScore(int scoreGained){
         this.score += scoreGained;
+    }
+    //===============================================================================================
+    
+    
+    //-----------------------------------------------------------------------------------------------
+    // Hint Data
+    //-----------------------------------------------------------------------------------------------
+    public void saveHint( BoardPoint point1, BoardPoint point2, BoardPoint point3 ){
+        hint = new BoardPoint[]{point1, point2, point3};
+    }
+    public void resetHint(){
+        hint = null;
     }
     //===============================================================================================
     

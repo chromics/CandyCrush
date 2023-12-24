@@ -41,7 +41,7 @@ public class CreateBoard {
      */
 
     public static void initiateBoard(Board board){
-        initiate_First_Valid_Move(board);
+        initiate_First_Valid_Move(board);                        
         fill_The_Rest_Of_The_Board(board);
     }
 

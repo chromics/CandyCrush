@@ -16,10 +16,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.Main;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import view.Main;
+import data.constant.GameMode;
 
 public class NewGameInputDialogController implements Initializable {
     private static Stage stage;
@@ -41,17 +43,19 @@ public class NewGameInputDialogController implements Initializable {
     }
 
     public void normalGameMode(ActionEvent event) throws Exception {
-        StartSceneController.newGame(event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
+        StartSceneController.newGame(GameMode.NORMALGAMEMODE, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
     }
-    public void specialGameMode(ActionEvent event) {
-
+    public void specialGameMode(ActionEvent event) throws Exception {
+        StartSceneController.newGame(GameMode.CHRISTMASGAMEMODE, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
     }
 
     public void startNewGame(ActionEvent event) throws Exception{
         if (normalModeToggle.isSelected()) {
+            System.out.println("Start Normal Game Mode");
             normalGameMode(event);
             stage.close();
         } else if (specialModeToggle.isSelected()) {
+            System.out.println("Start Special Game Mode");
             specialGameMode(event);
             stage.close();
         }

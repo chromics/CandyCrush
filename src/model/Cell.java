@@ -45,8 +45,11 @@ public class Cell implements Serializable{
         this.piece = null;
     }
     
-    public boolean equalPiece(Cell otherPiece){
-        return (this.piece.getName().equals(otherPiece.getPiece().getName()));
+    public boolean equalPiece(Cell otherCell){
+        if(otherCell.containPiece()){
+            return (this.piece.getName().equals(otherCell.getPiece().getName()));
+        }
+        return false;
     }
     //===============================================================
     

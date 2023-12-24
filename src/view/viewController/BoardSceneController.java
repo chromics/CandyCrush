@@ -1,7 +1,5 @@
 package view.viewController;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
@@ -30,10 +28,12 @@ import java.net.URL;
 import model.piece.*;
 import data.GameData;
 import controller.GameController;
+import controller.SaveLoadController;
 import view.Main;
 
 public class BoardSceneController implements Initializable {
-//    private Stage stage = Main.stage;
+    private static Image patchImage = new Image(Constant.decorations.get("patch"));
+    
     private static Scene scene;
     private int saveFileNumber = 1;
     private boolean saveFileExists;
@@ -43,6 +43,7 @@ public class BoardSceneController implements Initializable {
     private Board board;
     private GameController gameController;
     private GameData gameData;
+    private int pictureSize;
 
     @FXML
     private GridPane boardView;
@@ -69,7 +70,7 @@ public class BoardSceneController implements Initializable {
     public static AnchorPane getBoardPane() {
         return boardPane;
     }
-    
+
     public void initiateBoard(Cell[][] grid) {
         GridPane gridpane = new GridPane();
         for (int i = 0; i < gameData.getBoard_Row_Size(); i++) {
@@ -81,6 +82,7 @@ public class BoardSceneController implements Initializable {
             gridpane.getColumnConstraints().add(colConst);
         }
         // initiate boardView with getBoard_Row_Size() & col
+        setPictureSize(gameData.getBoard_Row_Size(), gameData.getBoard_Col_Size());        
         for (int row = 0; row < gameData.getBoard_Row_Size(); row++) {
             for (int col = 0; col < gameData.getBoard_Col_Size(); col++) {
                 if (grid[row][col].isPlayable()) {
@@ -90,6 +92,12 @@ public class BoardSceneController implements Initializable {
         }
     }
 
+    public void setPictureSize(int board_Row_Size, int board_Col_Size){
+        int board_Max_Size = Math.max(board_Row_Size, board_Col_Size);
+
+        pictureSize = Constant.pictureSizeList.get(board_Max_Size);
+    }
+
     public void set_Game_Info(GameController gameController){
 
         this.gameController = gameController;
@@ -97,9 +105,9 @@ public class BoardSceneController implements Initializable {
         
         board = gameData.getBoard();
 
-        shuffleLabel.setText(Integer.toString(gameData.getShuffleLeft()));
+        shuffleLabel.setText(Integer.toString(gameData.getRemainingShuffle()));
         currentScoreLabel.setText(Integer.toString(gameData.getScore()));
-        movesLeftLabel.setText(Integer.toString(gameData.getStepLeft()));
+        movesLeftLabel.setText(Integer.toString(gameData.getRemainingStep()));
     }
 
     //-----------------------------------------------------------------------------------------------
@@ -109,19 +117,17 @@ public class BoardSceneController implements Initializable {
         int row = point.getRow();
         int col = point.getCol();
 
-        StackPane stackPane = new StackPane();
-    
-        Image patch = new Image(Constant.decorations.get("patch"));
-        ImageView patchView = new ImageView(patch);
-        patchView.setFitWidth(Constant.PICTURE_SIZE.getNum());
-        patchView.setFitHeight(Constant.PICTURE_SIZE.getNum());
-        stackPane.getChildren().add(patchView);
+        ImageView patchView = new ImageView(patchImage);
+        patchView.setFitWidth(pictureSize);
+        patchView.setFitHeight(pictureSize);
+
+        StackPane stackPane = new StackPane(patchView);
         
         if(imagePath != null){
             Image fruit = new Image(imagePath);
             ImageView fruitView = new ImageView(fruit);
-            fruitView.setFitWidth(Constant.PICTURE_SIZE.getNum());
-            fruitView.setFitHeight(Constant.PICTURE_SIZE.getNum());
+            fruitView.setFitWidth(pictureSize);
+            fruitView.setFitHeight(pictureSize);
             stackPane.getChildren().add(fruitView);
         }
         
@@ -157,11 +163,11 @@ public class BoardSceneController implements Initializable {
     // SWAP
     public void swap(ActionEvent event) {
         if(gameData.anyMatch()){
-            generateAlert("Unable to swap.", "Press \"Next\" first to remove matches!");
+            UtilView.generateAlert("Unable to swap.", "Press \"Next\" first to remove matches!");
             resetSelectedPoint();
         }
         else if(gameData.hasnotFall()){
-            generateAlert("Unable to swap", "Press \"Next\" first to generate new pieces!");
+            UtilView.generateAlert("Unable to swap", "Press \"Next\" first to generate new pieces!");
             resetSelectedPoint();
         }
         else if(selectedPoint1 != null && selectedPoint2 != null){
@@ -169,7 +175,7 @@ public class BoardSceneController implements Initializable {
             resetSelectedPoint();
         }
         else{
-            generateAlert("Unable to swap", "Please select at least two points!");
+            UtilView.generateAlert("Unable to swap", "Please select at least two points!");
         }
     }
     
@@ -183,24 +189,27 @@ public class BoardSceneController implements Initializable {
             gameController.fall();
         }
         else{
-            generateAlert("No effect", "Create match first");
+            UtilView.generateAlert("No effect", "Create match first");
         }
+
+        selectedPoint1 = null;
+        selectedPoint2 = null;
     }
     
     // SHUFFLE
     public void shuffle(ActionEvent event) {
-        int shuffleLeft = gameData.getShuffleLeft();
+        int shuffleLeft = gameData.getRemainingShuffle();
         if (shuffleLeft > 0) {
             gameController.initBoard();
             initiateBoard(board.getGrid());
             
             shuffleLeft--; //Decrease Shuffle Left
             
-            gameData.setShuffleLeft(shuffleLeft);
+            gameData.setRemainingShuffle(shuffleLeft);
             shuffleLabel.setText(Integer.toString(shuffleLeft));
         }
         else {
-            generateAlert("Shuffle unavailable", "You have used all of the shuffle props for this game!");
+            UtilView.generateAlert("Shuffle unavailable", "You have used all of the shuffle props for this game!");
         }
     }
     
@@ -217,9 +226,10 @@ public class BoardSceneController implements Initializable {
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/InGameSettingScene.fxml"));
         Parent boardScene = loader.load();
-
+        
         InGameSettingSceneController settingsView = loader.getController();
         settingsView.setGameController(gameController);
+        
 
         Scene scene = new Scene(boardScene);
         dialog.setScene(scene);
@@ -233,38 +243,13 @@ public class BoardSceneController implements Initializable {
         currentScoreLabel.setText(Integer.toString(gameData.getScore()));
     }
     public void deductMovesLeft() {
-        movesLeftLabel.setText(Integer.toString(gameData.getStepLeft()));
+        movesLeftLabel.setText(Integer.toString(gameData.getRemainingStep()));
     }
     
-//    //Win
-//    public void winAlert() throws Exception {
-//        // Alert
-//        Alert alert = new Alert(AlertType.CONFIRMATION);
-//
-//        alert.setTitle("Level Cleared");
-//        alert.setHeaderText("Congratulations! You Won The Game");
-//        alert.setContentText("Proceed to next level?");
-//        alert.setX(725);
-//        alert.setY(45);
-//
-//        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
-//        ((Button) alert.getDialogPane().lookupButton(ButtonType.YES)).setDefaultButton(true);
-//
-//        // Proceed to next level?
-//        Optional <ButtonType> result = alert.showAndWait();
-//
-//        if (result.isPresent() && result.get() == ButtonType.YES) {
-//            gameController.nextLevel();
-//        }
-//        // Exit
-//        else if (result.isPresent() && result.get() == ButtonType.NO) {
-//            // backToStartScene(event);
-//        }
-//
-//    }
-    // SAVE & EXIT
     public void saveExit(ActionEvent event) throws Exception {
+        System.out.println("\nSave & Exit from BoardScene\n");
         // Alert
+        System.out.println("SaveExitAlert");
         Alert alert = new Alert(AlertType.CONFIRMATION);
         
         alert.setTitle("Save & Exit");
@@ -281,19 +266,19 @@ public class BoardSceneController implements Initializable {
         
         if (result.isPresent() && result.get() == ButtonType.YES) {
             // Save
-            createSaveFile(event);
-            // Test
-            if (checkSaveFile()) {
-                // Exit
-                backToStartScene(event);
-            }
+            System.out.println("Save Action");
+//            SaveFileInputDialogController.generateSaveFileNameTextField();
         }
-        // Exit
-        else if (result.isPresent() && result.get() == ButtonType.NO) {
+        else if (result.isPresent() && result.get() == ButtonType.NO){
+            // Exit
             backToStartScene(event);
         }
-
     }
+
+    public void saveGame(String fileName){
+        SaveLoadController.saveGame(gameData, fileName);
+    }
+
     public void backToStartScene(ActionEvent event) throws Exception {
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/StartScene.fxml"));
         Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
@@ -301,90 +286,26 @@ public class BoardSceneController implements Initializable {
         Main.stage.setScene(scene);
         Main.stage.show();
     }
-    public void createSaveFile(ActionEvent event) throws Exception {
-        // add feat: sortSaveFile --> method to sort and fill in empty save file numbers after deletion --> for the load game scene
-        // add feat: deleteSaveFile --> method to delete save files --> for the load game scene
-        // add feat: loadSaveFile --> for the load game scene
-        String fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".csv";
-        
-        File dir = new File("src/view/saves");
-        if (dir.listFiles() != null) {
-            for (int i = 0; i < dir.listFiles().length; i ++) {
-                
-                int checkNumLen = dir.listFiles()[i].getName().length() - 13;
-                int numLen = fileName.length() - 28;
-                String fileCheckNumber = dir.listFiles()[i].getName().substring(8, 9 + checkNumLen);
-                String fileNumber = fileName.substring(23, 24 + numLen);
-
-                if (fileNumber.equals(fileCheckNumber)) {
-                    this.saveFileNumber++;
-                    fileName = "src/view/saves/saveFile" + this.saveFileNumber + ".csv";
-                    i = 0;
-                }
-                
-            }
-        }
-        
-        File file = new File(fileName);
-        file.createNewFile();
-        // maybe save files need to be stored in local?
-        
-        FileWriter writer = new FileWriter(fileName);
-        writer.write(getSaveData());
-        writer.close();
-        
-        if (!file.exists()) {
-            this.saveFileExists = false;
-            
-            Alert errorAlert = new Alert(AlertType.ERROR);
-            errorAlert.setHeaderText("Error!");
-            errorAlert.setContentText("Save failed. Please retry.");
-            errorAlert.show();
-        }
-        else {
-            this.saveFileExists = true;
-            
-            Alert successAlert = new Alert(AlertType.INFORMATION);
-            successAlert.setHeaderText("Success!");
-            successAlert.setContentText("Your current game has been saved.");
-            successAlert.show();
-        }
-        
-        this.saveFileNumber++;
-        
-    }
-    public boolean checkSaveFile() {
-        return saveFileExists;
-    }
-    public String getSaveData() {
-        for (int i = 0; i < gameData.getBoard_Row_Size(); i++) {
-            for (int j = 0; j < gameData.getBoard_Col_Size(); j++) {
-                //                this.saveData += grid[i][j].getPiece().getName() + " ";
-            }
-        }
-        return this.saveData;
-    }
     
     public void resetSelectedPoint(){
         selectedPoint1 = null;
         selectedPoint2 = null;
     }
     
-    public void generateAlert(String header, String content){
-        Alert errorAlert = new Alert(AlertType.ERROR);
-        errorAlert.setHeaderText(header);
-        errorAlert.setContentText(content);
-        errorAlert.show();
-        errorAlert.setX(Main.stage.getX() + 625);
-        errorAlert.setY(Main.stage.getY() - 55);
-    }
-    
     public void buttonHandler(BoardPoint point) {
-        if(selectedPoint1 != null){
-            if(selectedPoint2 == null && board.calculateDistance(selectedPoint1, point) == 1){
+        if (selectedPoint1 != null) {
+            if (selectedPoint2 == null && board.calculateDistance(selectedPoint1, point) == 1){
+                selectedPoint2 = point;
+            } 
+            else if (selectedPoint2 != null
+                    && ! selectedPoint2.equals(point)
+                    && (board.calculateDistance(selectedPoint1, point) == 1 
+                        || board.calculateDistance(selectedPoint2, point) == 1)) {
+
+                selectedPoint1 = selectedPoint2;
                 selectedPoint2 = point;
             }
-            else{
+            else {
                 selectedPoint1 = point;
                 selectedPoint2 = null;
             }
