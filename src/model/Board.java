@@ -109,18 +109,18 @@ public class Board implements Serializable{
     //-----------------------------------------------------------------------------------------------
     // BoardPoint Methods
     //-----------------------------------------------------------------------------------------------
-    public int calculateDistance(BoardPoint src, BoardPoint dest) {
+    public int calculateDistance (BoardPoint src, BoardPoint dest) {
         return Math.abs(src.getRow() - dest.getRow()) + Math.abs(src.getCol() - dest.getCol());
     }
     
-    public boolean is_Within_Boundary(BoardPoint point){
+    public boolean is_Within_Boundary (BoardPoint point) {
         return (point.getRow() >= 0 
         && point.getRow() < board_Row_Size
         && point.getCol() >= 0
         && point.getCol() < board_Col_Size);
     }
     
-    public boolean is_Equal_To_Adjacent( BoardPoint currentPoint, Orientation orientation ){
+    public boolean is_Equal_To_Adjacent (BoardPoint currentPoint, Orientation orientation) {
         BoardPoint nextPoint = currentPoint.getAdjacentPoint( orientation );
         return equalPieceAt( currentPoint, nextPoint );
     }
@@ -149,11 +149,19 @@ public class Board implements Serializable{
 
     @Override
     public String toString(){
-        String res = "";
+        String res = "Board :";
         if(grid == null){
             res += "null\n";
         }
-        //Continue Later
+        else{
+            for(int row = 0; row < board_Row_Size; row++){
+                res += "\n";
+                for(int col = 0; col < board_Row_Size; col++){
+                    res += grid[row][col].getPiece().getImagePath() + " ";
+                }
+            }
+            res += "\n";
+        }
         return res;
     }
 }

@@ -1,7 +1,5 @@
 package view.viewController;
 
-import java.io.IOException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
@@ -37,18 +35,23 @@ import view.Main;
 import javax.sound.sampled.*;
 
 public class BoardSceneController implements Initializable {
-    private static Image patchImage = new Image(Constant.decorations.get("patch"));
-    
+    private final static Image PATCHIMAGE = new Image(Constant.decorations.get("patch"));
+    private final static Image SELECTMARKIMAGE = new Image(Constant.decorations.get("patchSelectMark"));
     private static Scene scene;
+    
+    private Pane[][] paneArray;
     private int saveFileNumber = 1;
     private boolean saveFileExists;
     private String saveData = "";
     private BoardPoint selectedPoint1;
     private BoardPoint selectedPoint2;
     private Board board;
+    private Cell[][] grid;
     private GameController gameController;
     private static GameData gameData;
     private int pictureSize;
+    private int board_Row_Size;
+    private int board_Col_Size;
     private AudioClip sFX;
     private Clip music;
 
@@ -90,19 +93,57 @@ public class BoardSceneController implements Initializable {
     private void initializeBackgroundMusic() {
 
     }
+    public void initiateBoard() {
+        grid = board.getGrid();
+        paneArray = new Pane[board_Row_Size][board_Col_Size];
 
-    public void initiateBoard(Cell[][] grid) {
-        GridPane gridpane = new GridPane();
-        for (int i = 0; i < gameData.getBoard_Row_Size(); i++) {
-            RowConstraints rowConst = new RowConstraints(gameData.getBoard_Row_Size());
-            gridpane.getRowConstraints().add(rowConst);
-        }
-        for (int i = 0; i < gameData.getBoard_Col_Size(); i++) {
-            ColumnConstraints colConst = new ColumnConstraints(gameData.getBoard_Col_Size());
-            gridpane.getColumnConstraints().add(colConst);
+        // for (int row = 0; row < board_Row_Size; row++) {
+        //     RowConstraints rowConst = new RowConstraints(gameData.getBoard_Row_Size());
+        //     boardView.getRowConstraints().add(rowConst);
+        // }
+        // for (int col = 0; col < board_Col_Size; col++) {
+        //     ColumnConstraints colConst = new ColumnConstraints(gameData.getBoard_Col_Size());
+        //     boardView.getColumnConstraints().add(colConst);
+        // }
+
+        setPictureSize(gameData.getBoard_Row_Size(), gameData.getBoard_Col_Size());        
+
+        for(int row = 0; row < board_Row_Size; row++){
+            for(int col = 0; col < board_Col_Size; col++){
+                setGridViewAt(row, col);
+            }
         }
         // initiate boardView with getBoard_Row_Size() & col
-        setPictureSize(gameData.getBoard_Row_Size(), gameData.getBoard_Col_Size());        
+        initiatePiecesView();
+    }
+
+    public void setGridViewAt(int row, int col){
+        if(grid[row][col].isPlayable()){
+            ImageView patchView = new ImageView(PATCHIMAGE);
+            patchView.setFitWidth(pictureSize);
+            patchView.setFitHeight(pictureSize); 
+            
+            paneArray[row][col] = new Pane(patchView);
+
+            Button fruitButton = new Button();
+            BoardPoint currentPoint = new BoardPoint(row, col);
+            fruitButton.setOnAction(e -> buttonHandler(currentPoint));
+            fruitButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            fruitButton.setGraphic(paneArray[row][col]);
+            fruitButton.maxWidth(Double.MAX_VALUE);
+            fruitButton.maxHeight(Double.MAX_VALUE);
+            fruitButton.setPadding(Insets.EMPTY);
+        
+            GridPane.setHalignment(paneArray[row][col], HPos.CENTER);
+            GridPane.setHgrow(paneArray[row][col], Priority.ALWAYS);
+            GridPane.setValignment(paneArray[row][col], VPos.CENTER);
+            GridPane.setVgrow(paneArray[row][col], Priority.ALWAYS);
+        
+            this.boardView.add(fruitButton, col, row);
+        }
+    }
+
+    public void initiatePiecesView(){
         for (int row = 0; row < gameData.getBoard_Row_Size(); row++) {
             for (int col = 0; col < gameData.getBoard_Col_Size(); col++) {
                 if (grid[row][col].isPlayable()) {
@@ -116,6 +157,7 @@ public class BoardSceneController implements Initializable {
         int board_Max_Size = Math.max(board_Row_Size, board_Col_Size);
 
         pictureSize = Constant.pictureSizeList.get(board_Max_Size);
+        System.out.println("Picture Size : " + pictureSize);
     }
 
     public void set_Game_Info(GameController gameController){
@@ -124,6 +166,8 @@ public class BoardSceneController implements Initializable {
         gameData = this.gameController.getGameData();
         
         board = gameData.getBoard();
+        board_Row_Size = gameData.getBoard_Row_Size();
+        board_Col_Size = gameData.getBoard_Col_Size();
 
         shuffleLabel.setText(Integer.toString(gameData.getRemainingShuffle()));
         currentScoreLabel.setText(Integer.toString(gameData.getScore()));
@@ -136,67 +180,64 @@ public class BoardSceneController implements Initializable {
     public void setPieceImageAt(String imagePath, BoardPoint point){
         int row = point.getRow();
         int col = point.getCol();
-
-        ImageView patchView = new ImageView(patchImage);
-        patchView.setFitWidth(pictureSize);
-        patchView.setFitHeight(pictureSize);
-
-        StackPane stackPane = new StackPane(patchView);
         
+        if(paneArray[row][col].getChildren().size() > 1){
+            System.out.println("Remove Fruit Image at : " + point.toString());
+            paneArray[row][col].getChildren().remove(1);
+        }
+
         if(imagePath != null){
             Image fruit = new Image(imagePath);
             ImageView fruitView = new ImageView(fruit);
             fruitView.setFitWidth(pictureSize);
             fruitView.setFitHeight(pictureSize);
-            stackPane.getChildren().add(fruitView);
+            paneArray[row][col].getChildren().add(1,fruitView);
         }
-        
-        Button fruitButton = new Button();
-        BoardPoint currentPoint = new BoardPoint(row, col);
-        fruitButton.setOnAction(e -> buttonHandler(currentPoint));
-        fruitButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        fruitButton.setGraphic(stackPane);
-        fruitButton.maxWidth(Double.MAX_VALUE);
-        fruitButton.maxHeight(Double.MAX_VALUE);
-        fruitButton.setPadding(Insets.EMPTY);
-    
-        GridPane.setHalignment(stackPane, HPos.CENTER);
-        GridPane.setHgrow(stackPane, Priority.ALWAYS);
-        GridPane.setValignment(stackPane, VPos.CENTER);
-        GridPane.setVgrow(stackPane, Priority.ALWAYS);
-    
-        this.boardView.add(fruitButton, col, row);
     }
-
     public void swapImage(BoardPoint point1, BoardPoint point2) {
         Piece piece1 = board.getPieceAt(point1);
         Piece piece2 = board.getPieceAt(point2);
         String imagePath1 = (piece1 == null)? null : piece1.getImagePath();
         String imagePath2 = (piece2 == null)? null : piece2.getImagePath();
         setPieceImageAt(imagePath1, point1);
-        setPieceImageAt(imagePath2, point2);        
+        setPieceImageAt(imagePath2, point2);
     }
     public void removeImage(BoardPoint point){
         setPieceImageAt(null, point);
     }
+    public void addSelectMarkImage(BoardPoint point){
+        ImageView selectMarkView = new ImageView(SELECTMARKIMAGE);
+        selectMarkView.setFitWidth(pictureSize);
+        selectMarkView.setFitHeight(pictureSize); 
+        paneArray[point.getRow()][point.getCol()].getChildren().add(selectMarkView);
+    }
+    public void removeSelectMarkImage(BoardPoint point){
+        int selectMarkIndex = paneArray[point.getRow()][point.getCol()].getChildren().size() - 1;
+        paneArray[point.getRow()][point.getCol()].getChildren().remove(selectMarkIndex);
+    }
     //===============================================================================================
     
+
+    //-----------------------------------------------------------------------------------------------
+    // Swap Methods
+    //-----------------------------------------------------------------------------------------------
+    
+    //===============================================================================================
     // SWAP
     public void swap(ActionEvent event) {
         if(gameData.anyMatch()){
-            UtilView.generateAlert("Unable to swap.", "Press \"Next\" first to remove matches!");
+            UtilView.generateErrorAlert("Unable to swap.", "Press \"Next\" first to remove matches!");
             resetSelectedPoint();
         }
         else if(gameData.hasnotFall()){
-            UtilView.generateAlert("Unable to swap", "Press \"Next\" first to generate new pieces!");
+            UtilView.generateErrorAlert("Unable to swap", "Press \"Next\" first to generate new pieces!");
             resetSelectedPoint();
         }
         else if(selectedPoint1 != null && selectedPoint2 != null){
             gameController.swapPieceOnBoard(selectedPoint1, selectedPoint2);
-            resetSelectedPoint();
         }
         else{
-            UtilView.generateAlert("Unable to swap", "Please select at least two points!");
+            UtilView.generateErrorAlert("Unable to swap", "Please select at least two points!");
         }
     }
     
@@ -210,11 +251,25 @@ public class BoardSceneController implements Initializable {
             gameController.fall();
         }
         else{
-            UtilView.generateAlert("No effect", "Create match first");
+            UtilView.generateErrorAlert("No effect", "Create match first");
         }
 
         selectedPoint1 = null;
         selectedPoint2 = null;
+    }
+
+    // Hints
+    public void provideHint (ActionEvent event) {
+        if(gameData.anyHint()){
+            BoardPoint[] hintPosition = gameData.getHint();
+    
+            resetSelectedPoint();
+    
+            selectedPoint1 = hintPosition[0];
+            selectedPoint2 = hintPosition[1];
+            addSelectMarkImage(selectedPoint1);
+            addSelectMarkImage(selectedPoint2);
+        }
     }
     
     // SHUFFLE
@@ -222,15 +277,17 @@ public class BoardSceneController implements Initializable {
         int shuffleLeft = gameData.getRemainingShuffle();
         if (shuffleLeft > 0) {
             gameController.initBoard();
-            initiateBoard(board.getGrid());
+            initiatePiecesView();
             
             shuffleLeft--; //Decrease Shuffle Left
             
+            gameData.resetMatchData();
+            gameData.resetFallData();
             gameData.setRemainingShuffle(shuffleLeft);
             shuffleLabel.setText(Integer.toString(shuffleLeft));
         }
         else {
-            UtilView.generateAlert("Shuffle unavailable", "You have used all of the shuffle props for this game!");
+            UtilView.generateErrorAlert("Shuffle unavailable", "You have used all of the shuffle props for this game!");
         }
     }
     
@@ -257,9 +314,6 @@ public class BoardSceneController implements Initializable {
         dialog.show();
     }
     
-    public void provideHint(ActionEvent event) {
-        System.out.println("hint");
-    }
     public void addScore() {
         currentScoreLabel.setText(Integer.toString(gameData.getScore()));
     }
@@ -309,30 +363,57 @@ public class BoardSceneController implements Initializable {
     }
     
     public void resetSelectedPoint(){
+        if (selectedPoint1 != null) {
+            removeSelectMarkImage(selectedPoint1);
+        }
+        if (selectedPoint2 != null) {
+            removeSelectMarkImage(selectedPoint2);
+        }
+
         selectedPoint1 = null;
         selectedPoint2 = null;
     }
     
     public void buttonHandler(BoardPoint point) {
-        if (selectedPoint1 != null) {
-            if (selectedPoint2 == null && board.calculateDistance(selectedPoint1, point) == 1){
-                selectedPoint2 = point;
-            } 
-            else if (selectedPoint2 != null
-                    && ! selectedPoint2.equals(point)
-                    && (board.calculateDistance(selectedPoint1, point) == 1 
-                        || board.calculateDistance(selectedPoint2, point) == 1)) {
+        if(board.any_piece(point)){
 
-                selectedPoint1 = selectedPoint2;
-                selectedPoint2 = point;
+            if (selectedPoint1 != null) {
+                if (selectedPoint2 == null){
+                    if(board.calculateDistance(selectedPoint1, point) == 1){
+                        addSelectMarkImage(point);
+                        selectedPoint2 = point;
+                    }
+                    else {
+                        removeSelectMarkImage(selectedPoint1);
+                        addSelectMarkImage(point);
+                        selectedPoint1 = point;
+                    }
+                } 
+                else if (selectedPoint2 != null) {
+                    if (board.calculateDistance(selectedPoint1, point) == 1){
+                        removeSelectMarkImage(selectedPoint2);
+                        addSelectMarkImage(point);
+                        selectedPoint2 = point;
+                    }
+                    else if (board.calculateDistance(selectedPoint2, point) == 1){
+                        removeSelectMarkImage(selectedPoint1);
+                        addSelectMarkImage(point);
+                        selectedPoint1 = selectedPoint2;
+                        selectedPoint2 = point;
+                    }
+                    else{
+                        removeSelectMarkImage(selectedPoint1);
+                        removeSelectMarkImage(selectedPoint2);
+                        addSelectMarkImage(point);
+                        selectedPoint1 = point;
+                        selectedPoint2 = null;
+                    }
+                }
             }
             else {
+                addSelectMarkImage(point);
                 selectedPoint1 = point;
-                selectedPoint2 = null;
             }
-        }
-        else{
-            selectedPoint1 = point;
         }
     }
 

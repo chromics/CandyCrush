@@ -77,6 +77,15 @@ public class SaveLoadController {
 
     public static List<GameFileInfo> load_Game_File_List (){
         List<String> fileNameList = load_File_Name_List();
+        if(fileNameList.size() != 0){
+            System.out.println("Success retrieve File Name List : ");
+            for(String fileName : fileNameList){
+                System.out.println(fileName);
+            }
+            System.out.println();
+        } else {
+            System.out.println("Fail to obtain File Name List");
+        }
         List<GameFileInfo> gameFileList = new ArrayList<>();
 
         for(String fileName : fileNameList){

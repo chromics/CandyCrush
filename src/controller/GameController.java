@@ -3,10 +3,10 @@ package controller;
 import mechanism.CheckMatch;
 import mechanism.Remove;
 import mechanism.Fall;
+import mechanism.HintFinder;
 import model.Board;
 import model.BoardPoint;
 import data.GameData;
-import data.constant.Level;
 import data.constant.GameMode;
 import view.viewController.BoardSceneController;
 import view.viewController.UtilView;
@@ -47,7 +47,7 @@ public class GameController {
             scanMatches();
         }while(gameData.anyMatch());
         gameData.resetMatchData();
-        view.initiateBoard(gameData.getBoard().getGrid());
+        view.initiateBoard();
     }
     //===============================================================================================
 
@@ -56,6 +56,8 @@ public class GameController {
     // Basic Game Mechanism
     //-----------------------------------------------------------------------------------------------
     public void swapPieceOnBoard(BoardPoint point1, BoardPoint point2){
+        view.resetSelectedPoint();
+
         board.swapPiece(point1, point2);
         view.swapImage(point1, point2);
         scanMatches();
@@ -64,9 +66,10 @@ public class GameController {
             board.swapPiece(point1, point2);
             view.swapImage(point1, point2);
 
-            UtilView.generateAlert("No Effect", "No Match Found");
+            UtilView.generateErrorAlert("No Effect", "No Match Found");
         }
         else{
+            gameData.resetHint();
             gameData.decreaseStepLeft();
             view.deductMovesLeft();
             System.out.println("Moves Left : " + gameData.getRemainingStep());
@@ -97,6 +100,19 @@ public class GameController {
         Fall.fall(board, gameData, view);
         System.out.println("\nFall Done\n");
         scanMatches();
+
+        if (! gameData.anyMatch()) {
+            HintFinder.findHint(gameData);
+
+            if(! gameData.anyHint()){
+                if(gameData.getRemainingShuffle() > 0){
+                    UtilView.generateErrorAlert("No Match Can be Formed Anymore", "Please use shuffle");
+                }
+                else{
+                    // Lose
+                }
+            }
+        }
     }
     //===============================================================================================
 

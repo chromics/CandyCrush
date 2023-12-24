@@ -136,11 +136,14 @@ public class GameData implements Serializable{
     //-----------------------------------------------------------------------------------------------
     // Hint Data
     //-----------------------------------------------------------------------------------------------
-    public void saveHint( BoardPoint point1, BoardPoint point2, BoardPoint point3 ){
-        hint = new BoardPoint[]{point1, point2, point3};
+    public void saveHint( BoardPoint point1, BoardPoint point2 ){
+        hint = new BoardPoint[]{point1, point2};
     }
     public void resetHint(){
         hint = null;
+    }
+    public boolean anyHint(){
+        return (hint != null);
     }
     //===============================================================================================
     
