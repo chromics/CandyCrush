@@ -10,17 +10,18 @@ import data.GameFileInfo;
 
 public class SaveLoadController {
     private static final String nameListPath = "src\\save\\FileName.txt";
-    private static final String directory = "src\\save\\gamefile";
-
+    private static final String directory = "src\\save\\gamefile\\";
     private static final File nameListFile = new File(nameListPath);
 
     //-----------------------------------------------------------------------------------------------
     // Save
     //-----------------------------------------------------------------------------------------------
-    public static void saveGame(GameFileInfo gameFileInfo){
+    public static void saveGame(GameData gameData, String saveName){
+        GameFileInfo gameFileInfo =  new GameFileInfo(gameData, saveName);
         String fileName = gameFileInfo.getFileName();
         appendFileName(fileName);
-        saveGame(gameFileInfo);
+        saveGameFile(gameFileInfo);
+        System.out.println("Save Game Done");
     }
 
     public static void appendFileName(String fileName){
@@ -79,9 +80,12 @@ public class SaveLoadController {
         List<GameFileInfo> gameFileList = new ArrayList<>();
 
         for(String fileName : fileNameList){
-                try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
-                    gameFileList.add((GameFileInfo) ois.readObject());
-
+                try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(directory + fileName))) {
+                    // gameFileList.add((GameFileInfo) ois.readObject());
+                    GameFileInfo temp = (GameFileInfo) ois.readObject();
+                    System.out.println(temp.getFileNameDisplay());
+                    System.out.printf("Score : %-4d StepLeft : %-4d\n", temp.getGameData().getScore(), temp.getGameData().getRemainingStep());
+                    gameFileList.add(temp);
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                     return null;

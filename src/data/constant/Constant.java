@@ -5,46 +5,47 @@ import java.util.HashMap;
 // import data.constant.Orientation;
 
 public enum Constant{
-    PICTURE_SIZE( 35 );
+    ;
 
-    private final int num;
-    Constant( int num ){
-        this.num = num;
-    }
+    public static HashMap <Integer, Integer> pictureSizeList = new HashMap<>(){{
+        put(7,40);
+        put(8,35);
+        put(9,31);
+        put(10,28);
+    }};
 
-    public int getNum() {
-        return num;
-    }
-
-    public  static  HashMap<String,String> audioHashMap = new HashMap<>() {{
-        put( "springDay","CandyCrush\\src\\data\\constant\\audio\\springDay.mp3" );
+    public static HashMap <String, String> audioHashMap = new HashMap<>() {{
+        put( "springDay","CandyCrush/data/constant/audio/springDay.mp3" );
     }};
     
     public static HashMap<String,String> decorations = new HashMap<>(){{
+        put( "patchSelectMark","data/constant/image/patchSelectMark.png" );
         put( "patch","data/constant/image/patch.png" );
         put( "bigPatch","data/constant/image/bigPatch.png" );
         put( "fence","data/constant/image/fence.png" );
     }};
 
-    public static String[] fruitsName = { "apple", "banana", "orange", "pear" };
+    public static String[] fruitsName = { "apple", "banana", "orange", "pear", "blueberry", "grape" };
 
     public static HashMap<String,String> fruitsHashMap = new HashMap<>(){{
         put( "apple","data/constant/image/apple.png" );
         put( "banana","data/constant/image/banana.png" );
+        put( "blueberry","data/constant/image/blueberry.png" );
+        put( "grape","data/constant/image/grape.png" );
         put( "orange","data/constant/image/orange.png" );
         put( "pear","data/constant/image/pear.png" );
     }};
-
     public static HashMap<String,String> specialPropsHashMap = new HashMap<>() {{
-
+        put( "downSackCat","data/constant/image/downSackCat.png" );
+        put( "iceBlock","data/constant/image/iceBlock.png" );
+        put( "leftSleighCat","data/constant/image/leftSleighCat.png" );
     }};
 
     public static HashMap<String,String> catHashMap = new HashMap<>() {{
         put( "defaultCat","data/constant/image/defaultCat.png" );
-        put( "sadCat","data/constant/image/sadCat.png" );
         put( "happyCat","data/constant/image/happyCat.png" );
+        put( "sadCat","data/constant/image/sadCat.png" );
     }};
-
     public static Orientation[][] potential_Match_Patterns = {
 
         // {A, C}
@@ -80,6 +81,5 @@ public enum Constant{
         // . . .                                         . . A
         // . B .                                         . B .
         // C . A                                         . . C      
-        
     };
 }
