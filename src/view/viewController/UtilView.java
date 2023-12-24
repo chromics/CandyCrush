@@ -2,14 +2,15 @@ package view.viewController;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import view.Main;
 
 public class UtilView {
-    public static void generateAlert(String header, String content){
+    public static void generateErrorAlert(String header, String content){
         Alert errorAlert = new Alert(AlertType.ERROR);
         errorAlert.setHeaderText(header);
         errorAlert.setContentText(content);
         errorAlert.show();
-        errorAlert.setX(725);
-        errorAlert.setY(45);
+        errorAlert.setX(Main.stage.getX() + 625);
+        errorAlert.setY(Main.stage.getY() - 55);
     }
 }

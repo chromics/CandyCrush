@@ -23,24 +23,26 @@ import view.Main;
 import data.GameData;
 import data.GameFileInfo;
 
-public class SaveFileInputDialogController implements Initializable {
+public class SaveFileInputDialogController {
     private final static int MAXINPUTLENGTH = 15;
     @FXML
-    private static TextField saveFileName = new TextField();
+    private static TextField saveFileName;
 
     private static Stage dialog;
     private static String source;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        saveFileName.setText("SaveFile");
-    }
+    // @Override
+    // public void initialize(URL url, ResourceBundle resourceBundle) {
+    //     saveFileName =  new TextField();
+    //     // saveFileName.setText("SaveFile");
+    // }
     public static String getText() {
         return saveFileName.getSelectedText();
     }
 
     public static void generateSaveFileNameTextField(String sourceClass) throws Exception {
         source = sourceClass;
+        saveFileName = new TextField();
 
         dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -57,7 +59,9 @@ public class SaveFileInputDialogController implements Initializable {
     
     public void save() throws Exception {
 
-        if (saveFileName.getSelectedText() == null) {
+        String fileName = SaveFileInputDialogController.saveFileName.getText();
+        System.out.println("Input Filed Name : " + fileName);
+        if (fileName == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error!");
             alert.setHeaderText("No content detected.");
@@ -69,22 +73,22 @@ public class SaveFileInputDialogController implements Initializable {
             System.out.println("null input detected");
         }
 
-        saveFileName.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Restricting prohibited symbols
-            if (newValue.matches("[^#*]+")) {
-                saveFileName.setText(newValue.replaceAll("[^#*]+", ""));
-            }
+        // saveFileName.textProperty().addListener((observable, oldValue, newValue) -> {
+        //     // Restricting prohibited symbols
+        //     if (newValue.matches("[^#*]+")) {
+        //         saveFileName.setText(newValue.replaceAll("[^#*]+", ""));
+        //     }
 
-            // Limiting number of characters
-            if (saveFileName.getText().length() > MAXINPUTLENGTH) {
-                String limitedText = saveFileName.getText().substring(0, MAXINPUTLENGTH);
-                saveFileName.setText(limitedText);
-            }
+        //     // Limiting number of characters
+        //     if (saveFileName.getText().length() > MAXINPUTLENGTH) {
+        //         String limitedText = saveFileName.getText().substring(0, MAXINPUTLENGTH);
+        //         saveFileName.setText(limitedText);
+        //     }
 
-            System.out.println("character error detected.");
-        });
+        //     System.out.println("character error detected.");
+        // });
 
-        SaveLoadController.saveGame(BoardSceneController.getGameData(), saveFileName.getSelectedText());
+        SaveLoadController.saveGame(BoardSceneController.getGameData(), fileName);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Success!");
@@ -97,9 +101,11 @@ public class SaveFileInputDialogController implements Initializable {
         System.out.println("save fired!");
         dialog.close();
         if (source.equals("mainStage")) {
+            System.out.println("Close Main Stage");
             Main.stage.close();
         }
         else if (source.equals("homeButton")) {
+            System.out.println("Back To Start Screen");
             backToStartScene();
         }
     }

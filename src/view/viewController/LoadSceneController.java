@@ -1,8 +1,6 @@
 package view.viewController;
 
-import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -12,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,10 +22,7 @@ import javafx.stage.Stage;
 import java.util.List;
 
 import view.Main;
-import data.GameData;
 import data.GameFileInfo;
-import data.constant.GameMode;
-import data.constant.Level;
 import controller.GameController;
 import controller.SaveLoadController;
 
@@ -102,7 +96,7 @@ public class LoadSceneController implements Initializable {
             Main.stage.show();
         } 
         else {
-            UtilView.generateAlert("No Effect", "Please select a file to be loaded");
+            UtilView.generateErrorAlert("No Effect", "Please select a file to be loaded");
         }
     }
     
@@ -112,7 +106,7 @@ public class LoadSceneController implements Initializable {
             System.out.println(selectedGameFile.getFileNameDisplay());
     
         } else {
-            UtilView.generateAlert("No Effect", "Please select a file to be loaded");
+            UtilView.generateErrorAlert("No Effect", "Please select a file to be loaded");
         }
     }
 

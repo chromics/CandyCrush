@@ -8,7 +8,7 @@ import view.viewController.BoardSceneController;
 
 public class Fall {
     public static void fall(Board board, GameData gameData, BoardSceneController view){
-        
+        System.out.println("Fall Start");
         for(int col = 0; col < gameData.getBoard_Col_Size(); col++){
 
             int lowest_Empty_Row = gameData.getFallDataAtCol(col);
