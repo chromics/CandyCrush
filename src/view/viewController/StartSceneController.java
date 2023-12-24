@@ -32,22 +32,35 @@ public class StartSceneController implements Initializable {
     private static BoardSceneController boardSceneController;
     private MediaPlayer mediaPlayer;
     private Clip music;
+    private Clip wind;
 
     // new File(this.mediaPath).toURI().toString()
 
     public void initialize(URL location, ResourceBundle resourceBundle) {
-//        try {
-//            AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource("springDay.mp3")));
-//            music = AudioSystem.getClip();
-//            music.open(audioInput);
-//            music.loop(Clip.LOOP_CONTINUOUSLY);
-//            music.start();
-//        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-//            e.printStackTrace();
-//            System.out.println("Error initializing background music.");
-//        }
-        //!
-        // playMusic();
+        if (music == null || !music.isRunning()) {
+            try {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource("/data/constant/audio/springDay.wav")));
+                music = AudioSystem.getClip();
+                music.open(audioInput);
+                music.loop(Clip.LOOP_CONTINUOUSLY);
+                music.start();
+            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+                e.printStackTrace();
+                System.out.println("Error initializing background music.");
+            }
+        }
+        if (wind == null || !wind.isRunning()) {
+            try {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource("/data/constant/audio/springDay.wav")));
+                wind = AudioSystem.getClip();
+                wind.open(audioInput);
+                wind.loop(Clip.LOOP_CONTINUOUSLY);
+                wind.start();
+            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+                e.printStackTrace();
+                System.out.println("Error initializing background music.");
+            }
+        }
     }
     
 //    public static void setStage(Stage newStage) {
