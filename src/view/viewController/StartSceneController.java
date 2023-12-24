@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
@@ -33,6 +34,8 @@ public class StartSceneController implements Initializable {
     private MediaPlayer mediaPlayer;
     private Clip music;
     private Clip wind;
+
+    private static AudioClip buttonClick = new AudioClip("/data/constant/audio/buttonClick.wav");
 
     // new File(this.mediaPath).toURI().toString()
 
@@ -62,66 +65,60 @@ public class StartSceneController implements Initializable {
             }
         }
     }
-    
-//    public static void setStage(Stage newStage) {
-//        stage = newStage;
+
+//    public void playMusic() {
+//        // Constant.audio.get("springDay")
+//        System.out.println("PlayMusic");
+//        try{
+//            String resourcePath = "src\\data\\constant\\audio\\springDay.mp3"; // Update this with the actual relative path
+//
+//            System.out.println(Constant.audioHashMap.get("springDay"));
+//            String filePath = "src\\data\\constant\\audio\\springDay.mp3"; // Update this with the actual relative path
+//
+//            File file = new File(filePath);
+//
+//            if (file.exists() && !file.isDirectory()) {
+//                System.out.println("File exists and is not a directory!");
+//
+//                // Check if the file is readable
+//                if (file.canRead()) {
+//                    System.out.println("File is readable.");
+//                } else {
+//                    System.out.println("File is not readable.");
+//                }
+//            } else {
+//                System.out.println("File does not exist or is a directory!");
+//            }
+//
+//            ClassLoader classLoader = getClass().getClassLoader();
+//            URL resource = classLoader.getResource(filePath);
+//            if (resource != null) {
+//                System.out.println("Resource found: " + resource.getFile());
+//            } else {
+//                System.out.println("Resource not found.");
+//            }
+//
+//
+//            // Media menuMusic = new Media(getClass().getResource(resourcePath).toExternalForm());
+//            // mediaPlayer = new MediaPlayer(menuMusic);
+//            // mediaPlayer.setVolume(0.5);
+//            // mediaPlayer.setAutoPlay(true);
+//            // Media menuMusic = new Media(getClass().getResource(Constant.audioHashMap.get("springDay")).toExternalForm());
+//
+//            // mediaPlayer = new MediaPlayer(menuMusic);
+//            // mediaPlayer.setVolume(0.5);
+//            // mediaPlayer.setAutoPlay(true);
+//         } catch (NullPointerException e){
+//             e.printStackTrace();
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//        // Media menuMusic = new Media(new File(mediaPath).toURI().toString());
+//
 //    }
-//    public static Stage getStage() {
-//        return stage;
-//    }
-
-    public void playMusic() {
-        // Constant.audio.get("springDay")
-        System.out.println("PlayMusic");
-        try{
-            String resourcePath = "src\\data\\constant\\audio\\springDay.mp3"; // Update this with the actual relative path
-            
-            System.out.println(Constant.audioHashMap.get("springDay"));
-            String filePath = "src\\data\\constant\\audio\\springDay.mp3"; // Update this with the actual relative path
-
-            File file = new File(filePath);
-        
-            if (file.exists() && !file.isDirectory()) {
-                System.out.println("File exists and is not a directory!");
-
-                // Check if the file is readable
-                if (file.canRead()) {
-                    System.out.println("File is readable.");
-                } else {
-                    System.out.println("File is not readable.");
-                }
-            } else {
-                System.out.println("File does not exist or is a directory!");
-            }
-
-            ClassLoader classLoader = getClass().getClassLoader();
-            URL resource = classLoader.getResource(filePath);
-            if (resource != null) {
-                System.out.println("Resource found: " + resource.getFile());
-            } else {
-                System.out.println("Resource not found.");
-            }
-
-
-            // Media menuMusic = new Media(getClass().getResource(resourcePath).toExternalForm());
-            // mediaPlayer = new MediaPlayer(menuMusic);
-            // mediaPlayer.setVolume(0.5);
-            // mediaPlayer.setAutoPlay(true);
-            // Media menuMusic = new Media(getClass().getResource(Constant.audioHashMap.get("springDay")).toExternalForm());
-            
-            // mediaPlayer = new MediaPlayer(menuMusic);
-            // mediaPlayer.setVolume(0.5);
-            // mediaPlayer.setAutoPlay(true);
-         } catch (NullPointerException e){
-             e.printStackTrace();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    
-        // Media menuMusic = new Media(new File(mediaPath).toURI().toString());
-    
-    }
     public static void newGame(GameMode gameMode, ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
+        buttonClick.play();
         FXMLLoader loader = new FXMLLoader(mainURL);
         Parent boardScene = loader.load();
         
@@ -152,6 +149,7 @@ public class StartSceneController implements Initializable {
     }
     
     public void loadGame(ActionEvent event) throws Exception {
+        buttonClick.play();
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/LoadScene.fxml"));
         Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         scene = new Scene(boardScene);
@@ -159,22 +157,22 @@ public class StartSceneController implements Initializable {
         Main.stage.show();
     }
 
-    public void settings(ActionEvent event) throws Exception {
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(Main.stage);
-        dialog.setResizable(false);
-        dialog.setX(Main.stage.getX() + 700);
-        dialog.setY(Main.stage.getY() + 320);
-
-        Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
-        dialog.getIcons().add(dialogIcon);
-
-        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/MenuSetting.fxml"));
-        Scene scene = new Scene(boardScene);
-        dialog.setScene(scene);
-        dialog.show();
-    }
+//    public void settings(ActionEvent event) throws Exception {
+//        Stage dialog = new Stage();
+//        dialog.initModality(Modality.APPLICATION_MODAL);
+//        dialog.initOwner(Main.stage);
+//        dialog.setResizable(false);
+//        dialog.setX(Main.stage.getX() + 700);
+//        dialog.setY(Main.stage.getY() + 320);
+//
+//        Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
+//        dialog.getIcons().add(dialogIcon);
+//
+//        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/MenuSetting.fxml"));
+//        Scene scene = new Scene(boardScene);
+//        dialog.setScene(scene);
+//        dialog.show();
+//    }
 
     public void newGameCustomize(ActionEvent event) throws Exception {
         Stage dialog = new Stage();

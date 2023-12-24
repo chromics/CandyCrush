@@ -72,6 +72,8 @@ public class BoardSceneController implements Initializable {
     @FXML
     private static AnchorPane boardPane;
 
+    private static AudioClip buttonClick;
+
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
         selectedPoint1 = null;
@@ -195,6 +197,7 @@ public class BoardSceneController implements Initializable {
         }
     }
     public void swapImage(BoardPoint point1, BoardPoint point2) {
+        // insert audioclip
         Piece piece1 = board.getPieceAt(point1);
         Piece piece2 = board.getPieceAt(point2);
         String imagePath1 = (piece1 == null)? null : piece1.getImagePath();
@@ -322,6 +325,7 @@ public class BoardSceneController implements Initializable {
     }
     
     public void saveExit(ActionEvent event) throws Exception {
+        buttonClick.play();
         System.out.println("\nSave & Exit from BoardScene\n");
         // Alert
         System.out.println("SaveExitAlert");
