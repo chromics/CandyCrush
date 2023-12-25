@@ -15,199 +15,204 @@ public class HintFinder {
 
                 Cell currentCell = grid[row][col];
 
-                if (col < board_Col_Size - 2){
-                    if (currentCell.equalPiece(grid[row][col+1])) {
-                        if (row > 0
-                            && currentCell.equalPiece(grid[row-1][col+2])) {
-                            /*
-                            * . . C
-                            * A B .
-                            * . . .
-                            */
-                            saveHint(gameData, row-1, col+2, row, col+2);
-                            return;
-                        }
-                        if (row < board_Row_Size
-                            && currentCell.equalPiece(grid[row+1][col+2])) {
-                            /*
-                            * . . .
-                            * A B .
-                            * . . C
-                            */
-                            saveHint(gameData, row+1, col+2, row, col+2);
-                            return;
-                        }
-                        if (col < board_Col_Size - 3
-                            && currentCell.equalPiece(grid[row][col+3])){
-                            /*
-                            * . . . .
-                            * A B . C
-                            * . . . .
-                            */
-                            saveHint(gameData, row, col+2, row, col+3);
-                            return;
-                        }
-                    }
-                    
-                    if (row > 0
-                        && currentCell.equalPiece(grid[row-1][col+1])) {
+                if(currentCell.containPiece()){
+
+                    if (col < board_Col_Size - 2){
+                        if (currentCell.equalPiece(grid[row][col+1])) {
                             
-                        if (currentCell.equalPiece(grid[row-1][col+2])) {
-                            /*
-                            * . B C
-                            * A . .
-                            * . . .
-                            */
-                            saveHint(gameData, row, col, row-1, col);
-                            return;
+                            if (row > 0
+                                && currentCell.equalPiece(grid[row-1][col+2])) {
+                                /*
+                                * . . C
+                                * A B .
+                                * . . .
+                                */
+                                saveHint(gameData, row-1, col+2, row, col+2);
+                                return;
+                            }
+                            if (row < board_Row_Size
+                                && currentCell.equalPiece(grid[row+1][col+2])) {
+                                /*
+                                * . . .
+                                * A B .
+                                * . . C
+                                */
+                                saveHint(gameData, row+1, col+2, row, col+2);
+                                return;
+                            }
+                            if (col < board_Col_Size - 3
+                                && currentCell.equalPiece(grid[row][col+3])){
+                                /*
+                                * . . . .
+                                * A B . C
+                                * . . . .
+                                */
+                                saveHint(gameData, row, col+2, row, col+3);
+                                return;
+                            }
                         }
-                        if (currentCell.equalPiece(grid[row][col+2])) {
-                            /*
-                            * . B .
-                            * A . C
-                            * . . .
-                            */
-                            saveHint(gameData, row-1, col+1, row, col+1);
-                            return;
-                        }
-                    }
-                    
-                    if (row < board_Row_Size
-                        && currentCell.equalPiece(grid[row+1][col+1])) {
-
-                        if (currentCell.equalPiece(grid[row+1][col+2])) {
-                            /*
-                            * . . .
-                            * A . .
-                            * . B C
-                            */
-                            saveHint(gameData, row, col, row+1, col);
-                            return;
-                        }
-                        if (currentCell.equalPiece(grid[row][col+2])) {
-                            /*
-                            * . . .
-                            * A . C
-                            * . B .
-                            */
-                            saveHint(gameData, row+1, col+1, row, col+1);
-                            return;
-                        }
-                    }
-
-                    if (col < board_Col_Size - 3
-                        && currentCell.equalPiece(grid[row][col+2])
-                        && currentCell.equalPiece(grid[row][col+3])){
                         
-                        /*
-                        * . . . .
-                        * A . B C
-                        * . . . .
-                        */
-                        saveHint(gameData, row, col, row, col+1);
-                        return;
-                    }
-                }
-
-                
-                
-                if (row < board_Row_Size - 2) {
-
-                    if (currentCell.equalPiece(grid[row+1][col])) {
-
-                        if (col > 0
-                            && currentCell.equalPiece(grid[row+2][col-1])) {
-                            /*
-                            * . A .
-                            * . B .
-                            * C . .
-                            */
-                            saveHint(gameData, row+2, col-1, row+2, col);
-                            return;
+                        if (row > 0
+                            && currentCell.equalPiece(grid[row-1][col+1])) {
+                                
+                            if (currentCell.equalPiece(grid[row-1][col+2])) {
+                                /*
+                                * . B C
+                                * A . .
+                                * . . .
+                                */
+                                saveHint(gameData, row, col, row-1, col);
+                                return;
+                            }
+                            if (currentCell.equalPiece(grid[row][col+2])) {
+                                /*
+                                * . B .
+                                * A . C
+                                * . . .
+                                */
+                                saveHint(gameData, row-1, col+1, row, col+1);
+                                return;
+                            }
                         }
-                        if (col < board_Col_Size - 1
-                            && currentCell.equalPiece(grid[row+2][col+1])) {
-                            /*
-                            * . A .
-                            * . B .
-                            * . . C
-                            */
-                            saveHint(gameData, row+2, col+1, row+2, col);
-                            return;
+                        
+                        if (row < board_Row_Size
+                            && currentCell.equalPiece(grid[row+1][col+1])) {
+    
+                            if (currentCell.equalPiece(grid[row+1][col+2])) {
+                                /*
+                                * . . .
+                                * A . .
+                                * . B C
+                                */
+                                saveHint(gameData, row, col, row+1, col);
+                                return;
+                            }
+                            if (currentCell.equalPiece(grid[row][col+2])) {
+                                /*
+                                * . . .
+                                * A . C
+                                * . B .
+                                */
+                                saveHint(gameData, row+1, col+1, row, col+1);
+                                return;
+                            }
                         }
-                        if (row < board_Row_Size - 3
-                            && currentCell.equalPiece(grid[row+3][col])) {
+    
+                        if (col < board_Col_Size - 3
+                            && currentCell.equalPiece(grid[row][col+2])
+                            && currentCell.equalPiece(grid[row][col+3])){
+                            
                             /*
-                            * . A .
-                            * . B .
-                            * . . .
-                            * . C .
+                            * . . . .
+                            * A . B C
+                            * . . . .
                             */
-                            saveHint(gameData, row+2,col, row+3, col);
-                            return;
-                        }
-                    }
-                    
-                    if (col > 0
-                        && currentCell.equalPiece(grid[row+1][col-1])) {
-
-                        if (currentCell.equalPiece(grid[row+2][col-1])) {
-                            /*
-                            * . A .
-                            * B . .
-                            * C . .
-                            */
-                            saveHint(gameData, row, col-1, row, col);
-                            return;
-                        }
-                        if (currentCell.equalPiece(grid[row+2][col])) {
-                            /*
-                            * . A .
-                            * B . .
-                            * . C .
-                            */
-                            saveHint(gameData, row+1, col-1, row+1, col);
+                            saveHint(gameData, row, col, row, col+1);
                             return;
                         }
                     }
     
-                    if (col < board_Col_Size - 1
-                        && currentCell.equalPiece(grid[row+1][col+1])) {
-
-                        if (currentCell.equalPiece(grid[row+2][col+1])) {
-                            /*
-                            * . A .
-                            * . . B
-                            * . . C
-                            */
-                            saveHint(gameData, row, col+1, row, col);
-                            return;
+                    
+                    
+                    if (row < board_Row_Size - 2) {
+    
+                        if (currentCell.equalPiece(grid[row+1][col])) {
+    
+                            if (col > 0
+                                && currentCell.equalPiece(grid[row+2][col-1])) {
+                                /*
+                                * . A .
+                                * . B .
+                                * C . .
+                                */
+                                saveHint(gameData, row+2, col-1, row+2, col);
+                                return;
+                            }
+                            if (col < board_Col_Size - 1
+                                && currentCell.equalPiece(grid[row+2][col+1])) {
+                                /*
+                                * . A .
+                                * . B .
+                                * . . C
+                                */
+                                saveHint(gameData, row+2, col+1, row+2, col);
+                                return;
+                            }
+                            if (row < board_Row_Size - 3
+                                && currentCell.equalPiece(grid[row+3][col])) {
+                                /*
+                                * . A .
+                                * . B .
+                                * . . .
+                                * . C .
+                                */
+                                saveHint(gameData, row+2,col, row+3, col);
+                                return;
+                            }
                         }
-                        if (currentCell.equalPiece(grid[row+2][col])) {
+                        
+                        if (col > 0
+                            && currentCell.equalPiece(grid[row+1][col-1])) {
+    
+                            if (currentCell.equalPiece(grid[row+2][col-1])) {
+                                /*
+                                * . A .
+                                * B . .
+                                * C . .
+                                */
+                                saveHint(gameData, row, col-1, row, col);
+                                return;
+                            }
+                            if (currentCell.equalPiece(grid[row+2][col])) {
+                                /*
+                                * . A .
+                                * B . .
+                                * . C .
+                                */
+                                saveHint(gameData, row+1, col-1, row+1, col);
+                                return;
+                            }
+                        }
+        
+                        if (col < board_Col_Size - 1
+                            && currentCell.equalPiece(grid[row+1][col+1])) {
+    
+                            if (currentCell.equalPiece(grid[row+2][col+1])) {
+                                /*
+                                * . A .
+                                * . . B
+                                * . . C
+                                */
+                                saveHint(gameData, row, col+1, row, col);
+                                return;
+                            }
+                            if (currentCell.equalPiece(grid[row+2][col])) {
+                                /*
+                                * . A .
+                                * . . B
+                                * . C .
+                                */
+                                saveHint(gameData, row+1, col+1, row+1, col);
+                                return;
+                            }
+                        }
+                        
+                        if (row < board_Row_Size - 3
+                            && currentCell.equalPiece(grid[row+2][col])
+                            && currentCell.equalPiece(grid[row+3][col])){
+                            
                             /*
                             * . A .
-                            * . . B
+                            * . . .
+                            * . B .
                             * . C .
                             */
-                            saveHint(gameData, row+1, col+1, row+1, col);
+                            saveHint(gameData, row+1, col, row, col);
                             return;
                         }
                     }
-                    
-                    if (row < board_Row_Size - 3
-                        && currentCell.equalPiece(grid[row+2][col])
-                        && currentCell.equalPiece(grid[row+3][col])){
-                        
-                        /*
-                        * . A .
-                        * . . .
-                        * . B .
-                        * . C .
-                        */
-                        saveHint(gameData, row+1, col, row, col);
-                        return;
-                    }
                 }
+
             }
         }
     }

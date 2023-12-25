@@ -47,6 +47,7 @@ public class GameController {
             scanMatches();
         }while(gameData.anyMatch());
         gameData.resetMatchData();
+        HintFinder.findHint(gameData);
         view.initiateBoard();
     }
     //===============================================================================================
@@ -102,6 +103,11 @@ public class GameController {
         scanMatches();
 
         if (! gameData.anyMatch()) {
+            try{
+                checkWin();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             HintFinder.findHint(gameData);
 
             if(! gameData.anyHint()){
@@ -109,7 +115,11 @@ public class GameController {
                     UtilView.generateErrorAlert("No Match Can be Formed Anymore", "Please use shuffle");
                 }
                 else{
-                    // Lose
+                    try{
+                    view.lose();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -152,17 +162,13 @@ public class GameController {
     //-----------------------------------------------------------------------------------------------
     // Win Methods
     //-----------------------------------------------------------------------------------------------
-    public void checkWin(){
+    public void checkWin() throws Exception {
         if(gameData.getScore() >= gameData.getTargetScore()){
-            win();
+            view.win();
         }
-    }
-    public void win(){
-        // try (view.winAlert()){
-
-        // }  catch (Exception e) {
-        //     e.printStackTrace();
-        // }
+        else if(gameData.getRemainingStep() <= 0){
+            view.lose();
+        }
     }
     public void nextLevel(){
         int nextLevelIndex = gameData.getLevelIndex() + 1;

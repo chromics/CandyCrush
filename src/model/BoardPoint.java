@@ -38,7 +38,7 @@ public class BoardPoint implements Serializable {
 
     @Override
     public String toString() {
-        return "("+row + ","+col+") " + "on the board is clicked!";
+        return "("+row + ","+col+")";
     }
 
     public BoardPoint getAdjacentPoint(Orientation orientation){

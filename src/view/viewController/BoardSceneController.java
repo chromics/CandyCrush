@@ -4,6 +4,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javafx.util.Duration;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,29 +26,30 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Translate;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import model.Board;
-import model.BoardPoint;
-import data.constant.Constant;
-import model.Cell;
 import javafx.scene.image.*;
 import javafx.geometry.Insets;
 import java.net.URL;
 
+import view.Main;
+import model.Cell;
 import model.piece.*;
+import model.Board;
+import model.BoardPoint;
 import data.GameData;
+import data.constant.Constant;
 import controller.GameController;
 import controller.SaveLoadController;
-import view.Main;
 
 import javax.sound.sampled.*;
 
 public class BoardSceneController implements Initializable {
     private final static Image PATCHIMAGE = new Image(Constant.decorations.get("patch"));
     private final static Image SELECTMARKIMAGE = new Image(Constant.decorations.get("patchSelectMark"));
+    private final static Duration ANIMATION_DURATION = Duration.millis(500);
     private static Scene scene;
     
     private Pane[][] paneArray;
+    private ImageView[][] fruitsViewArray;
     private int saveFileNumber = 1;
     private boolean saveFileExists;
     private String saveData = "";
@@ -109,6 +112,7 @@ public class BoardSceneController implements Initializable {
     public void initiateBoard() {
         grid = board.getGrid();
         paneArray = new Pane[board_Row_Size][board_Col_Size];
+        fruitsViewArray = new ImageView[board_Row_Size][board_Col_Size];
 
         // for (int row = 0; row < board_Row_Size; row++) {
         //     RowConstraints rowConst = new RowConstraints(gameData.getBoard_Row_Size());
@@ -136,7 +140,11 @@ public class BoardSceneController implements Initializable {
             patchView.setFitWidth(pictureSize);
             patchView.setFitHeight(pictureSize); 
             
-            paneArray[row][col] = new Pane(patchView);
+            fruitsViewArray[row][col] = new ImageView();
+            fruitsViewArray[row][col].setFitWidth(pictureSize);
+            fruitsViewArray[row][col].setFitHeight(pictureSize);
+
+            paneArray[row][col] = new Pane(patchView, fruitsViewArray[row][col]);
 
             Button fruitButton = new Button();
             BoardPoint currentPoint = new BoardPoint(row, col);
@@ -191,23 +199,11 @@ public class BoardSceneController implements Initializable {
     // Update Image Methods
     //-----------------------------------------------------------------------------------------------
     public void setPieceImageAt(String imagePath, BoardPoint point){
-        int row = point.getRow();
-        int col = point.getCol();
-        
-        if(paneArray[row][col].getChildren().size() > 1){
-            System.out.println("Remove Fruit Image at : " + point.toString());
-            paneArray[row][col].getChildren().remove(1);
-        }
-
+        Image newImage = null;
         if(imagePath != null){
-            Image fruit = new Image(imagePath);
-            ImageView fruitView = new ImageView(fruit);
-            fruitView.setFitWidth(pictureSize);
-            fruitView.setFitHeight(pictureSize);
-            paneArray[row][col].getChildren().add(1,fruitView);
-
-            dropButton(paneArray[row][col].getChildren().get(1), point);
+            newImage = new Image(imagePath);
         }
+        fruitsViewArray[point.getRow()][point.getCol()].setImage(newImage);
     }
     public void swapImage(BoardPoint point1, BoardPoint point2) {
         // insert audioclip
@@ -215,35 +211,12 @@ public class BoardSceneController implements Initializable {
         Piece piece2 = board.getPieceAt(point2);
         String imagePath1 = (piece1 == null)? null : piece1.getImagePath();
         String imagePath2 = (piece2 == null)? null : piece2.getImagePath();
-
+        
+        swapAnimation(point1, point2);
+        swapAnimation(point2, point1);
+        
         setPieceImageAt(imagePath1, point1);
         setPieceImageAt(imagePath2, point2);
-    }
-    public void dropButton(Node fruit, BoardPoint origin) {
-        Image ice = new Image(Objects.requireNonNull(getClass().getResource("/data/constant/image/iceBlock.png")).toString());
-        ImageView iceImage = new ImageView(ice);
-        ImageView fruitImage = (ImageView) fruit;
-
-        // add a layer of fruit on top of button
-        boardView.add(fruitImage, origin.getCol(), origin.getRow());
-
-        // if ice exists then add ice image on top and remove ice image in button
-        if (paneArray[origin.getRow()][origin.getCol()].getChildren().size() > 1) {
-            boardView.add(iceImage, origin.getCol(), origin.getRow());
-            paneArray[origin.getRow()][origin.getCol()].getChildren().remove(2);
-        }
-
-//        setNodeByRowColumnIndex(origin.getRow(), origin.getCol(), boardView, fruitImage);
-//        setNodeByRowColumnIndex(origin.getRow(), origin.getCol(), boardView, iceImage);
-//        paneArray[][].getChildren().add(1,fruitImage);
-
-        TranslateTransition drop = new TranslateTransition();
-        drop.setNode(fruitImage);
-
-        drop.setDuration(Duration.millis(150));
-        drop.setByY(pictureSize);
-
-        drop.play();
     }
     public void removeImage(BoardPoint point){
         setPieceImageAt(null, point);
@@ -257,6 +230,23 @@ public class BoardSceneController implements Initializable {
     public void removeSelectMarkImage(BoardPoint point){
         int selectMarkIndex = paneArray[point.getRow()][point.getCol()].getChildren().size() - 1;
         paneArray[point.getRow()][point.getCol()].getChildren().remove(selectMarkIndex);
+    }
+    public void swapAnimation(BoardPoint src, BoardPoint dest){
+        // System.out.println("Animation played from : " + src.toString() + " to " + dest.toString());
+        // TranslateTransition swapTransition  = new TranslateTransition(ANIMATION_DURATION, fruitsViewArray[dest.getRow()][dest.getCol()]);
+        // swapTransition.setByX(board.getDistanceX(src, dest) * pictureSize);
+        // swapTransition.setByY(board.getDistanceY(src, dest) * pictureSize);
+
+        // swapTransition.play();
+
+        // PauseTransition pause = new PauseTransition(ANIMATION_DURATION);
+        // pause.play();
+    }
+    public void generatePieceViewAt(String imagePath, BoardPoint dest){
+        BoardPoint src = new BoardPoint(0, dest.getCol());
+        swapAnimation(src, dest);
+
+        setPieceImageAt(imagePath, dest);
     }
     //===============================================================================================
     
@@ -386,8 +376,9 @@ public class BoardSceneController implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             // Save
             System.out.println("Save Action");
-//            SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
-
+            // SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
+            SaveLoadController.saveGame(gameData);
+            
             Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
             saveAlert.setTitle("Success!");
             saveAlert.setHeaderText("Save successful!");
@@ -395,7 +386,7 @@ public class BoardSceneController implements Initializable {
             saveAlert.setX(Main.stage.getX() + 625);
             saveAlert.setY(Main.stage.getY() - 55);
             saveAlert.showAndWait();
-
+            
             backToStartScene();
         }
         else if (result.isPresent() && result.get() == ButtonType.NO){

@@ -28,7 +28,7 @@ public class Fall {
             while (board.is_Within_Boundary(dest)) {
                 if ( ! board.any_piece(dest)) {
                     board.generatePieceAt(dest);
-                    view.setPieceImageAt(board.getPieceAt(dest).getImagePath(), dest);
+                    view.generatePieceViewAt(board.getPieceAt(dest).getImagePath(), dest);
                 }
                 dest = dest.getAdjacentPoint(Orientation.UP);
             }

@@ -19,6 +19,11 @@ public class Remove {
 
             for(; matchLength > 0; matchLength--){
                 gameData.updateFallData(currentPoint); // For Fall Mechanism
+
+//                if(board.getGridAt(currentPoint).containSpecialPiece()){
+//                    board.getPieceAt(currentPoint).getEffect(gameData, currentPoint);
+//                }
+
                 board.removePiece(currentPoint);
                 view.removeImage(currentPoint);
                 currentPoint = currentPoint.getAdjacentPoint(orientation);

@@ -3,11 +3,9 @@ package data.constant;
 import java.util.List;
 import java.util.ArrayList;
 
-import data.constant.Level;
-
 public enum GameMode {
     
-    NORMALGAMEMODE(
+    Normal_Game_Mode(
         false, 
         false,
         new ArrayList<>(){{
@@ -15,7 +13,7 @@ public enum GameMode {
             add(Level.LEVEL_2);
         }}
     ),
-    CHRISTMASGAMEMODE(
+    Special_Game_Mode(
         true,
         true,
         new ArrayList<>(){{
