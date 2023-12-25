@@ -43,10 +43,10 @@ public class NewGameInputDialogController implements Initializable {
     }
 
     public void normalGameMode(ActionEvent event) throws Exception {
-        StartSceneController.newGame(GameMode.NORMALGAMEMODE, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
+        StartSceneController.newGame(GameMode.Normal_Game_Mode, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
     }
     public void specialGameMode(ActionEvent event) throws Exception {
-        StartSceneController.newGame(GameMode.CHRISTMASGAMEMODE, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
+        StartSceneController.newGame(GameMode.Special_Game_Mode, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
     }
 
     public void startNewGame(ActionEvent event) throws Exception{

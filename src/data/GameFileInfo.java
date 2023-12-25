@@ -36,6 +36,21 @@ public class GameFileInfo implements Serializable {
         fileName = (this.saveName + "_" + levelDisplay + "_" + this.saveDate + ".ser");
         fileNameDisplay = String.format("%-15s   %s    %s", this.saveName, levelDisplay, saveDateDisplay);
     }
+    public GameFileInfo(GameData gameData){
+        this.gameData = gameData;
+        this.saveName = gameData.getGameMode().toString();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        SimpleDateFormat sdfDisplay = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date currentDate = new Date();
+        saveDate = sdf.format(currentDate);
+        saveDateDisplay = sdfDisplay.format(currentDate);
+
+        levelDisplay = "Level-" + String.valueOf(gameData.getLevel());
+
+        fileName = (this.saveName + "_" + levelDisplay + "_" + this.saveDate + ".ser");
+        fileNameDisplay = String.format("%-20s   %s    %s", this.saveName, levelDisplay, saveDateDisplay);
+    }
     //===============================================================================================
     
 

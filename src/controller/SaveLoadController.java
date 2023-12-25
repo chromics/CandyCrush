@@ -23,6 +23,13 @@ public class SaveLoadController {
         saveGameFile(gameFileInfo);
         System.out.println("Save Game Done");
     }
+    public static void saveGame(GameData gameData){
+        GameFileInfo gameFileInfo =  new GameFileInfo(gameData);
+        String fileName = gameFileInfo.getFileName();
+        appendFileName(fileName);
+        saveGameFile(gameFileInfo);
+        System.out.println("Save Game Done");
+    }
 
     public static void appendFileName(String fileName){
     

@@ -16,6 +16,7 @@ import data.constant.Level;
 
 public class GameData implements Serializable{
     private List<MatchData> matchDatas;
+    private List<BoardPoint> newSpecialPiecesPosition;
     private int[] fallData;
     private BoardPoint[] hint;
     private Board board;
@@ -82,6 +83,7 @@ public class GameData implements Serializable{
     //-----------------------------------------------------------------------------------------------
     public List<MatchData> getMatchDatas() { return matchDatas; }
     public BoardPoint[] getHint() { return hint; }
+    public List<BoardPoint> getNewSpecialPiecesPosition() { return newSpecialPiecesPosition; }
     public Board getBoard() { return board; }
     public int getScore() { return score; }
     public int getBoard_Row_Size() { return BOARD_ROW_SIZE; }
@@ -134,9 +136,16 @@ public class GameData implements Serializable{
     
     
     //-----------------------------------------------------------------------------------------------
+    // Special Mode
+    //-----------------------------------------------------------------------------------------------
+    // public void saveNewSpecialPiecesPosition (BoardPoint)
+    //===============================================================================================
+    
+    
+    //-----------------------------------------------------------------------------------------------
     // Hint Data
     //-----------------------------------------------------------------------------------------------
-    public void saveHint( BoardPoint point1, BoardPoint point2 ){
+    public void saveHint (BoardPoint point1, BoardPoint point2) {
         hint = new BoardPoint[]{point1, point2};
     }
     public void resetHint(){

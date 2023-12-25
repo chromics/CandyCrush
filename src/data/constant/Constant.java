@@ -23,6 +23,7 @@ public enum Constant{
         put( "patch","data/constant/image/patch.png" );
         put( "bigPatch","data/constant/image/bigPatch.png" );
         put( "fence","data/constant/image/fence.png" );
+        put( "iceBlock","data/constant/image/iceBlock.png" );
     }};
 
     public static String[] fruitsName = { "apple", "banana", "orange", "pear", "blueberry", "grape" };
@@ -37,7 +38,6 @@ public enum Constant{
     }};
     public static HashMap<String,String> specialPropsHashMap = new HashMap<>() {{
         put( "downSackCat","data/constant/image/downSackCat.png" );
-        put( "iceBlock","data/constant/image/iceBlock.png" );
         put( "leftSleighCat","data/constant/image/leftSleighCat.png" );
     }};
 

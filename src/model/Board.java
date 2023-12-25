@@ -82,9 +82,7 @@ public class Board implements Serializable{
         Cell c1 = getGridAt(point1);
         Cell c2 = getGridAt(point2);
 
-        return (c1.containPiece()
-                && c2.containPiece()
-                && c1.equalPiece(c2));
+        return (c1.equalPiece(c2));
     }
 
     public Piece get_Adjacent_Piece(BoardPoint point, Orientation orientation){
@@ -111,6 +109,14 @@ public class Board implements Serializable{
     //-----------------------------------------------------------------------------------------------
     public int calculateDistance (BoardPoint src, BoardPoint dest) {
         return Math.abs(src.getRow() - dest.getRow()) + Math.abs(src.getCol() - dest.getCol());
+    }
+
+    public int getDistanceX (BoardPoint src, BoardPoint dest) {
+        return (src.getCol() - dest.getCol());
+    }
+
+    public int getDistanceY (BoardPoint src, BoardPoint dest) {
+        return (src.getRow() - dest.getRow());
     }
     
     public boolean is_Within_Boundary (BoardPoint point) {

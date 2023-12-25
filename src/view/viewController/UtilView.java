@@ -13,4 +13,8 @@ public class UtilView {
         errorAlert.setX(Main.stage.getX() + 625);
         errorAlert.setY(Main.stage.getY() - 55);
     }
+
+    public static void generateConfirmationAlert(String header, String content){
+        
+    }
 }

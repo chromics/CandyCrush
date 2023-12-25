@@ -91,17 +91,16 @@ public class Main extends Application {
         Optional <ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
-//            SaveFileInputDialogController.generateSaveFileNameTextField("mainStage");
-//            SaveLoadController.saveGame(BoardSceneController.getGameData(), SaveFileInputDialogController.getText());
-
+            // SaveFileInputDialogController.generateSaveFileNameTextField("mainStage");
+            SaveLoadController.saveGame(BoardSceneController.getGameData());
             Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
             saveAlert.setTitle("Success!");
             saveAlert.setHeaderText("Save successful!");
             saveAlert.setContentText("Your file has been successfully saved.");
             saveAlert.setX(Main.stage.getX() + 625);
             saveAlert.setY(Main.stage.getY() - 55);
-            saveAlert.showAndWait();
-
+            saveAlert.showAndWait();           
+            
             stage.close();
         }
         // Exit
