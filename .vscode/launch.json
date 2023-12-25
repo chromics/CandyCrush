@@ -10,7 +10,7 @@
                 "--module-path",
                 "C:/Users/USER/Documents/My Files/Uni Stuff/CS109/Projects/CandyCrush/lib/javafx-sdk-21.0.1/lib",
                 "--add-modules",
-                "javafx.controls,javafx.fxml"
+                "javafx.controls,javafx.fxml,javafx.media,javafx.base"
             ],
             "projectName": "CandyCrush_1fcbc8ab"
         }

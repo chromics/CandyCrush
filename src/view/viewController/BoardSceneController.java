@@ -1,7 +1,10 @@
 package view.viewController;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javafx.animation.TranslateTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,8 +19,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.transform.Translate;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Board;
 import model.BoardPoint;
 import data.constant.Constant;
@@ -65,14 +72,18 @@ public class BoardSceneController implements Initializable {
     private Label movesLeftLabel;
     @FXML
     private Button hintsButton;
-    // method: provideHint()
-    // dunno how to do this yet need to learn css ¯\_(ツ)_/¯
     @FXML
     private Label levelNumLabel;
     @FXML
     private static AnchorPane boardPane;
 
     private static AudioClip buttonClick;
+//    private AudioClip fruitSelect = new AudioClip(BoardSceneController.class.getResource("selectSFX.wav").toString());
+//
+//    String audioPath = getClass().getResource("selectSFX.wav").toString();
+//    Media media = new Media(audioPath);
+//
+//    MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -194,6 +205,8 @@ public class BoardSceneController implements Initializable {
             fruitView.setFitWidth(pictureSize);
             fruitView.setFitHeight(pictureSize);
             paneArray[row][col].getChildren().add(1,fruitView);
+
+            dropButton(paneArray[row][col].getChildren().get(1), point);
         }
     }
     public void swapImage(BoardPoint point1, BoardPoint point2) {
@@ -202,8 +215,35 @@ public class BoardSceneController implements Initializable {
         Piece piece2 = board.getPieceAt(point2);
         String imagePath1 = (piece1 == null)? null : piece1.getImagePath();
         String imagePath2 = (piece2 == null)? null : piece2.getImagePath();
+
         setPieceImageAt(imagePath1, point1);
         setPieceImageAt(imagePath2, point2);
+    }
+    public void dropButton(Node fruit, BoardPoint origin) {
+        Image ice = new Image(Objects.requireNonNull(getClass().getResource("/data/constant/image/iceBlock.png")).toString());
+        ImageView iceImage = new ImageView(ice);
+        ImageView fruitImage = (ImageView) fruit;
+
+        // add a layer of fruit on top of button
+        boardView.add(fruitImage, origin.getCol(), origin.getRow());
+
+        // if ice exists then add ice image on top and remove ice image in button
+        if (paneArray[origin.getRow()][origin.getCol()].getChildren().size() > 1) {
+            boardView.add(iceImage, origin.getCol(), origin.getRow());
+            paneArray[origin.getRow()][origin.getCol()].getChildren().remove(2);
+        }
+
+//        setNodeByRowColumnIndex(origin.getRow(), origin.getCol(), boardView, fruitImage);
+//        setNodeByRowColumnIndex(origin.getRow(), origin.getCol(), boardView, iceImage);
+//        paneArray[][].getChildren().add(1,fruitImage);
+
+        TranslateTransition drop = new TranslateTransition();
+        drop.setNode(fruitImage);
+
+        drop.setDuration(Duration.millis(150));
+        drop.setByY(pictureSize);
+
+        drop.play();
     }
     public void removeImage(BoardPoint point){
         setPieceImageAt(null, point);
@@ -325,7 +365,7 @@ public class BoardSceneController implements Initializable {
     }
     
     public void saveExit(ActionEvent event) throws Exception {
-        buttonClick.play();
+//        buttonClick.play();
         System.out.println("\nSave & Exit from BoardScene\n");
         // Alert
         System.out.println("SaveExitAlert");
@@ -346,11 +386,21 @@ public class BoardSceneController implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             // Save
             System.out.println("Save Action");
-            SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
+//            SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
+
+            Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            saveAlert.setTitle("Success!");
+            saveAlert.setHeaderText("Save successful!");
+            saveAlert.setContentText("Your file has been successfully saved.");
+            saveAlert.setX(Main.stage.getX() + 625);
+            saveAlert.setY(Main.stage.getY() - 55);
+            saveAlert.showAndWait();
+
+            backToStartScene();
         }
         else if (result.isPresent() && result.get() == ButtonType.NO){
             // Exit
-            backToStartScene(event);
+            backToStartScene();
         }
     }
 
@@ -358,9 +408,8 @@ public class BoardSceneController implements Initializable {
         SaveLoadController.saveGame(gameData, fileName);
     }
 
-    public void backToStartScene(ActionEvent event) throws Exception {
+    public void backToStartScene() throws Exception {
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/StartScene.fxml"));
-        Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
@@ -419,20 +468,21 @@ public class BoardSceneController implements Initializable {
                 selectedPoint1 = point;
             }
         }
+        SFXController.initializePlay("selectSFX.wav");
+        SFXController.play();
     }
 
-    public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
-        Node result = null;
+    public Button getImageByRowColumnIndex (final int row, final int column, Pane gridPane) {
+        Button button = null;
         ObservableList<Node> childrens = gridPane.getChildren();
     
         for (Node node : childrens) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                result = node;
+                button = (Button)node;
                 break;
             }
         }
-    
-        return result;
+        return button;
     }
 
     public void setNodeByRowColumnIndex (final int row, final int column, GridPane gridPane, Node node) {

@@ -35,7 +35,8 @@ public class StartSceneController implements Initializable {
     private Clip music;
     private Clip wind;
 
-    private static AudioClip buttonClick = new AudioClip("/data/constant/audio/buttonClick.wav");
+//    private String buttonClickPath = Objects.requireNonNull(getClass().getResource("/data/constant/audio/springDay.wav")).toString();
+//    private static AudioClip buttonClick = new AudioClip(buttonClickPathPath);
 
     // new File(this.mediaPath).toURI().toString()
 
@@ -118,7 +119,7 @@ public class StartSceneController implements Initializable {
 //
 //    }
     public static void newGame(GameMode gameMode, ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
-        buttonClick.play();
+//        buttonClick.play();
         FXMLLoader loader = new FXMLLoader(mainURL);
         Parent boardScene = loader.load();
         
@@ -149,7 +150,7 @@ public class StartSceneController implements Initializable {
     }
     
     public void loadGame(ActionEvent event) throws Exception {
-        buttonClick.play();
+//        buttonClick.play();
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/LoadScene.fxml"));
         Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         scene = new Scene(boardScene);
