@@ -67,6 +67,9 @@ public class SaveFileInputDialogController {
     }
     
     public void save() throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
 
         String fileName = textField.getText();
         System.out.println("Input Filed Name : " + fileName);

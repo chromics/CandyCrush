@@ -16,28 +16,6 @@ import javafx.stage.Stage;
 import view.Main;
 
 public class LevelMenuSceneController {
-
-    @FXML
-    Button level1;
-    @FXML
-    Button level2;
-    @FXML
-    Button level3;
-    @FXML
-    Button level4;
-    @FXML
-    Button level5;
-    @FXML
-    Button level6;
-    @FXML
-    Button level7;
-    @FXML
-    Button level8;
-    @FXML
-    Button level9;
-    @FXML
-    Button level10;
-
     private static Stage stage;
     private Scene scene;
     private static int currentLevelNum;
@@ -51,6 +29,9 @@ public class LevelMenuSceneController {
     }
 
     public void selectLevel(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Button sourceButton = (Button)(event.getSource());
         String buttonID = sourceButton.getId();
         int levelIndex = Integer.parseInt(buttonID.replaceAll("[^0-9]", "")) - 1;
@@ -61,6 +42,9 @@ public class LevelMenuSceneController {
         // insert level to the constructor?
     }
     public void customizeLevel() throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(Main.stage);
@@ -80,6 +64,9 @@ public class LevelMenuSceneController {
     }
 
     public void home() throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/StartScene.fxml"));
         this.scene = new Scene(startScene);
         Main.stage.setScene(this.scene);

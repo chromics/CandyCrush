@@ -38,11 +38,6 @@ public class StartSceneController implements Initializable {
 
     private static GameMode currentGameMode;
 
-    //    private String buttonClickPath = Objects.requireNonNull(getClass().getResource("/data/constant/audio/springDay.wav")).toString();
-//    private static AudioClip buttonClick = new AudioClip(buttonClickPathPath);
-
-    // new File(this.mediaPath).toURI().toString()
-
     public void initialize(URL location, ResourceBundle resourceBundle) {
         if (music == null || !music.isRunning()) {
             try {
@@ -162,7 +157,9 @@ public class StartSceneController implements Initializable {
     }
     
     public void loadGame(ActionEvent event) throws Exception {
-//        buttonClick.play();
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/LoadScene.fxml"));
         Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         scene = new Scene(boardScene);
@@ -170,8 +167,10 @@ public class StartSceneController implements Initializable {
         Main.stage.show();
     }
 
-
     public void settings(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(Main.stage);
@@ -189,6 +188,9 @@ public class StartSceneController implements Initializable {
     }
 
     public void setGameMode(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(Main.stage);
@@ -212,15 +214,3 @@ public class StartSceneController implements Initializable {
         return boardSceneController;
     }
 }
-
-// @FXML
-// private Label label;
-
-// public void initialize() {
-//     String javaVersion = System.getProperty("java.version");
-//     String javafxVersion = System.getProperty("javafx.version");
-//     label.setText("Hello, JavaFX " + javafxVersion + "\nRunning on Java " + javaVersion + ".");
-// }
-
-// import javafx.fxml.FXML;
-// import javafx.scene.control.Label;

@@ -48,6 +48,9 @@ public class LoadSceneController implements Initializable {
     }
 
     public void backToStartScene(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/StartScene.fxml"));
         Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         this.scene = new Scene(startScene);
@@ -94,6 +97,9 @@ public class LoadSceneController implements Initializable {
     }
 
     public void loadFile(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         if(selectedGameFileName != null){
             System.out.println("Load File : ");
             System.out.println(selectedGameFileName);
@@ -119,6 +125,9 @@ public class LoadSceneController implements Initializable {
     }
     
     public void deleteFile(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         if(selectedGameFileName != null){
             System.out.print("Delete File : ");
             System.out.println(selectedGameFileName);
@@ -134,6 +143,9 @@ public class LoadSceneController implements Initializable {
     }
 
     public void selectGameFile(Button selectedButton, String selectedGameFileName) {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         this.selectedButton = selectedButton;
         this.selectedGameFileName = selectedGameFileName;
         System.out.println("Selected File Name : " + selectedGameFileName);

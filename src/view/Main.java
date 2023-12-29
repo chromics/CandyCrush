@@ -105,10 +105,12 @@ public class Main extends Application {
             saveAlert.showAndWait();           
             
             stage.close();
+            System.exit(0);
         }
         // Exit
         else if (result.isPresent() && result.get() == ButtonType.NO) {
             stage.close();
+            System.exit(0);
         }
     }
     
@@ -131,6 +133,7 @@ public class Main extends Application {
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             stage.close();
+            System.exit(0);
         }
     }
 

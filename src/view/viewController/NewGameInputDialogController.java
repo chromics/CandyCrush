@@ -40,6 +40,9 @@ public class NewGameInputDialogController {
     }
 
     public void setGameMode(ActionEvent event) throws Exception{
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Button sourceButton = (Button)(event.getSource());
         String buttonID = sourceButton.getId();
         if (buttonID.equals("normalModeToggle")) {

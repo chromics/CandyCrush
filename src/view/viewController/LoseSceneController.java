@@ -11,6 +11,10 @@ public class LoseSceneController {
     private GameController gameController;
 
     public void retry() throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));
         Parent boardScene = loader.load();
         
@@ -23,6 +27,9 @@ public class LoseSceneController {
     }
 
     public void returnHome() throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/StartScene.fxml"));
         scene = new Scene(startScene);
         Main.stage.setScene(scene);

@@ -122,22 +122,10 @@ public class BoardSceneController implements Initializable {
         return gameData;
     }
 
-    private void initializeBackgroundMusic() {
-
-    }
     public void initiateBoard() {
         grid = board.getGrid();
         paneArray = new Pane[board_Row_Size][board_Col_Size];
         fruitsViewArray = new ImageView[board_Row_Size][board_Col_Size];
-
-        // for (int row = 0; row < board_Row_Size; row++) {
-        //     RowConstraints rowConst = new RowConstraints(gameData.getBoard_Row_Size());
-        //     boardView.getRowConstraints().add(rowConst);
-        // }
-        // for (int col = 0; col < board_Col_Size; col++) {
-        //     ColumnConstraints colConst = new ColumnConstraints(gameData.getBoard_Col_Size());
-        //     boardView.getColumnConstraints().add(colConst);
-        // }
 
         setPictureSize(gameData.getBoard_Row_Size(), gameData.getBoard_Col_Size());        
 
@@ -306,6 +294,9 @@ public class BoardSceneController implements Initializable {
     //===============================================================================================
     // SWAP
     public void swap(ActionEvent event) {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         if(gameData.anyMatch()){
 
             catDialog("longBox","Press \"Next\" first to remove matches!", 505, 140);
@@ -321,6 +312,9 @@ public class BoardSceneController implements Initializable {
             resetSelectedPoint();
         }
         else if(selectedPoint1 != null && selectedPoint2 != null){
+            SFXController.initializePlay("SFX/swapSFX.wav");
+            SFXController.play();
+
             gameController.swapPieceOnBoard(selectedPoint1, selectedPoint2);
         }
         else{
@@ -333,10 +327,19 @@ public class BoardSceneController implements Initializable {
     
     // NEXT STEP
     public void next(ActionEvent event) {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         if(gameData.anyMatch()){
+            SFXController.initializePlay("SFX/matchEliminateSFX.wav");
+            SFXController.play();
+
             gameController.removeMatches();
         }
         else if(gameData.hasnotFall()){
+            SFXController.initializePlay("SFX/fallSFX.wav");
+            SFXController.play();
+
             gameController.fall();
         }
         else{
@@ -350,6 +353,9 @@ public class BoardSceneController implements Initializable {
 
     // Hints
     public void provideHint (ActionEvent event) {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         if (gameData.anyHint()) {
             BoardPoint[] hintPosition = gameData.getHint();
             int remainingHints = gameData.getRemainingHints();
@@ -368,6 +374,9 @@ public class BoardSceneController implements Initializable {
     
     // SHUFFLE
     public void shuffle(ActionEvent event) {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         if (gameData.anyShuffle()) {
             int shuffleLeft = gameData.getRemainingShuffle();
 
@@ -399,6 +408,9 @@ public class BoardSceneController implements Initializable {
     }
     
     public void settings(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(Main.stage);
@@ -429,7 +441,9 @@ public class BoardSceneController implements Initializable {
     }
     
     public void saveExit(ActionEvent event) throws Exception {
-//        buttonClick.play();
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
         System.out.println("\nSave & Exit from BoardScene\n");
         // Alert
         System.out.println("SaveExitAlert");
@@ -495,6 +509,9 @@ public class BoardSceneController implements Initializable {
     }
     
     public void buttonHandler(BoardPoint point) {
+        SFXController.initializePlay("SFX/selectSFX.wav");
+        SFXController.play();
+
         if(board.any_piece(point)){
 
             if (selectedPoint1 != null) {
@@ -533,33 +550,6 @@ public class BoardSceneController implements Initializable {
             else {
                 addSelectMarkImage(point);
                 selectedPoint1 = point;
-            }
-        }
-        SFXController.initializePlay("selectSFX.wav");
-        SFXController.play();
-    }
-
-    public Button getImageByRowColumnIndex (final int row, final int column, Pane gridPane) {
-        Button button = null;
-        ObservableList<Node> childrens = gridPane.getChildren();
-    
-        for (Node node : childrens) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                button = (Button)node;
-                break;
-            }
-        }
-        return button;
-    }
-
-    public void setNodeByRowColumnIndex (final int row, final int column, GridPane gridPane, Node node) {
-        ObservableList<Node> childrens = gridPane.getChildren();
-    
-        for (int i = 0; i < gridPane.getChildren().size(); i++) {
-            Node currentNode = childrens.get(i);
-            if (GridPane.getRowIndex(currentNode) == row && GridPane.getColumnIndex(currentNode) == column) {
-                gridPane.getChildren().set(i, node);
-                break;
             }
         }
     }
@@ -614,6 +604,10 @@ public class BoardSceneController implements Initializable {
         Main.stage.show();
     }
     public void catDialog(String boxType, String message, double dialogX, double dialogY) {
+        SFXController.initializePlay("SFX/meowSFX.wav");
+        SFXController.setVolume(0.2F);
+        SFXController.play();
+
         Image meowCat = new Image("/data/constant/image/meowCat.png");
         catImageView.setImage(meowCat);
 
