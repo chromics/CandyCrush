@@ -37,9 +37,8 @@ public class StartSceneController implements Initializable {
     private Clip wind;
 
     private static GameMode currentGameMode;
-    private static int currentLevel;
 
-//    private String buttonClickPath = Objects.requireNonNull(getClass().getResource("/data/constant/audio/springDay.wav")).toString();
+    //    private String buttonClickPath = Objects.requireNonNull(getClass().getResource("/data/constant/audio/springDay.wav")).toString();
 //    private static AudioClip buttonClick = new AudioClip(buttonClickPathPath);
 
     // new File(this.mediaPath).toURI().toString()
@@ -78,13 +77,6 @@ public class StartSceneController implements Initializable {
     }
     public static void setCurrentGameMode(GameMode gameMode) {
         currentGameMode = gameMode;
-    }
-
-    public static int getCurrentLevel() {
-        return currentLevel;
-    }
-    public static void setCurrentLevel(int level) {
-        currentLevel = level;
     }
 
 //    public void playMusic() {
@@ -138,13 +130,13 @@ public class StartSceneController implements Initializable {
 //        // Media menuMusic = new Media(new File(mediaPath).toURI().toString());
 //
 //    }
-    public static void newGame(GameMode gameMode, ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
+    public static void newGame(int levelIndex, ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
 //        buttonClick.play();
         FXMLLoader loader = new FXMLLoader(mainURL);
         Parent boardScene = loader.load();
         
         boardSceneController = loader.getController();
-        GameController gameController = new GameController(gameMode, 0, boardSceneController);
+        GameController gameController = new GameController(currentGameMode, levelIndex, boardSceneController);
     
         scene = new Scene(boardScene);
         Main.stage.setScene(scene);
@@ -177,6 +169,7 @@ public class StartSceneController implements Initializable {
         Main.stage.setScene(scene);
         Main.stage.show();
     }
+
 
     public void settings(ActionEvent event) throws Exception {
         Stage dialog = new Stage();
@@ -213,10 +206,6 @@ public class StartSceneController implements Initializable {
 
         boardScene.requestFocus();
         NewGameInputDialogController.setStage(dialog);
-    }
-
-    public void setLevel() {
-
     }
 
     public static BoardSceneController getBoardSceneController(){

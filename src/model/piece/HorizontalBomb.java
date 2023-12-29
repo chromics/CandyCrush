@@ -7,7 +7,7 @@ import data.constant.Status;
 import model.BoardPoint;
 
 public class HorizontalBomb extends Piece {
-    private final static String NAME = "leftSleighCat";
+    private final static String NAME = "sleighCat";
     private final static String IMAGEPATH = Constant.specialPropsHashMap.get(NAME);
     private final static Status TYPE = Status.SPECIALPIECE;
 
@@ -25,5 +25,10 @@ public class HorizontalBomb extends Piece {
     @Override
     public void getEffect (GameData gameData, BoardPoint point) { 
         gameData.saveMatchData(new BoardPoint(point.getRow(), 0), gameData.getBoard_Row_Size(), Orientation.RIGHT); 
+    }
+
+    @Override
+    public String toString () {
+        return "Horizontal Bomb";
     }
 }

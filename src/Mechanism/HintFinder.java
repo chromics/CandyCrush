@@ -6,6 +6,7 @@ import data.GameData;
 
 public class HintFinder {
     public static void findHint(GameData gameData){
+        
         Cell[][] grid = gameData.getBoard().getGrid();
         int board_Row_Size = gameData.getBoard_Row_Size();
         int board_Col_Size = gameData.getBoard_Col_Size();

@@ -3,12 +3,12 @@ package data.constant;
 public enum Level {
     //Level, Board_Row_Size, Board_Col_Size, TargetScore, Init Step, init Hints, init Shuffle, Map)
     //Default Game Mode
-    LEVEL_1(0, 8, 8, 1000, 30, 5, 3, MapTemplate.RECTANGULAR),
-    LEVEL_2(1, 8,8, 1500, 30, 5, 3, MapTemplate.RECTANGULAR),
+    LEVEL_1(0, 8, 8, 1000, 30, -1, 3, MapTemplate.RECTANGULAR),
+    LEVEL_2(1, 8,8, 1500, 30, -1, 3, MapTemplate.RECTANGULAR),
     
     //Christmas Game Mode
-    LEVEL_C1(0, 8, 8, 2000, 40, 5, 4, MapTemplate.RECTANGULAR),
-    LEVEL_C2(1, 8,8, 2500, 35, 5, 3, MapTemplate.RECTANGULAR);
+    LEVEL_C1(0, 8, 8, 2000, 40, -1, -1, MapTemplate.RECTANGULAR),
+    LEVEL_C2(1, 8,8, 2500, 35, -1, 3, MapTemplate.RECTANGULAR);
 
     private int levelIndex;
     private int board_Row_Size;

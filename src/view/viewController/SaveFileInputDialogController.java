@@ -20,8 +20,6 @@ import javafx.stage.Stage;
 import java.lang.reflect.Method;
 
 import view.Main;
-import data.GameData;
-import data.GameFileInfo;
 
 public class SaveFileInputDialogController {
     private final static int MAXINPUTLENGTH = 15;
@@ -76,7 +74,7 @@ public class SaveFileInputDialogController {
             inputError();
         }
 
-        SaveLoadController.saveGame(BoardSceneController.getGameData(), fileName);
+        SaveLoadController.save_Game(BoardSceneController.getGameData(), fileName);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Success!");

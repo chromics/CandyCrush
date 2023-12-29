@@ -3,10 +3,9 @@ package model.piece;
 import java.io.*;
 
 import data.GameData;
-import data.MatchData;
 import data.constant.Status;
-import model.BoardPoint;
 import data.constant.Constant;
+import model.BoardPoint;
 
 public class Piece implements Serializable {
     private String name;

@@ -1,10 +1,14 @@
 package test;
 
+import data.constant.Constant;
+
 public class Test1 {
     public static void main(String[] args) {
-        System.out.println(false==false);
-        System.out.println(true==false);
-        System.out.println(false==true);
-        System.out.println(true==true);
+        int[] a = {1,2,3};
+        System.out.println(a[2]);
+
+        a[2]++;
+
+        System.out.println(a[2]);
     }
 }

@@ -8,10 +8,10 @@ public enum Constant{
     ;
 
     public static HashMap <Integer, Integer> pictureSizeList = new HashMap<>(){{
-        put(7,40); //
+        put(7,40);
         put(8,43);
-        put(9,31); //
-        put(10,28); //
+        put(9,31);
+        put(10,28);
     }};
 
     public static HashMap <String, String> audioHashMap = new HashMap<>() {{
@@ -26,6 +26,30 @@ public enum Constant{
         put( "iceBlock","data/constant/image/iceBlock.png" );
     }};
 
+    public static HashMap<String, String> pieceToNumber = new HashMap<>(){{
+        put(null, "0");
+        put("apple", "1");
+        put("orange", "2");
+        put("banana", "3");
+        put("pear", "4");
+        put("grape", "5");
+        put("blueberry", "6");
+        put("horizontalSleighCat", "7");
+        put("verticalSackCat", "8");
+    }};
+
+    public static HashMap<String, String> numberToPiece = new HashMap<>(){{
+        put("0", null);
+        put("1", "apple");
+        put("2", "orange");
+        put("3", "banana");
+        put("4", "pear");
+        put("5", "grape");
+        put("6", "blueberry");
+        put("7", "horizontalSleighCat");
+        put("8", "verticalSackCat");
+    }}; 
+
     public static String[] fruitsName = { "apple", "banana", "orange", "pear", "blueberry", "grape" };
 
     public static HashMap<String,String> fruitsHashMap = new HashMap<>(){{
@@ -37,8 +61,8 @@ public enum Constant{
         put( "pear","data/constant/image/pear.png" );
     }};
     public static HashMap<String,String> specialPropsHashMap = new HashMap<>() {{
-        put( "downSackCat","data/constant/image/downSackCat.png" );
-        put( "leftSleighCat","data/constant/image/leftSleighCat.png" );
+        put( "sackCat","data/constant/image/sackCat.png" );
+        put( "sleighCat","data/constant/image/sleighCat.png" );
     }};
 
     public static HashMap<String,String> catHashMap = new HashMap<>() {{

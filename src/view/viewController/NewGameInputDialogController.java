@@ -20,16 +20,13 @@ import java.util.ResourceBundle;
 import view.Main;
 import data.constant.GameMode;
 
-public class NewGameInputDialogController implements Initializable {
+public class NewGameInputDialogController {
     private static Stage stage;
     private static Scene scene;
     @FXML
     private Button normalModeToggle;
     @FXML
     private Button specialModeToggle;
-    public void initialize(URL location, ResourceBundle resourceBundle) {
-
-    }
 
     public static void setStage(Stage dialogStage) {
         stage = dialogStage;
