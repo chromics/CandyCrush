@@ -19,17 +19,22 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.geometry.Insets;
 import javafx.stage.Stage;
-import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import view.Main;
-import data.GameFileInfo;
+import data.GameData;
 import controller.GameController;
 import controller.SaveLoadController;
+import controller.SaveLoadControllerSer;
 
 public class LoadSceneController implements Initializable {
     private Scene scene;
     // private Button selectButton;
-    private GameFileInfo selectedGameFile;
+    private Button selectedButton;
+    private String selectedGameFileName;
+    private Map<String, String> fileNameList;
+    private ObservableList<Button> loadList;
     
     @FXML
     private ListView<Button> loadListView;
@@ -52,48 +57,61 @@ public class LoadSceneController implements Initializable {
 
     public void initializeLoadListView() throws NullPointerException, Exception {
         // create new button for load game selection
-        List<GameFileInfo> gameFileList =  SaveLoadController.load_Game_File_List();
-        ObservableList<Button> loadList = FXCollections.observableArrayList();
+        // List<GameFileInfo> gameFileList =  SaveLoadControllerSer.load_Game_File_List();
+        //! No Saved File Message to user
+        fileNameList = SaveLoadController.load_File_Name_List();
+        loadList = FXCollections.observableArrayList();
 
-        for(GameFileInfo gameFile : gameFileList){
+        System.out.println("File Name List : ");
+        for(String fileName : fileNameList.keySet()){
+            System.out.println(fileName);
+            System.out.println(fileNameList.get(fileName));
+            System.out.println();
+        }
+        System.out.println();
+
+        for(String fileName : fileNameList.keySet()){
             Button selectFile = new Button();
             selectFile.setOnAction(e -> {
-                try {
-                    selectGameFile(gameFile);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+                selectGameFile(selectFile, fileName);
             });
             
             Font font = Font.font("HP Simplified Hans", FontWeight.NORMAL, 12);
-            selectFile.setText(gameFile.getFileNameDisplay());
+            selectFile.setText(fileNameList.get(fileName));
             selectFile.setWrapText(true);
             selectFile.setFont(font);
 
             selectFile.maxWidth(Double.MAX_VALUE);
             selectFile.maxHeight(Double.MAX_VALUE);
             selectFile.setPadding(Insets.EMPTY);
+
+            loadList.add(selectFile);
+
+            SaveLoadController.loadGame(fileName);
         }
 
-        // // put the button in the listView
         loadListView.setItems(loadList);
     }
 
     public void loadFile(ActionEvent event) throws Exception {
-        if(selectedGameFile != null){
+        if(selectedGameFileName != null){
             System.out.println("Load File : ");
-            System.out.println(selectedGameFile.getFileNameDisplay());
+            System.out.println(selectedGameFileName);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));
             Parent boardScene = loader.load();
             
+            GameData loadedGameData = SaveLoadController.loadGame(selectedGameFileName);
+
             BoardSceneController view = loader.getController();
-            GameController gameController = new GameController(view, selectedGameFile.getGameData());
+            GameController gameController = new GameController(view, loadedGameData);
         
             Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
             scene = new Scene(boardScene);
             Main.stage.setScene(this.scene);
             Main.stage.show();
+
+            //! deleteFile(event);
         } 
         else {
             UtilView.generateErrorAlert("No Effect", "Please select a file to be loaded");
@@ -101,16 +119,23 @@ public class LoadSceneController implements Initializable {
     }
     
     public void deleteFile(ActionEvent event) throws Exception {
-        if(selectedGameFile != null){
-            System.out.println("Delete File");
-            System.out.println(selectedGameFile.getFileNameDisplay());
-    
+        if(selectedGameFileName != null){
+            System.out.print("Delete File : ");
+            System.out.println(selectedGameFileName);
+
+            loadList.remove(selectedButton);
+            fileNameList.remove(selectedGameFileName);
+            SaveLoadController.overwrite_File_Name_List(fileNameList);
+            SaveLoadController.remove_Game_File(selectedGameFileName);
+
         } else {
-            UtilView.generateErrorAlert("No Effect", "Please select a file to be loaded");
+            UtilView.generateErrorAlert("No Effect", "Please select a file to be deleted");
         }
     }
 
-    public void selectGameFile(GameFileInfo selectedGameFile) throws Exception {
-        this.selectedGameFile = selectedGameFile;
+    public void selectGameFile(Button selectedButton, String selectedGameFileName) {
+        this.selectedButton = selectedButton;
+        this.selectedGameFileName = selectedGameFileName;
+        System.out.println("Selected File Name : " + selectedGameFileName);
     }
 }

@@ -21,7 +21,6 @@ import view.viewController.InGameSettingSceneController;
 import view.viewController.SaveFileInputDialogController;
 import view.viewController.StartSceneController;
 import data.GameData;
-import data.GameFileInfo;
 
 public class Main extends Application {
     public static Stage stage;
@@ -94,8 +93,9 @@ public class Main extends Application {
         Optional <ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
+
             SaveFileInputDialogController.generateSaveFileNameTextField("mainStage");
-            SaveLoadController.saveGame(BoardSceneController.getGameData());
+            // SaveLoadController.saveGame(BoardSceneController.getGameData());
             Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
             saveAlert.setTitle("Success!");
             saveAlert.setHeaderText("Save successful!");
@@ -134,9 +134,6 @@ public class Main extends Application {
         }
     }
 
-    public static void saveGame(String fileName){
-        StartSceneController.getBoardSceneController().saveGame(fileName);
-    }
     public static void main(String[] args) {
         launch(args);
     }

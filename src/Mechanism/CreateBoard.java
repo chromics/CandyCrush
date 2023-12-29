@@ -72,7 +72,7 @@ public class CreateBoard {
         /*
          * Randomize a piece and assign it to the pattern coordinate
          */
-        String randomPieceName = CreatePiece.createPiece();
+        String randomPieceName = Util.generateRandomPieceName();
 
         board.setPiece( point1, new Piece( randomPieceName ) );
         board.setPiece( point2, new Piece( randomPieceName ) );
@@ -137,7 +137,7 @@ public class CreateBoard {
 
                     String randomPieceName;
                     do{
-                        randomPieceName = CreatePiece.createPiece();
+                        randomPieceName = Util.generateRandomPieceName();
                     }while(excludeList.contains(randomPieceName));
 
                     grid[row][col].setPiece(new Piece(randomPieceName));

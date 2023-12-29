@@ -24,6 +24,10 @@ public class MatchData implements Serializable{
     public BoardPoint getPoint() { return point; }
     public Orientation getOrientation() { return orientation; }
 
+    public String txtMatchData() {
+        return String.format("%d %d %d %s", getRow(), getCol(), getLength(), orientation.toString());
+    }
+
     @Override
     public String toString(){
         return String.format("Point : (%d,%d), Length : %d, Orientation : %s", getRow(), getCol(), getLength(), orientation.toString());

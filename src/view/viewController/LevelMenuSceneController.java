@@ -53,13 +53,11 @@ public class LevelMenuSceneController {
     public void selectLevel(ActionEvent event) throws Exception {
         Button sourceButton = (Button)(event.getSource());
         String buttonID = sourceButton.getId();
-        int levelNum = Integer.parseInt(buttonID.replaceAll("[^0-9]", ""));
-        System.out.println(levelNum);
+        int levelIndex = Integer.parseInt(buttonID.replaceAll("[^0-9]", "")) - 1;
+        System.out.println("Level Index : " + levelIndex);
 
-        StartSceneController.setCurrentLevel(levelNum);
-        currentLevelNum = levelNum;
 
-        StartSceneController.newGame(GameMode.Special_Game_Mode, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
+        StartSceneController.newGame(levelIndex, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
         // insert level to the constructor?
     }
     public void customizeLevel() throws Exception {

@@ -3,9 +3,10 @@ package model;
 import java.io.*;
 
 import mechanism.CreateBoard;
-import mechanism.CreatePiece;
+import mechanism.Util;
 import model.piece.*;
 import data.constant.Orientation;
+import data.constant.Constant;
 import data.constant.MapTemplate;
 
 
@@ -27,8 +28,6 @@ public class Board implements Serializable{
     }
     
     public void initBoard(){
-        this.grid = new Cell[board_Row_Size][board_Col_Size];
-        
         initGrid();
         mapTemplate.initiate_Unplayable_Cell(grid, board_Row_Size, board_Col_Size);
         
@@ -36,6 +35,7 @@ public class Board implements Serializable{
     }
     
     public void initGrid() {
+        this.grid = new Cell[board_Row_Size][board_Col_Size];
         for (int i = 0; i < board_Row_Size; i++) {
             for (int j = 0; j < board_Col_Size; j++) {
                 grid[i][j] = new Cell();
@@ -53,7 +53,7 @@ public class Board implements Serializable{
     // Pieces Methods
     //-----------------------------------------------------------------------------------------------
     public void generatePieceAt(BoardPoint point){
-        Piece newPiece = new Piece(CreatePiece.createPiece());
+        Piece newPiece = new Piece(Util.generateRandomPieceName());
         setPiece(point, newPiece);
     }
     
@@ -61,10 +61,8 @@ public class Board implements Serializable{
         return getGridAt(point).getPiece();
     }
 
-    public Piece removePiece(BoardPoint point) {
-        Piece piece = getPieceAt(point);
+    public void removePiece(BoardPoint point) {
         getGridAt(point).removePiece();
-        return piece;
     }
 
     public void setPiece(BoardPoint point, Piece piece) {
@@ -152,6 +150,27 @@ public class Board implements Serializable{
     public int get_Board_Col_Size(){ return board_Col_Size; }
     //===============================================================================================
     
+    public String txtBoard () {
+        StringBuilder res = new StringBuilder();
+
+        if (grid != null) {
+
+            for (int row = 0; row < board_Row_Size; row++) {
+                for (int col = 0; col < board_Col_Size; col++) {
+                    
+                    if (grid[row][col].getPiece() == null) {
+                        res.append(Constant.pieceToNumber.get(null) + " ");
+                    }
+                    else {
+                        res.append(Constant.pieceToNumber.get(grid[row][col].getPiece().getName()) + " ");
+                    }
+                }
+                res.append("\n");
+            }
+        }
+
+        return res.toString();
+    }
 
     @Override
     public String toString(){
