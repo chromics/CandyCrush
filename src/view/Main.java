@@ -11,9 +11,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
+import javafx.stage.Window;
 import view.viewController.BoardSceneController;
 import view.viewController.InGameSettingSceneController;
 import view.viewController.SaveFileInputDialogController;
@@ -45,6 +47,7 @@ public class Main extends Application {
         stage.setScene(new Scene(startScene));
         // Show Stage
         stage.show();
+        startScene.requestFocus();
 
         // Exit Stage
         stage.setOnCloseRequest(event -> {

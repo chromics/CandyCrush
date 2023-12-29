@@ -13,12 +13,12 @@
 
 <AnchorPane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.viewController.BoardSceneController">
    <children>
-      <ImageView fitHeight="325.0" fitWidth="325.0" layoutX="77.0" layoutY="60.0" pickOnBounds="true">
+      <ImageView fitHeight="360.0" fitWidth="360.0" layoutX="91.0" layoutY="58.0" pickOnBounds="true">
          <image>
             <Image url="@../../data/constant/image/bigPatch.png" />
          </image>
       </ImageView>
-      <GridPane fx:id="boardView" alignment="CENTER" layoutX="90.0" layoutY="73.0" prefHeight="300.0" prefWidth="300.0">
+      <GridPane fx:id="boardView" alignment="CENTER" layoutX="103.0" layoutY="70.0" prefHeight="335.0" prefWidth="335.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -40,27 +40,27 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Text layoutX="443.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Moves left:">
+      <Text layoutX="486.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Moves  left :">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Text>
-      <Text layoutX="443.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Score:">
+      <Text layoutX="486.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Score :">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Text>
-      <Button layoutX="446.0" layoutY="366.0" mnemonicParsing="false" onAction="#swap" prefHeight="20.0" prefWidth="90.0" text="Swap">
+      <Button layoutX="489.0" layoutY="384.0" mnemonicParsing="false" onAction="#swap" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Swap">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="556.0" layoutY="365.0" mnemonicParsing="false" onAction="#next" prefHeight="20.0" prefWidth="90.0" text="Next">
+      <Button layoutX="595.0" layoutY="384.0" mnemonicParsing="false" onAction="#next" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Next">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="28.0" layoutY="23.0" mnemonicParsing="false" onAction="#saveExit" prefHeight="29.0" prefWidth="23.0" text="Save &amp; Exit">
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="29.0" layoutY="21.0" mnemonicParsing="false" onAction="#saveExit" prefHeight="33.0" prefWidth="34.0" text="Save &amp; Exit">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
@@ -72,7 +72,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="707.0" layoutY="54.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="30.0" prefWidth="24.0" text="Shuffle">
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="706.0" layoutY="24.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="33.0" prefWidth="34.0" text="Shuffle">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
@@ -84,22 +84,22 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label fx:id="movesLeftLabel" layoutX="523.0" layoutY="86.0" text="-">
+      <Label fx:id="movesLeftLabel" layoutX="599.0" layoutY="82.0" style="-fx-font-family: Minecraftia;" text="-">
          <font>
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="currentScoreLabel" layoutX="544.0" layoutY="54.0" text="-">
+      <Label fx:id="currentScoreLabel" layoutX="561.0" layoutY="51.0" style="-fx-font-family: Minecraftia;" text="-">
          <font>
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="shuffleLabel" layoutX="741.0" layoutY="44.0" text="3">
+      <Label fx:id="shuffleLabel" layoutX="743.0" layoutY="14.0" style="-fx-font-family: Minecraft;" text="3">
          <font>
             <Font name="HP Simplified Hans Regular" size="14.0" />
          </font>
       </Label>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="704.0" layoutY="385.0" mnemonicParsing="false" onAction="#settings" prefHeight="30.0" prefWidth="31.0" text="Save &amp; Exit">
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="29.0" layoutY="63.0" mnemonicParsing="false" onAction="#settings" prefHeight="33.0" prefWidth="34.0" text="Save &amp; Exit">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
@@ -111,17 +111,17 @@
             </ImageView>
          </graphic>
       </Button>
-      <Text layoutX="76.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Level">
+      <Text layoutX="92.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Level">
          <font>
             <Font name="HP Simplified Hans Regular" size="20.0" />
          </font>
       </Text>
-      <ImageView fitHeight="244.0" fitWidth="244.0" layoutX="431.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="catImageView" fitHeight="217.0" fitWidth="203.0" layoutX="474.0" layoutY="171.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../data/constant/image/defaultCat.png" />
          </image>
       </ImageView>
-      <Button fx:id="hintsButton" contentDisplay="GRAPHIC_ONLY" layoutX="707.0" layoutY="93.0" mnemonicParsing="false" onAction="#provideHint" prefHeight="30.0" prefWidth="24.0" text="Shuffle">
+      <Button fx:id="hintsButton" contentDisplay="GRAPHIC_ONLY" layoutX="706.0" layoutY="70.0" mnemonicParsing="false" onAction="#provideHint" prefHeight="33.0" prefWidth="34.0" text="Shuffle">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
@@ -133,10 +133,17 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label fx:id="levelNumLabel" layoutX="133.0" layoutY="24.0" text="-">
+      <Label fx:id="levelNumLabel" layoutX="170.0" layoutY="21.0" style="-fx-font-family: Minecraftia;" text="-">
          <font>
             <Font name="HP Simplified Hans Regular" size="20.0" />
          </font>
       </Label>
+      <ImageView fx:id="textBoxView" fitHeight="79.0" fitWidth="117.0" layoutX="601.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="catDialog" layoutX="612.0" layoutY="140.0" lineSpacing="1.0" maxWidth="60.0" style="-fx-font-family: Minecraftia; -fx-line-spacing: 0.5;" stylesheets="@/data/constant/styles4.css" wrapText="true">
+         <font>
+            <Font size="9.5" />
+         </font>
+      </Label>
+      <ImageView fx:id="longBoxView" fitHeight="79.0" fitWidth="267.0" layoutX="482.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

@@ -8,10 +8,10 @@ public enum Constant{
     ;
 
     public static HashMap <Integer, Integer> pictureSizeList = new HashMap<>(){{
-        put(7,40);
-        put(8,35);
-        put(9,31);
-        put(10,28);
+        put(7,40); //
+        put(8,43);
+        put(9,31); //
+        put(10,28); //
     }};
 
     public static HashMap <String, String> audioHashMap = new HashMap<>() {{

@@ -9,10 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -25,38 +22,48 @@ import data.constant.GameMode;
 
 public class NewGameInputDialogController implements Initializable {
     private static Stage stage;
-    private ToggleGroup toggleGroup = new ToggleGroup();
+    private static Scene scene;
     @FXML
-    private ToggleButton normalModeToggle;
+    private Button normalModeToggle;
     @FXML
-    private ToggleButton specialModeToggle;
-    @FXML
-    private CheckBox autoModeCheckbox;
+    private Button specialModeToggle;
     public void initialize(URL location, ResourceBundle resourceBundle) {
-        normalModeToggle.setToggleGroup(toggleGroup);
-        specialModeToggle.setToggleGroup(toggleGroup);
-        normalModeToggle.setSelected(true);
+
     }
 
     public static void setStage(Stage dialogStage) {
         stage = dialogStage;
     }
 
-    public void normalGameMode(ActionEvent event) throws Exception {
-        StartSceneController.newGame(GameMode.Normal_Game_Mode, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
+    public void normalGameMode() {
+        StartSceneController.setCurrentGameMode(GameMode.Normal_Game_Mode);
     }
-    public void specialGameMode(ActionEvent event) throws Exception {
-        StartSceneController.newGame(GameMode.Special_Game_Mode, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
+    public void specialGameMode() {
+        StartSceneController.setCurrentGameMode(GameMode.Special_Game_Mode);
     }
 
-    public void startNewGame(ActionEvent event) throws Exception{
-        if (normalModeToggle.isSelected()) {
+    public void setGameMode(ActionEvent event) throws Exception{
+        Button sourceButton = (Button)(event.getSource());
+        String buttonID = sourceButton.getId();
+        if (buttonID.equals("normalModeToggle")) {
             System.out.println("Start Normal Game Mode");
-            normalGameMode(event);
+            normalGameMode();
+
+            Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/LevelMenuScene.fxml"));
+            scene = new Scene(boardScene);
+            Main.stage.setScene(scene);
+            Main.stage.show();
+
             stage.close();
-        } else if (specialModeToggle.isSelected()) {
+        } else if (buttonID.equals("specialModeToggle")) {
             System.out.println("Start Special Game Mode");
-            specialGameMode(event);
+            specialGameMode();
+
+            Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/LevelMenuScene.fxml"));
+            scene = new Scene(boardScene);
+            Main.stage.setScene(scene);
+            Main.stage.show();
+
             stage.close();
         }
         else {

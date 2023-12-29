@@ -1,9 +1,10 @@
 package view.viewController;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
+import data.constant.GameMode;
+import data.constant.Level;
+import javafx.application.Platform;
 import javafx.util.Duration;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -77,8 +78,23 @@ public class BoardSceneController implements Initializable {
     private Button hintsButton;
     @FXML
     private Label levelNumLabel;
+    // methodnya udh gw tambah yg updateLvlLabel(int level)
+    // lgsg masukin angka current lvlnya
     @FXML
     private static AnchorPane boardPane;
+    @FXML
+    private Label targetScoreLabel;
+    // methodnya gabung sama set current score
+    @FXML
+    private ImageView catImageView;
+    @FXML
+    private ImageView textBoxView;
+    @FXML
+    private ImageView longBoxView;
+    @FXML
+    private Label catDialog;
+
+    private Timer catDialogTimer = new Timer();
 
     private static AudioClip buttonClick;
 //    private AudioClip fruitSelect = new AudioClip(BoardSceneController.class.getResource("selectSFX.wav").toString());
@@ -91,7 +107,8 @@ public class BoardSceneController implements Initializable {
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
         selectedPoint1 = null;
-        selectedPoint2 = null;        
+        selectedPoint2 = null;
+        updateLvlLabel();
     }
     public static AnchorPane getBoardPane() {
         return boardPane;
@@ -191,7 +208,7 @@ public class BoardSceneController implements Initializable {
         board_Col_Size = gameData.getBoard_Col_Size();
 
         shuffleLabel.setText(Integer.toString(gameData.getRemainingShuffle()));
-        currentScoreLabel.setText(Integer.toString(gameData.getScore()));
+        currentScoreLabel.setText(Integer.toString(gameData.getScore()) + " / " + gameData.getTargetScore());
         movesLeftLabel.setText(Integer.toString(gameData.getRemainingStep()));
     }
 
@@ -259,18 +276,26 @@ public class BoardSceneController implements Initializable {
     // SWAP
     public void swap(ActionEvent event) {
         if(gameData.anyMatch()){
-            UtilView.generateErrorAlert("Unable to swap.", "Press \"Next\" first to remove matches!");
+//            UtilView.generateErrorAlert("", );
+            catDialog("longBox","Press \"Next\" first to remove matches!", 505, 140);
+            setCatTimer("longBox",1500);
+
             resetSelectedPoint();
         }
         else if(gameData.hasnotFall()){
-            UtilView.generateErrorAlert("Unable to swap", "Press \"Next\" first to generate new pieces!");
+//            UtilView.generateErrorAlert("Unable to swap", "Press \"Next\" first to generate new pieces!");
+            catDialog("longBox","Press \"Next\" first to remove matches!", 505, 140);
+            setCatTimer("longBox",1500);
+
             resetSelectedPoint();
         }
         else if(selectedPoint1 != null && selectedPoint2 != null){
             gameController.swapPieceOnBoard(selectedPoint1, selectedPoint2);
         }
         else{
-            UtilView.generateErrorAlert("Unable to swap", "Please select at least two points!");
+//            UtilView.generateErrorAlert("Unable to swap", "Please select at least two points!");
+            catDialog("longBox","Please select at least two points!", 505, 140);
+            setCatTimer("longBox",1500);
         }
     }
     
@@ -284,7 +309,9 @@ public class BoardSceneController implements Initializable {
             gameController.fall();
         }
         else{
-            UtilView.generateErrorAlert("No effect", "Create match first");
+            catDialog("longBox","Create match first!", 505, 140);
+//            UtilView.generateErrorAlert("No effect", "Create match first");
+            setCatTimer("longBox",1500);
         }
 
         selectedPoint1 = null;
@@ -320,7 +347,9 @@ public class BoardSceneController implements Initializable {
             shuffleLabel.setText(Integer.toString(shuffleLeft));
         }
         else {
-            UtilView.generateErrorAlert("Shuffle unavailable", "You have used all of the shuffle props for this game!");
+//            UtilView.generateErrorAlert("Shuffle unavailable", "You have used all of the shuffle props for this game!");
+            catDialog("longBox","All shuffle props have been used !", 505, 140);
+            setCatTimer("longBox",1500);
         }
     }
     
@@ -348,7 +377,7 @@ public class BoardSceneController implements Initializable {
     }
     
     public void addScore() {
-        currentScoreLabel.setText(Integer.toString(gameData.getScore()));
+        currentScoreLabel.setText(Integer.toString(gameData.getScore()) + " / " + Integer.toString(gameData.getTargetScore()));
     }
     public void deductMovesLeft() {
         movesLeftLabel.setText(Integer.toString(gameData.getRemainingStep()));
@@ -526,6 +555,65 @@ public class BoardSceneController implements Initializable {
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
+    }
+
+    public void updateLvlLabel() {
+        levelNumLabel.setText(Integer.toString(LevelMenuSceneController.getCurrentLevelNum()));
+    }
+
+    public void catDialog(String boxType, String message, double dialogX, double dialogY) {
+        Image meowCat = new Image("/data/constant/image/meowCat.png");
+        catImageView.setImage(meowCat);
+
+        if (boxType.equals("longBox")) {
+            Image textBox = new Image("/data/constant/image/longBox.png");
+            longBoxView.setImage(textBox);
+            longBoxView.setLayoutX(482);
+            longBoxView.setLayoutY(123);
+            catDialog.setMaxWidth(220);
+        }
+        else if (boxType.equals("shortBox")) {
+            Image textBox = new Image("/data/constant/image/textBox.png");
+            textBoxView.setImage(textBox);
+            textBoxView.setLayoutX(602);
+            textBoxView.setLayoutY(131);
+            catDialog.setMaxWidth(60);
+        }
+
+        catDialog.setLayoutX(dialogX);
+        catDialog.setLayoutY(dialogY);
+        catDialog.setText(message);
+    }
+
+    public void catDefaultState(String boxType) {
+        Image defaultCat = new Image("/data/constant/image/defaultCat.png");
+        catImageView.setImage(defaultCat);
+
+        if (boxType.equals("longBox")) {
+            longBoxView.setImage(null);
+            Platform.runLater(() -> {
+                catDialog.setText(null);
+            });
+        }
+        else if (boxType.equals("shortBox")) {
+            textBoxView.setImage(null);
+            Platform.runLater(() -> {
+                catDialog.setText(null);
+            });
+        }
+
+    }
+
+    public void setCatTimer(String boxType, long delay) {
+        TimerTask task = new TimerTask()
+        {
+            public void run()
+            {
+                catDefaultState(boxType);
+            }
+
+        };
+        catDialogTimer.schedule(task,delay);
     }
 
 }
