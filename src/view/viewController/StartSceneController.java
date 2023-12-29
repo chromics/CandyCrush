@@ -28,20 +28,117 @@ import view.viewController.BoardSceneController;
 
 import javax.sound.sampled.*;
 
-public class StartSceneController implements Initializable {
+public class StartSceneController {
 
     private static Scene scene;
     private static BoardSceneController boardSceneController;
     private MediaPlayer mediaPlayer;
-    private Clip music;
-    private Clip wind;
+    private static Clip music;
+    private static Clip wind;
 
     private static GameMode currentGameMode;
 
-    public void initialize(URL location, ResourceBundle resourceBundle) {
+    public static GameMode getCurrentGameMode() {
+        return currentGameMode;
+    }
+    public static void setCurrentGameMode(GameMode gameMode) {
+        currentGameMode = gameMode;
+    }
+    public static void newGame(int levelIndex, ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
+        stopMusic();
+        FXMLLoader loader = new FXMLLoader(mainURL);
+        Parent boardScene = loader.load();
+        
+        boardSceneController = loader.getController();
+        GameController gameController = new GameController(currentGameMode, levelIndex, boardSceneController);
+    
+        scene = new Scene(boardScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
+        gameObjective(event, dialogURL);
+    }
+
+    public static void gameObjective(ActionEvent event, URL url) throws Exception {
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(Main.stage);
+        dialog.setResizable(false);
+        dialog.setX(Main.stage.getX() + 465);
+        dialog.setY(Main.stage.getY() + 175);
+
+        Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
+        dialog.getIcons().add(dialogIcon);
+
+        Parent boardScene = FXMLLoader.load(url);
+        Scene scene = new Scene(boardScene);
+        dialog.setScene(scene);
+        dialog.show();
+    }
+    
+    public void loadGame(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/LoadScene.fxml"));
+        Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
+        scene = new Scene(boardScene);
+        Main.stage.setScene(scene);
+        Main.stage.show();
+    }
+
+    public void settings(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(Main.stage);
+        dialog.setResizable(false);
+        dialog.setX(Main.stage.getX() + 700);
+        dialog.setY(Main.stage.getY() + 320);
+
+        Image dialogIcon = new Image("data/constant/image/highVolumeIcon.png");
+        dialog.getIcons().add(dialogIcon);
+        dialog.setTitle("Volume Settings");
+
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/MenuSetting.fxml"));
+        Scene scene = new Scene(boardScene);
+        dialog.setScene(scene);
+        dialog.show();
+    }
+
+    public void setGameMode(ActionEvent event) throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(Main.stage);
+        dialog.setResizable(false);
+//        dialog.setX(Main.stage.getX() + 430);
+//        dialog.setY(Main.stage.getY() + 160);
+
+        Image dialogIcon = new Image("data/constant/image/settingsIcon.png");
+        dialog.getIcons().add(dialogIcon);
+        dialog.setTitle("Select Game Mode");
+
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/NewGameInputDialog.fxml"));
+        Scene scene = new Scene(boardScene);
+        dialog.setScene(scene);
+        dialog.show();
+
+        boardScene.requestFocus();
+        NewGameInputDialogController.setStage(dialog);
+    }
+
+    public static BoardSceneController getBoardSceneController(){
+        return boardSceneController;
+    }
+
+    public static void playMusic() throws Exception {
         if (music == null || !music.isRunning()) {
             try {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource("/data/constant/audio/springDay.wav")));
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(StartSceneController.class.getResource("/data/constant/audio/springDay.wav")));
                 music = AudioSystem.getClip();
                 music.open(audioInput);
                 music.loop(Clip.LOOP_CONTINUOUSLY);
@@ -53,7 +150,7 @@ public class StartSceneController implements Initializable {
         }
         if (wind == null || !wind.isRunning()) {
             try {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource("/data/constant/audio/springDay.wav")));
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(StartSceneController.class.getResource("/data/constant/audio/springDay.wav")));
                 wind = AudioSystem.getClip();
                 wind.open(audioInput);
                 wind.loop(Clip.LOOP_CONTINUOUSLY);
@@ -63,16 +160,13 @@ public class StartSceneController implements Initializable {
                 System.out.println("Error initializing background music.");
             }
         }
-        Font.loadFont(getClass().getResourceAsStream("/data/constant/font/Minecraft.ttf"), 65);
-        Font.loadFont(getClass().getResourceAsStream("/data/constant/font/Minecraftia-Regular.ttf"), 20);
     }
 
-    public static GameMode getCurrentGameMode() {
-        return currentGameMode;
+    public static void stopMusic() {
+        music.stop();
+        wind.stop();
     }
-    public static void setCurrentGameMode(GameMode gameMode) {
-        currentGameMode = gameMode;
-    }
+}
 
 //    public void playMusic() {
 //        // Constant.audio.get("springDay")
@@ -125,92 +219,3 @@ public class StartSceneController implements Initializable {
 //        // Media menuMusic = new Media(new File(mediaPath).toURI().toString());
 //
 //    }
-    public static void newGame(int levelIndex, ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
-//        buttonClick.play();
-        FXMLLoader loader = new FXMLLoader(mainURL);
-        Parent boardScene = loader.load();
-        
-        boardSceneController = loader.getController();
-        GameController gameController = new GameController(currentGameMode, levelIndex, boardSceneController);
-    
-        scene = new Scene(boardScene);
-        Main.stage.setScene(scene);
-        Main.stage.show();
-        gameObjective(event, dialogURL);
-    }
-
-    public static void gameObjective(ActionEvent event, URL url) throws Exception {
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(Main.stage);
-        dialog.setResizable(false);
-        dialog.setX(Main.stage.getX() + 465);
-        dialog.setY(Main.stage.getY() + 175);
-
-        Image dialogIcon = new Image(Constant.catHashMap.get("defaultCat"));
-        dialog.getIcons().add(dialogIcon);
-
-        Parent boardScene = FXMLLoader.load(url);
-        Scene scene = new Scene(boardScene);
-        dialog.setScene(scene);
-        dialog.show();
-    }
-    
-    public void loadGame(ActionEvent event) throws Exception {
-        SFXController.initializePlay("SFX/buttonClickSFX.wav");
-        SFXController.play();
-
-        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/LoadScene.fxml"));
-        Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
-        scene = new Scene(boardScene);
-        Main.stage.setScene(scene);
-        Main.stage.show();
-    }
-
-    public void settings(ActionEvent event) throws Exception {
-        SFXController.initializePlay("SFX/buttonClickSFX.wav");
-        SFXController.play();
-
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(Main.stage);
-        dialog.setResizable(false);
-        dialog.setX(Main.stage.getX() + 700);
-        dialog.setY(Main.stage.getY() + 320);
-
-        Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
-        dialog.getIcons().add(dialogIcon);
-
-        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/MenuSetting.fxml"));
-        Scene scene = new Scene(boardScene);
-        dialog.setScene(scene);
-        dialog.show();
-    }
-
-    public void setGameMode(ActionEvent event) throws Exception {
-        SFXController.initializePlay("SFX/buttonClickSFX.wav");
-        SFXController.play();
-
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(Main.stage);
-        dialog.setResizable(false);
-//        dialog.setX(Main.stage.getX() + 430);
-//        dialog.setY(Main.stage.getY() + 160);
-
-        Image dialogIcon = new Image(Constant.catHashMap.get("defaultCat"));
-        dialog.getIcons().add(dialogIcon);
-
-        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/NewGameInputDialog.fxml"));
-        Scene scene = new Scene(boardScene);
-        dialog.setScene(scene);
-        dialog.show();
-
-        boardScene.requestFocus();
-        NewGameInputDialogController.setStage(dialog);
-    }
-
-    public static BoardSceneController getBoardSceneController(){
-        return boardSceneController;
-    }
-}

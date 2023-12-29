@@ -75,4 +75,26 @@ public class NewGameInputDialogController {
 //            errorAlert.setY(this.stage.getY() - 55);
         }
     }
+
+    public void customizeLevel() throws Exception {
+        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.play();
+
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(Main.stage);
+        dialog.setResizable(false);
+//        dialog.setX(Main.stage.getX() + 430);
+//        dialog.setY(Main.stage.getY() + 160);
+
+        Image dialogIcon = new Image(Constant.catHashMap.get("defaultCat"));
+        dialog.getIcons().add(dialogIcon);
+
+        Parent boardScene = FXMLLoader.load(getClass().getResource(""));
+        Scene scene = new Scene(boardScene);
+        dialog.setScene(scene);
+        dialog.show();
+
+        LevelMenuSceneController.setStage(dialog);
+    }
 }

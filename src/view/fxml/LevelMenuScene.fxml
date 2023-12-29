@@ -9,12 +9,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.viewController.LevelMenuSceneController">
    <children>
-      <Button fx:id="b1" contentDisplay="CENTER" layoutX="112.0" layoutY="180.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="1" textAlignment="CENTER">
+      <Button fx:id="b1" contentDisplay="CENTER" layoutX="102.0" layoutY="185.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="1" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="customLevel" alignment="CENTER" contentDisplay="CENTER" layoutX="298.0" layoutY="358.0" mnemonicParsing="false" onAction="#customizeLevel" prefHeight="52.0" prefWidth="194.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles2.css" text="Custom Level" textAlignment="CENTER" wrapText="true" />
       <Label layoutX="176.0" layoutY="23.0" style="-fx-font-family: Minecraftia;" text="Level Selection">
          <font>
             <Font name="HP Simplified Hans Regular" size="50.0" />
@@ -25,47 +24,47 @@
             <Font name="HP Simplified Hans Regular" size="25.0" />
          </font>
       </Label>
-      <Button fx:id="b4" contentDisplay="CENTER" layoutX="488.0" layoutY="179.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="4" textAlignment="CENTER">
+      <Button fx:id="b4" contentDisplay="CENTER" layoutX="493.0" layoutY="184.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="4" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="b3" contentDisplay="CENTER" layoutX="362.0" layoutY="179.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="3" textAlignment="CENTER">
+      <Button fx:id="b3" contentDisplay="CENTER" layoutX="362.0" layoutY="184.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="3" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="b2" contentDisplay="CENTER" layoutX="237.0" layoutY="179.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="2" textAlignment="CENTER">
+      <Button fx:id="b2" contentDisplay="CENTER" layoutX="232.0" layoutY="184.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="2" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="b5" contentDisplay="CENTER" layoutX="614.0" layoutY="179.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="5" textAlignment="CENTER">
+      <Button fx:id="b5" contentDisplay="CENTER" layoutX="624.0" layoutY="184.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="5" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="b6" contentDisplay="CENTER" layoutX="112.0" layoutY="268.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="6" textAlignment="CENTER">
+      <Button fx:id="b6" contentDisplay="CENTER" layoutX="102.0" layoutY="280.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="6" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="b9" contentDisplay="CENTER" layoutX="488.0" layoutY="267.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="9" textAlignment="CENTER">
+      <Button fx:id="b9" contentDisplay="CENTER" layoutX="493.0" layoutY="279.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="9" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="b8" contentDisplay="CENTER" layoutX="362.0" layoutY="267.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="8" textAlignment="CENTER">
+      <Button fx:id="b8" contentDisplay="CENTER" layoutX="362.0" layoutY="279.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="8" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="b7" contentDisplay="CENTER" layoutX="237.0" layoutY="267.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="7" textAlignment="CENTER">
+      <Button fx:id="b7" contentDisplay="CENTER" layoutX="232.0" layoutY="279.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="7" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="b10" contentDisplay="CENTER" layoutX="614.0" layoutY="267.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="10" textAlignment="CENTER">
+      <Button fx:id="b10" contentDisplay="CENTER" layoutX="624.0" layoutY="279.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="10" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>

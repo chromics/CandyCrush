@@ -26,9 +26,9 @@
          </font>
       </Label>
       <ImageView fitHeight="10.0" fitWidth="6.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fitHeight="23.0" fitWidth="23.0" layoutX="192.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="24.0" fitWidth="25.0" layoutX="187.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../data/constant/image/apple.png" />
+            <Image url="@../../data/constant/image/automaticIcon.png" />
          </image>
       </ImageView>
       <Label layoutX="27.0" layoutY="89.0" prefHeight="18.0" prefWidth="101.0" text="Music Volume">

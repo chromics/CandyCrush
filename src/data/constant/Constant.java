@@ -69,6 +69,7 @@ public enum Constant{
         put( "defaultCat","data/constant/image/defaultCat.png" );
         put( "happyCat","data/constant/image/happyCat.png" );
         put( "sadCat","data/constant/image/sadCat.png" );
+        put( "meowCat","data/constant/image/meowCat.png" );
     }};
     public static Orientation[][] potential_Match_Patterns = {
 

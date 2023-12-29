@@ -242,7 +242,6 @@ public class BoardSceneController implements Initializable {
         }
     }
     public void swapImage (BoardPoint point1, BoardPoint point2) {
-        // insert audioclip
         Piece piece1 = board.getPieceAt(point1);
         Piece piece2 = board.getPieceAt(point2);
         String imagePath1 = (piece1 == null)? null : piece1.getImagePath();
@@ -294,9 +293,6 @@ public class BoardSceneController implements Initializable {
     //===============================================================================================
     // SWAP
     public void swap(ActionEvent event) {
-        SFXController.initializePlay("SFX/buttonClickSFX.wav");
-        SFXController.play();
-
         if(gameData.anyMatch()){
 
             catDialog("longBox","Press \"Next\" first to remove matches!", 505, 140);
@@ -327,9 +323,6 @@ public class BoardSceneController implements Initializable {
     
     // NEXT STEP
     public void next(ActionEvent event) {
-        SFXController.initializePlay("SFX/buttonClickSFX.wav");
-        SFXController.play();
-
         if(gameData.anyMatch()){
             SFXController.initializePlay("SFX/matchEliminateSFX.wav");
             SFXController.play();
@@ -374,7 +367,7 @@ public class BoardSceneController implements Initializable {
     
     // SHUFFLE
     public void shuffle(ActionEvent event) {
-        SFXController.initializePlay("SFX/buttonClickSFX.wav");
+        SFXController.initializePlay("SFX/swapSFX.wav");
         SFXController.play();
 
         if (gameData.anyShuffle()) {
@@ -420,6 +413,7 @@ public class BoardSceneController implements Initializable {
         
         Image dialogIcon = new Image("data/constant/image/settingsIcon.png");
         dialog.getIcons().add(dialogIcon);
+        dialog.setTitle("Game Settings");
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/InGameSettingScene.fxml"));
         Parent boardScene = loader.load();
@@ -494,6 +488,7 @@ public class BoardSceneController implements Initializable {
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
+        StartSceneController.playMusic();
     }
     
     public void resetSelectedPoint(){
@@ -605,7 +600,7 @@ public class BoardSceneController implements Initializable {
     }
     public void catDialog(String boxType, String message, double dialogX, double dialogY) {
         SFXController.initializePlay("SFX/meowSFX.wav");
-        SFXController.setVolume(0.2F);
+        SFXController.setInitVolume(0.2F);
         SFXController.play();
 
         Image meowCat = new Image("/data/constant/image/meowCat.png");

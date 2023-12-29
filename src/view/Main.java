@@ -3,6 +3,7 @@ package view;
 import java.util.Optional;
 
 import controller.SaveLoadController;
+import data.constant.Constant;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,16 +29,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        StartSceneController.playMusic();
+
+        Font.loadFont(getClass().getResourceAsStream("/data/constant/font/Minecraft.ttf"), 65);
+        Font.loadFont(getClass().getResourceAsStream("/data/constant/font/Minecraftia-Regular.ttf"), 20);
+
         stage = primaryStage;
         // SCENE ROOT NODES
         Parent startScene = FXMLLoader.load(getClass().getResource("fxml/StartScene.fxml"));
         // STAGE
         // a) Icon
-        Image icon = new Image("data/constant/image/apple.png");
+        Image icon = new Image(Constant.catHashMap.get("defaultCat"));
         stage.getIcons().add(icon);
 
         // b) Title
-        stage.setTitle("Happy Match");
+        stage.setTitle("Harvest Match");
         stage.setHeight(500);
         stage.setWidth(800);
         stage.setResizable(false);
@@ -77,8 +83,13 @@ public class Main extends Application {
         // System.out.println("attempt to close 2");
     }
     public void exitBoardScene() throws Exception {
-        // Alert
         Alert alert = new Alert(AlertType.CONFIRMATION);
+
+        Image dialogIcon = new Image(Constant.catHashMap.get("sadCat"));
+        ImageView dialogView = new ImageView(dialogIcon);
+        dialogView.setFitHeight(80);
+        dialogView.setFitWidth(100);
+        alert.getDialogPane().setGraphic(dialogView);
 
         alert.setTitle("Save & Exit");
         alert.setHeaderText("You're about to exit the current game!");
@@ -116,6 +127,13 @@ public class Main extends Application {
     
     public void exitStage() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
+
+        Image dialogIcon = new Image(Constant.catHashMap.get("sadCat"));
+        ImageView dialogView = new ImageView(dialogIcon);
+        dialogView.setFitHeight(80);
+        dialogView.setFitWidth(100);
+        alert.getDialogPane().setGraphic(dialogView);
+
         alert.setTitle("Exit");
         alert.setHeaderText("You're about to exit the game!");
         alert.setContentText("Do you want to leave?");

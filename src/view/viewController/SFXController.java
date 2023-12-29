@@ -7,8 +7,6 @@ import java.util.Objects;
 public class SFXController {
     private static Clip sfxClip;
     public static void initializePlay(String path) {
-//        AudioClip selectFX = new AudioClip(SFXController.class.getResource(path).toString());
-
         try {
             AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(SFXController.class.getResource(path)));
             sfxClip = AudioSystem.getClip();
@@ -17,10 +15,9 @@ public class SFXController {
             e.printStackTrace();
             System.out.println("Error initializing pop sound effect.");
         }
-
     }
 
-    public static void setVolume(float volume) {
+    public static void setInitVolume(float volume) {
         FloatControl gainControl = (FloatControl) sfxClip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(20f * (float) Math.log10(volume));
     }
