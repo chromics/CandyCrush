@@ -94,7 +94,7 @@ public class Main extends Application {
         Optional <ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
-            // SaveFileInputDialogController.generateSaveFileNameTextField("mainStage");
+            SaveFileInputDialogController.generateSaveFileNameTextField("mainStage");
             SaveLoadController.saveGame(BoardSceneController.getGameData());
             Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
             saveAlert.setTitle("Success!");
@@ -135,7 +135,7 @@ public class Main extends Application {
     }
 
     public static void saveGame(String fileName){
-//        startSceneController.getBoardSceneController().saveGame(fileName);
+        StartSceneController.getBoardSceneController().saveGame(fileName);
     }
     public static void main(String[] args) {
         launch(args);

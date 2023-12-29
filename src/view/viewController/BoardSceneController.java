@@ -405,7 +405,7 @@ public class BoardSceneController implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             // Save
             System.out.println("Save Action");
-            // SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
+            SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
             SaveLoadController.saveGame(gameData);
             
             Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);

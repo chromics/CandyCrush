@@ -219,7 +219,7 @@ public class StartSceneController implements Initializable {
 
     }
 
-    public BoardSceneController getBoardSceneController(){
+    public static BoardSceneController getBoardSceneController(){
         return boardSceneController;
     }
 }

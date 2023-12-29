@@ -26,7 +26,7 @@ import data.GameFileInfo;
 public class SaveFileInputDialogController {
     private final static int MAXINPUTLENGTH = 15;
     @FXML
-    private static TextField textField;
+    private TextField textField;
 
     private static Stage dialog;
     private static String source;
@@ -70,7 +70,7 @@ public class SaveFileInputDialogController {
     
     public void save() throws Exception {
 
-        String fileName = SaveFileInputDialogController.textField.getText();
+        String fileName = textField.getText();
         System.out.println("Input Filed Name : " + fileName);
         if (fileName == null) {
             inputError();
