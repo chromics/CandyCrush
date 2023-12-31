@@ -26,18 +26,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        StartSceneController.initializeMusic();
-        MusicController.playMusic(StartSceneController.getMusic());
-
-        StartSceneController.initializeWind();
-        MusicController.playMusic(StartSceneController.getWind());
+        VolumeController.setStartSceneMusicVolume(70);
+        VolumeController.setStartSceneWindVolume(70);
+        StartSceneController.initMusic();
 
         Font.loadFont(getClass().getResourceAsStream("/data/constant/font/Minecraft.ttf"), 65);
         Font.loadFont(getClass().getResourceAsStream("/data/constant/font/Minecraftia-Regular.ttf"), 20);
 
         stage = primaryStage;
         // SCENE ROOT NODES
-        Parent startScene = FXMLLoader.load(getClass().getResource("fxml/StartScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/StartScene.fxml"));
+        Parent startScene = loader.load();
         // STAGE
         // a) Icon
         Image icon = new Image(Constant.catHashMap.get("defaultCat"));
@@ -105,17 +104,7 @@ public class Main extends Application {
         Optional <ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
-
             SaveFileInputDialogController.generateSaveFileNameTextField("mainStage");
-            // SaveLoadController.saveGame(BoardSceneController.getGameData());
-            Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            saveAlert.setTitle("Success!");
-            saveAlert.setHeaderText("Save successful!");
-            saveAlert.setContentText("Your file has been successfully saved.");
-            saveAlert.setX(Main.stage.getX() + 625);
-            saveAlert.setY(Main.stage.getY() - 55);
-            saveAlert.showAndWait();           
-            
             stage.close();
             System.exit(0);
         }

@@ -15,13 +15,13 @@
             <Image url="@../../data/constant/image/startSceneBG.png" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c7c7c7" height="51.0" layoutX="293.0" layoutY="270.0" stroke="#c7c7c7" strokeType="INSIDE" width="206.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b5a089" height="51.0" layoutX="293.0" layoutY="270.0" stroke="#b5a089" strokeType="INSIDE" width="206.0" />
       <Button layoutX="297.0" layoutY="273.0" mnemonicParsing="false" onAction="#setGameMode" prefHeight="43.0" prefWidth="198.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles.css" text="New Game" textFill="#3a0404">
          <font>
             <Font name="HP Simplified Hans Regular" size="20.0" />
          </font>
       </Button>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c7c7c7" height="51.0" layoutX="293.0" layoutY="326.0" stroke="#c7c7c7" strokeType="INSIDE" width="206.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b5a089" height="51.0" layoutX="293.0" layoutY="326.0" stroke="#b5a089" strokeType="INSIDE" width="206.0" />
       <Button layoutX="297.0" layoutY="329.0" mnemonicParsing="false" onAction="#loadGame" prefHeight="43.0" prefWidth="199.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles.css" text="Load Game" textFill="#451414">
          <font>
             <Font name="HP Simplified Hans Regular" size="20.0" />
@@ -47,7 +47,7 @@
             <Font name="HP Simplified Hans Regular" size="75.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c7c7c7" height="37.0" layoutX="728.0" layoutY="402.0" stroke="#c7c7c7" strokeType="INSIDE" width="39.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b5a089" height="37.0" layoutX="728.0" layoutY="402.0" stroke="#b5a089" strokeType="INSIDE" width="39.0" />
       <Button contentDisplay="GRAPHIC_ONLY" layoutX="731.0" layoutY="404.0" mnemonicParsing="false" onAction="#settings" prefHeight="32.0" prefWidth="33.0" stylesheets="@/data/constant/styles2.css" text="Save &amp; Exit">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />

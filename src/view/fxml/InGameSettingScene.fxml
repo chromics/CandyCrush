@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.viewController.InGameSettingSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.viewController.InGameSettingSceneController">
    <children>
       <CheckBox fx:id="autoModeCheckBox" layoutX="28.0" layoutY="45.0" mnemonicParsing="false" onAction="#toggleAutoMode" selected="true" text="   Toggle automatic game mode">
          <font>
@@ -42,16 +42,5 @@
          </image>
       </ImageView>
       <Slider fx:id="sliderMusic" layoutX="23.0" layoutY="111.0" prefHeight="14.0" prefWidth="272.0" value="50.0" />
-      <Slider fx:id="sliderSFX" layoutX="23.0" layoutY="154.0" prefHeight="14.0" prefWidth="272.0" value="50.0" />
-      <Label layoutX="27.0" layoutY="134.0" prefHeight="18.0" prefWidth="89.0" text="SFX Volume">
-         <font>
-            <Font name="HP Simplified Hans Regular" size="16.0" />
-         </font>
-      </Label>
-      <ImageView fitHeight="18.0" fitWidth="23.0" layoutX="116.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../data/constant/image/highVolumeIcon.png" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>

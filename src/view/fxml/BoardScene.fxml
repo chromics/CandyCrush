@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.viewController.BoardSceneController">
+<AnchorPane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: fff7e6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.viewController.BoardSceneController">
    <children>
       <ImageView fitHeight="360.0" fitWidth="360.0" layoutX="91.0" layoutY="58.0" pickOnBounds="true">
          <image>
@@ -40,22 +40,22 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Text layoutX="486.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Moves  left :">
+      <Text layoutX="486.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Moves  left :">
          <font>
-            <Font name="HP Simplified Hans Regular" size="15.0" />
+            <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="486.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Score :">
+      <Text layoutX="486.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Score :">
          <font>
-            <Font name="HP Simplified Hans Regular" size="15.0" />
+            <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Text>
-      <Button layoutX="489.0" layoutY="384.0" mnemonicParsing="false" onAction="#swap" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Swap">
+      <Button layoutX="489.0" layoutY="379.0" mnemonicParsing="false" onAction="#swap" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Swap" textFill="#5e0f0f">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="595.0" layoutY="384.0" mnemonicParsing="false" onAction="#next" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Next">
+      <Button layoutX="595.0" layoutY="379.0" mnemonicParsing="false" onAction="#next" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Next" textFill="#5e0f0f">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
@@ -84,12 +84,12 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label fx:id="movesLeftLabel" layoutX="599.0" layoutY="82.0" style="-fx-font-family: Minecraftia;" text="-">
+      <Label fx:id="movesLeftLabel" layoutX="621.0" layoutY="92.0" style="-fx-font-family: Minecraftia;" text="-" textFill="#5e0f0f">
          <font>
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="currentScoreLabel" layoutX="561.0" layoutY="51.0" style="-fx-font-family: Minecraftia;" text="-">
+      <Label fx:id="currentScoreLabel" layoutX="575.0" layoutY="60.0" style="-fx-font-family: Minecraftia;" text="-" textFill="#5e0f0f">
          <font>
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>

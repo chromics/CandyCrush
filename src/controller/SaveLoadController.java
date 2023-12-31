@@ -54,6 +54,11 @@ public class SaveLoadController {
         7 : Horizontal Bomb
         8 : Vertical Bomb 
         """;
+
+    private static String currentFilePath;
+    public static String getCurrentFilePath() {
+        return currentFilePath;
+    }
       
     //-----------------------------------------------------------------------------------------------
     // Save
@@ -87,6 +92,7 @@ public class SaveLoadController {
     public static void save_Game_File (GameData gameData, String fileName) {
         
         String filePath = DIRECTORY_PATH + fileName;
+        currentFilePath = filePath;
 
         try (BufferedWriter writer = new BufferedWriter (new FileWriter (filePath))) {
 

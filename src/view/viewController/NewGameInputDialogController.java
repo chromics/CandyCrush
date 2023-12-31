@@ -14,9 +14,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import view.Main;
 import data.constant.GameMode;
 
@@ -86,6 +83,7 @@ public class NewGameInputDialogController {
         dialog.setResizable(false);
         dialog.setX(Main.stage.getX() + 200);
         dialog.setY(Main.stage.getY() + 40);
+        dialog.setTitle("Customize Level");
 
         Image dialogIcon = new Image("data/constant/image/settingsIcon.png");
         dialog.getIcons().add(dialogIcon);
