@@ -97,12 +97,6 @@ public class BoardSceneController implements Initializable {
     private Timer catDialogTimer = new Timer();
 
     private static AudioClip buttonClick;
-//    private AudioClip fruitSelect = new AudioClip(BoardSceneController.class.getResource("selectSFX.wav").toString());
-//
-//    String audioPath = getClass().getResource("selectSFX.wav").toString();
-//    Media media = new Media(audioPath);
-//
-//    MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {

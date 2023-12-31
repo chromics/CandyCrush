@@ -86,6 +86,7 @@ public class NewGameInputDialogController {
         dialog.setResizable(false);
         dialog.setX(Main.stage.getX() + 200);
         dialog.setY(Main.stage.getY() + 40);
+        dialog.setTitle("Customize Level");
 
         Image dialogIcon = new Image("data/constant/image/settingsIcon.png");
         dialog.getIcons().add(dialogIcon);

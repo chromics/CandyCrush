@@ -77,6 +77,37 @@ public class StartSceneController {
         MusicController.stopMusic(music);
         MusicController.stopMusic(wind);
     }
+//    public static void newCustomGame(ActionEvent event, URL mainURL, URL dialogURL, int gridWidth, int gridHeight, int movesCount, int shuffleCount, int targetScore, Clip BGM, GameMode gamemode) throws Exception {
+//        FXMLLoader loader = new FXMLLoader(mainURL);
+//        Parent boardScene = loader.load();
+//
+//        boardSceneController = loader.getController();
+//        GameController gameController = new GameController(currentGameMode, levelIndex, boardSceneController);
+//
+//        scene = new Scene(boardScene);
+//        Main.stage.setScene(scene);
+//        Main.stage.show();
+//        gameObjective(event, dialogURL);
+//
+//        MusicController.stopMusic(music);
+//        MusicController.stopMusic(wind);
+//    }
+
+//    public static void newTemplatedGame(ActionEvent event, URL mainURL, URL dialogURL, int movesCount, int shuffleCount, int targetScore, Clip BGM, Template template) throws Exception {
+//        FXMLLoader loader = new FXMLLoader(mainURL);
+//        Parent boardScene = loader.load();
+//
+//        boardSceneController = loader.getController();
+//        GameController gameController = new GameController(currentGameMode, levelIndex, boardSceneController);
+//
+//        scene = new Scene(boardScene);
+//        Main.stage.setScene(scene);
+//        Main.stage.show();
+//        gameObjective(event, dialogURL);
+//
+//        MusicController.stopMusic(music);
+//        MusicController.stopMusic(wind);
+//    }
 
     public static void gameObjective(ActionEvent event, URL url) throws Exception {
         Stage dialog = new Stage();
