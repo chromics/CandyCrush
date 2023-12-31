@@ -308,13 +308,17 @@ public class BoardSceneController implements Initializable {
             resetSelectedPoint();
         }
         else if(selectedPoint1 != null && selectedPoint2 != null){
-            SFXController.initializePlay("SFX/swapSFX.wav");
-            SFXController.play();
-
             gameController.swapPieceOnBoard(selectedPoint1, selectedPoint2);
+            if (gameData.anyMatch()) {
+                SFXController.initializePlay("SFX/swapSFX.wav");
+                SFXController.play();
+            }
+            if (!gameData.anyMatch()) {
+                catDialog("longBox","No match found.", 505, 140);
+                setCatTimer("longBox",1500);
+            }
         }
         else{
-            // UtilView.generateErrorAlert("Unable to swap", "Please select at least two points!");
             catDialog("longBox","Please select at least two points!", 505, 140);
             setCatTimer("longBox",1500);
         }
@@ -336,7 +340,6 @@ public class BoardSceneController implements Initializable {
             gameController.fall();
         }
         else{
-            // UtilView.generateErrorAlert("No effect", "Create match first");
             catDialog("longBox","Create match first!", 505, 140);
             setCatTimer("longBox",1500);
         }
@@ -394,7 +397,6 @@ public class BoardSceneController implements Initializable {
             }
         }
         else {
-            // UtilView.generateErrorAlert("Shuffle unavailable", "You have used all of the shuffle props for this game!");
             catDialog("longBox","All shuffle props have been used !", 505, 140);
             setCatTimer("longBox",1500);
         }
@@ -408,8 +410,8 @@ public class BoardSceneController implements Initializable {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(Main.stage);
         dialog.setResizable(false);
-        dialog.setX(Main.stage.getX() + 675);
-        dialog.setY(Main.stage.getY() + 265);
+        dialog.setX(Main.stage.getX() - 120);
+        dialog.setY(Main.stage.getY() + 160);
         
         Image dialogIcon = new Image("data/constant/image/settingsIcon.png");
         dialog.getIcons().add(dialogIcon);
@@ -440,8 +442,14 @@ public class BoardSceneController implements Initializable {
 
         System.out.println("\nSave & Exit from BoardScene\n");
         // Alert
-        System.out.println("SaveExitAlert");
+        System.out.println("Save Exit Alert");
         Alert alert = new Alert(AlertType.CONFIRMATION);
+
+        Image dialogIcon = new Image(Constant.catHashMap.get("sadCat"));
+        ImageView dialogView = new ImageView(dialogIcon);
+        dialogView.setFitHeight(80);
+        dialogView.setFitWidth(100);
+        alert.getDialogPane().setGraphic(dialogView);
         
         alert.setTitle("Save & Exit");
         alert.setHeaderText("You're about to exit the current game!");
@@ -488,7 +496,12 @@ public class BoardSceneController implements Initializable {
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
-        StartSceneController.playMusic();
+
+        StartSceneController.initializeMusic();
+        MusicController.playMusic(StartSceneController.getMusic());
+
+        StartSceneController.initializeWind();
+        MusicController.playMusic(StartSceneController.getWind());
     }
     
     public void resetSelectedPoint(){

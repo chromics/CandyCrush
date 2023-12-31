@@ -1,4 +1,6 @@
 asdflkajs_Special_Game_Mode_Level-1_2023-12-29_16-35-34.txt
 asdflkajs  | Special Mode  | Level-1 | 2023-12-29 16:35:34
+Crys_Normal_Game_Mode_Level-2_2023-12-30_22-42-28.txt
+Crys       | Normal Mode   | Level-2 | 2023-12-30 22:42:28
 test1_Normal_Game_Mode_Level-2_2023-12-29_22-59-29.txt
 test1      | Normal Mode   | Level-2 | 2023-12-29 22:59:29

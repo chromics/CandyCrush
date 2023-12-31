@@ -37,9 +37,7 @@ public class LevelMenuSceneController {
         int levelIndex = Integer.parseInt(buttonID.replaceAll("[^0-9]", "")) - 1;
         System.out.println("Level Index : " + levelIndex);
 
-
         StartSceneController.newGame(levelIndex, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
-        // insert level to the constructor?
     }
 
     public void home() throws Exception {

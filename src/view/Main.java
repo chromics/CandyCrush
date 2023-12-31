@@ -17,10 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
 import javafx.stage.Window;
-import view.viewController.BoardSceneController;
-import view.viewController.InGameSettingSceneController;
-import view.viewController.SaveFileInputDialogController;
-import view.viewController.StartSceneController;
+import view.viewController.*;
 import data.GameData;
 
 public class Main extends Application {
@@ -29,7 +26,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        StartSceneController.playMusic();
+        StartSceneController.initializeMusic();
+        MusicController.playMusic(StartSceneController.getMusic());
+
+        StartSceneController.initializeWind();
+        MusicController.playMusic(StartSceneController.getWind());
 
         Font.loadFont(getClass().getResourceAsStream("/data/constant/font/Minecraft.ttf"), 65);
         Font.loadFont(getClass().getResourceAsStream("/data/constant/font/Minecraftia-Regular.ttf"), 20);

@@ -84,17 +84,17 @@ public class NewGameInputDialogController {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(Main.stage);
         dialog.setResizable(false);
-//        dialog.setX(Main.stage.getX() + 430);
-//        dialog.setY(Main.stage.getY() + 160);
+        dialog.setX(Main.stage.getX() + 200);
+        dialog.setY(Main.stage.getY() + 40);
 
-        Image dialogIcon = new Image(Constant.catHashMap.get("defaultCat"));
+        Image dialogIcon = new Image("data/constant/image/settingsIcon.png");
         dialog.getIcons().add(dialogIcon);
 
-        Parent boardScene = FXMLLoader.load(getClass().getResource(""));
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/CustomGameInputDialog.fxml"));
         Scene scene = new Scene(boardScene);
         dialog.setScene(scene);
         dialog.show();
 
-        LevelMenuSceneController.setStage(dialog);
+        stage.close();
     }
 }

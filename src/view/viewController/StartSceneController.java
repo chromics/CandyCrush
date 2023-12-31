@@ -32,20 +32,37 @@ public class StartSceneController {
 
     private static Scene scene;
     private static BoardSceneController boardSceneController;
-    private MediaPlayer mediaPlayer;
     private static Clip music;
     private static Clip wind;
 
     private static GameMode currentGameMode;
 
+    public static void initializeMusic() throws Exception {
+        AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(MusicController.class.getResource("/data/constant/audio/springDay.wav")));
+        music = AudioSystem.getClip();
+        music.open(audioInput);
+        music.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+    public static void initializeWind() throws Exception {
+        AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(MusicController.class.getResource("/data/constant/audio/windSFX.wav")));
+        wind = AudioSystem.getClip();
+        wind.open(audioInput);
+        wind.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
     public static GameMode getCurrentGameMode() {
         return currentGameMode;
+    }
+    public static Clip getMusic() {
+        return music;
+    }
+    public static Clip getWind() {
+        return wind;
     }
     public static void setCurrentGameMode(GameMode gameMode) {
         currentGameMode = gameMode;
     }
     public static void newGame(int levelIndex, ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
-        stopMusic();
         FXMLLoader loader = new FXMLLoader(mainURL);
         Parent boardScene = loader.load();
         
@@ -56,6 +73,9 @@ public class StartSceneController {
         Main.stage.setScene(scene);
         Main.stage.show();
         gameObjective(event, dialogURL);
+
+        MusicController.stopMusic(music);
+        MusicController.stopMusic(wind);
     }
 
     public static void gameObjective(ActionEvent event, URL url) throws Exception {
@@ -64,8 +84,9 @@ public class StartSceneController {
         dialog.initOwner(Main.stage);
         dialog.setResizable(false);
         dialog.setX(Main.stage.getX() + 465);
-        dialog.setY(Main.stage.getY() + 175);
+        dialog.setY(Main.stage.getY() + 180);
 
+        dialog.setTitle("Game Objective");
         Image dialogIcon = new Image(Constant.fruitsHashMap.get("apple"));
         dialog.getIcons().add(dialogIcon);
 
@@ -94,7 +115,7 @@ public class StartSceneController {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(Main.stage);
         dialog.setResizable(false);
-        dialog.setX(Main.stage.getX() + 700);
+        dialog.setX(Main.stage.getX() + 620);
         dialog.setY(Main.stage.getY() + 320);
 
         Image dialogIcon = new Image("data/constant/image/highVolumeIcon.png");
@@ -115,8 +136,8 @@ public class StartSceneController {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(Main.stage);
         dialog.setResizable(false);
-//        dialog.setX(Main.stage.getX() + 430);
-//        dialog.setY(Main.stage.getY() + 160);
+        dialog.setX(Main.stage.getX() + 120);
+        dialog.setY(Main.stage.getY() + 160);
 
         Image dialogIcon = new Image("data/constant/image/settingsIcon.png");
         dialog.getIcons().add(dialogIcon);
@@ -135,37 +156,6 @@ public class StartSceneController {
         return boardSceneController;
     }
 
-    public static void playMusic() throws Exception {
-        if (music == null || !music.isRunning()) {
-            try {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(StartSceneController.class.getResource("/data/constant/audio/springDay.wav")));
-                music = AudioSystem.getClip();
-                music.open(audioInput);
-                music.loop(Clip.LOOP_CONTINUOUSLY);
-                music.start();
-            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-                e.printStackTrace();
-                System.out.println("Error initializing background music.");
-            }
-        }
-        if (wind == null || !wind.isRunning()) {
-            try {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(StartSceneController.class.getResource("/data/constant/audio/springDay.wav")));
-                wind = AudioSystem.getClip();
-                wind.open(audioInput);
-                wind.loop(Clip.LOOP_CONTINUOUSLY);
-                wind.start();
-            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-                e.printStackTrace();
-                System.out.println("Error initializing background music.");
-            }
-        }
-    }
-
-    public static void stopMusic() {
-        music.stop();
-        wind.stop();
-    }
 }
 
 //    public void playMusic() {

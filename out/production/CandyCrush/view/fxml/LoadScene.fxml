@@ -48,5 +48,10 @@
             </ImageView>
          </graphic>
       </Button>
+      <ImageView fitHeight="196.0" fitWidth="188.0" layoutX="538.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../data/constant/image/meowCat.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

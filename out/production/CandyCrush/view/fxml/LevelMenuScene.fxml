@@ -14,14 +14,9 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Label layoutX="176.0" layoutY="23.0" style="-fx-font-family: Minecraftia;" text="Level Selection">
+      <Label layoutX="174.0" layoutY="64.0" style="-fx-font-family: Minecraftia;" text="Level Selection">
          <font>
             <Font name="HP Simplified Hans Regular" size="50.0" />
-         </font>
-      </Label>
-      <Label layoutX="294.0" layoutY="105.0" style="-fx-font-family: Minecraftia;" text="select a level...">
-         <font>
-            <Font name="HP Simplified Hans Regular" size="25.0" />
          </font>
       </Label>
       <Button fx:id="b4" contentDisplay="CENTER" layoutX="493.0" layoutY="184.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="66.0" prefWidth="66.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles3.css" text="4" textAlignment="CENTER">

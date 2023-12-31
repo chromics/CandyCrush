@@ -117,7 +117,8 @@ public class LoadSceneController implements Initializable {
             Main.stage.setScene(this.scene);
             Main.stage.show();
 
-            //! deleteFile(event);
+            MusicController.stopMusic(StartSceneController.getMusic());
+            MusicController.stopMusic(StartSceneController.getWind());
         } 
         else {
             UtilView.generateErrorAlert("No Effect", "Please select a file to be loaded");

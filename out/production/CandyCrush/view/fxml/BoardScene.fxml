@@ -72,7 +72,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="706.0" layoutY="24.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="33.0" prefWidth="34.0" text="Shuffle">
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="706.0" layoutY="28.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="33.0" prefWidth="34.0" text="Shuffle">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
@@ -94,7 +94,7 @@
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="shuffleLabel" layoutX="743.0" layoutY="14.0" style="-fx-font-family: Minecraft;" text="3">
+      <Label fx:id="shuffleLabel" layoutX="743.0" layoutY="18.0" style="-fx-font-family: Minecraft;" text="3">
          <font>
             <Font name="HP Simplified Hans Regular" size="14.0" />
          </font>

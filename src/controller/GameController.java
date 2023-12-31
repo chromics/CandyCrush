@@ -90,12 +90,9 @@ public class GameController {
         // Util.pauseExecution(1000);
         
         if(! gameData.anyMatch()){
-            
             // view.resetSelectedPoint();
             board.swapPiece(point1, point2);
             view.swapImage(point1, point2);
-
-            UtilView.generateErrorAlert("No Effect", "No Match Found");
         }
         else{
             gameData.resetHint();

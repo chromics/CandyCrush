@@ -30,40 +30,39 @@ public class SaveFileInputDialogController {
     private static String source;
 
      public void initialize(URL url, ResourceBundle resourceBundle) {
-         textField.setText("SaveFile1");
-         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-             // Restricting prohibited symbols
-             if (newValue.matches("[^#*]+")) {
-                 textField.setText(newValue.replaceAll("[^#*]+", ""));
-             }
-             // Limiting number of characters
-             if (textField.getText().length() > MAXINPUTLENGTH) {
-                 String limitedText = textField.getText().substring(0, MAXINPUTLENGTH);
-                 textField.setText(limitedText);
-             }
-
-             System.out.println("character error detected.");
-         });
+//         textField.textProperty().addListener((observable, oldValue, newValue) -> {
+//             // Restricting prohibited symbols
+//             if (newValue.matches("[^#*]+")) {
+//                 textField.setText(newValue.replaceAll("[^#*]+", ""));
+//             }
+//             // Limiting number of characters
+//             if (textField.getText().length() > MAXINPUTLENGTH) {
+//                 String limitedText = textField.getText().substring(0, MAXINPUTLENGTH);
+//                 textField.setText(limitedText);
+//             }
+//
+//             System.out.println("character error detected.");
+//         }); (doesnt work)
 
      }
-//    public static String getText() {
-//        return saveFileName.getSelectedText();
-//    }
 
     public static void generateSaveFileNameTextField(String sourceClass) throws Exception {
-        source = sourceClass;
+         boolean tru = true;
+         if (tru) {
+             source = sourceClass;
 
-        dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(Main.stage);
-        dialog.setResizable(false);
-        dialog.setX(Main.stage.getX() - 150);
-        dialog.setY(Main.stage.getY() + 150);
+             dialog = new Stage();
+             dialog.initModality(Modality.APPLICATION_MODAL);
+             dialog.initOwner(Main.stage);
+             dialog.setResizable(false);
+             dialog.setX(Main.stage.getX() - 150);
+             dialog.setY(Main.stage.getY() + 150);
 
-        Parent saveFileInputDialog = FXMLLoader.load(SaveFileInputDialogController.class.getResource("/view/fxml/SaveFileInputDialog.fxml"));
-        Scene scene = new Scene(saveFileInputDialog);
-        dialog.setScene(scene);
-        dialog.showAndWait();
+             Parent saveFileInputDialog = FXMLLoader.load(SaveFileInputDialogController.class.getResource("/view/fxml/SaveFileInputDialog.fxml"));
+             Scene scene = new Scene(saveFileInputDialog);
+             dialog.setScene(scene);
+             dialog.showAndWait();
+         }
     }
     
     public void save() throws Exception {
