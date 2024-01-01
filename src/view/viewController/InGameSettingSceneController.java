@@ -45,9 +45,10 @@ public class InGameSettingSceneController implements Initializable {
         InGameSettingSceneController.gameController = gameController;
         setCheckBoxStatus();
     }
-    
+
     public void setCheckBoxStatus(){
         autoModeCheckBox.setSelected(gameController.getGameData().getAutomaticMode());
     }
+
 }
 

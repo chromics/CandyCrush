@@ -25,14 +25,12 @@ public class MenuSettingController implements Initializable {
         setWindVolume();
     }
 
-<<<<<<< HEAD
+
 //    public MenuSettingController(MusicController musicController, MusicController windController) {
 //        this.musicController = musicController;
 //        this.windController = windController;
 //    }
 
-=======
->>>>>>> 1eb36fe9edcf9446235713411bdd13faf3b7dd87
 //    public void setInitVolume() {
 //        musicSlider.setValue(VolumeController.getStartSceneMusicVolume());
 //        windSlider.setValue(VolumeController.getStartSceneWindVolume());
