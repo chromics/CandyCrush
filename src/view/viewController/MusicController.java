@@ -14,8 +14,7 @@ public class MusicController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        currentVolume = VolumeController.getStartSceneMusicVolume();
-        System.out.println(currentVolume);
+
     }
 
     public MusicController(double volume) {
