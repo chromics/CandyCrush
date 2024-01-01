@@ -25,6 +25,14 @@ public class MenuSettingController implements Initializable {
         setWindVolume();
     }
 
+<<<<<<< HEAD
+//    public MenuSettingController(MusicController musicController, MusicController windController) {
+//        this.musicController = musicController;
+//        this.windController = windController;
+//    }
+
+=======
+>>>>>>> 1eb36fe9edcf9446235713411bdd13faf3b7dd87
 //    public void setInitVolume() {
 //        musicSlider.setValue(VolumeController.getStartSceneMusicVolume());
 //        windSlider.setValue(VolumeController.getStartSceneWindVolume());
@@ -51,6 +59,9 @@ public class MenuSettingController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 VolumeController.setStartSceneMusicVolume(musicSlider.getValue());
+                StartSceneController.musicController.setVolume(musicSlider.getValue());
+                StartSceneController.musicController.setMusicVolume();
+                System.out.println(StartSceneController.musicController.getVolume());
             }
         });
     }
@@ -59,6 +70,9 @@ public class MenuSettingController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 VolumeController.setStartSceneWindVolume(windSlider.getValue());
+                StartSceneController.windController.setVolume(windSlider.getValue());
+                StartSceneController.windController.setMusicVolume();
+                System.out.println(StartSceneController.windController.getVolume());
             }
         });
     }

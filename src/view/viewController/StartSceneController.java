@@ -40,8 +40,7 @@ public class StartSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        musicController.setMusicVolume();
-        windController.setMusicVolume();
+
     }
     public static void initMusic() throws Exception {
         musicController = new MusicController(VolumeController.getStartSceneMusicVolume());

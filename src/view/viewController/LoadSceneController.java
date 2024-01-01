@@ -130,6 +130,9 @@ public class LoadSceneController implements Initializable {
 
             StartSceneController.stopMusic();
             StartSceneController.stopWind();
+
+            VolumeController.setBoardSceneMusicVolume(70);
+            BoardSceneController.initMusic();
         } 
         else {
             UtilView.generateErrorAlert("No Effect", "Please select a file to be loaded");

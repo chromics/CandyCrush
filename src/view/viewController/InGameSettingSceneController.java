@@ -32,7 +32,8 @@ public class InGameSettingSceneController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 VolumeController.setBoardSceneMusicVolume(sliderMusic.getValue());
-            }
+                BoardSceneController.musicController.setVolume(sliderMusic.getValue());
+                BoardSceneController.musicController.setMusicVolume();
         });
     }
 
@@ -49,3 +50,4 @@ public class InGameSettingSceneController implements Initializable {
         autoModeCheckBox.setSelected(gameController.getGameData().getAutomaticMode());
     }
 }
+

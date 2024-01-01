@@ -14,7 +14,7 @@ public class MusicController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setMusicVolume();
+
     }
 
     public MusicController(double volume) {

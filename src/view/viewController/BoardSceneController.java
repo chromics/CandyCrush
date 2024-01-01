@@ -67,7 +67,7 @@ public class BoardSceneController implements Initializable {
     private int board_Col_Size;
     private AudioClip sFX;
     private Clip music;
-    private static MusicController musicController;
+    public static MusicController musicController;
 
     @FXML
     private GridPane boardView;
@@ -648,7 +648,7 @@ public class BoardSceneController implements Initializable {
     }
     public static void initMusic() throws Exception {
         musicController = new MusicController(VolumeController.getBoardSceneMusicVolume());
-        musicController.initMusicController("/data/constant/audio/springDay.wav");
+        musicController.initMusicController("/data/constant/audio/colors.wav");
         musicController.playMusic();
     }
     public static void stopMusic() {

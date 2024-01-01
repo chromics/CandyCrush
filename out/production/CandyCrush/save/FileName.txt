@@ -34,3 +34,8 @@ Crys_Normal_Game_Mode_Level-2_2023-12-30_22-42-28.txt
 Crys       | Normal Mode   | Level-2 | 2023-12-30 22:42:28
 q_Normal_Game_Mode_Level-1_2023-12-31_18-09-50.txt
 q          | Normal Mode   | Level-1 | 2023-12-31 18:09:50
+<<<<<<< HEAD
+wwwwww_Normal_Game_Mode_Level-1_2024-01-02_00-10-50.txt
+wwwwww     | Normal Mode   | Level-1 | 2024-01-02 00:10:50
+=======
+>>>>>>> 1eb36fe9edcf9446235713411bdd13faf3b7dd87
