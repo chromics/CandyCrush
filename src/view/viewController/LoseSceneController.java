@@ -8,7 +8,6 @@ import view.Main;
 
 public class LoseSceneController {
     private Scene scene;
-    private GameController gameController;
 
     public void retry() throws Exception {
         SFXController.initializePlay("SFX/buttonClickSFX.wav");
@@ -18,8 +17,8 @@ public class LoseSceneController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));
         Parent boardScene = loader.load();
         
-        BoardSceneController boardSceneController = loader.getController();
-        gameController.restartLevel(boardSceneController);
+        Main.restartLevel();
+        Main.setBoardSceneController(loader.getController());
     
         scene = new Scene(boardScene);
         Main.stage.setScene(scene);
@@ -34,9 +33,5 @@ public class LoseSceneController {
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
-    }
-
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
     }
 }

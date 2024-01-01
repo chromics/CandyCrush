@@ -14,6 +14,9 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import view.Main;
 import data.constant.GameMode;
 
@@ -30,10 +33,10 @@ public class NewGameInputDialogController {
     }
 
     public void normalGameMode() {
-        StartSceneController.setCurrentGameMode(GameMode.Normal_Game_Mode);
+        Main.setGameMode(GameMode.Normal_Game_Mode);
     }
     public void specialGameMode() {
-        StartSceneController.setCurrentGameMode(GameMode.Special_Game_Mode);
+        Main.setGameMode(GameMode.Special_Game_Mode);
     }
 
     public void setGameMode(ActionEvent event) throws Exception{
@@ -72,7 +75,7 @@ public class NewGameInputDialogController {
 //            errorAlert.setY(this.stage.getY() - 55);
         }
     }
-
+    
     public void customizeLevel() throws Exception {
         SFXController.initializePlay("SFX/buttonClickSFX.wav");
         SFXController.play();

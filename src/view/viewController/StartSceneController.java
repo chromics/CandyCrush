@@ -32,9 +32,6 @@ import javax.sound.sampled.*;
 public class StartSceneController implements Initializable {
 
     private static Scene scene;
-    private static BoardSceneController boardSceneController;
-    private static GameMode currentGameMode;
-
     public static MusicController musicController;
     public static MusicController windController;
 
@@ -57,23 +54,18 @@ public class StartSceneController implements Initializable {
     public static void stopWind() {
         windController.stopMusic();
     }
-    public static GameMode getCurrentGameMode() {
-        return currentGameMode;
-    }
-    public static void setCurrentGameMode(GameMode gameMode) {
-        currentGameMode = gameMode;
-    }
-    public static void newGame(int levelIndex, ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
+
+    public static void newGame(ActionEvent event, URL mainURL, URL dialogURL) throws Exception {
         FXMLLoader loader = new FXMLLoader(mainURL);
         Parent boardScene = loader.load();
         
-        boardSceneController = loader.getController();
-        GameController gameController = new GameController(currentGameMode, levelIndex, boardSceneController);
+        Main.setBoardSceneController(loader.getController());
+        Main.initiateNewGame();
     
         scene = new Scene(boardScene);
         Main.stage.setScene(scene);
         Main.stage.show();
-        gameObjective(event, dialogURL);
+        // gameObjective(event, dialogURL);
 
         musicController.stopMusic();
         windController.stopMusic();
@@ -158,11 +150,11 @@ public class StartSceneController implements Initializable {
         dialog.getIcons().add(dialogIcon);
         dialog.setTitle("Volume Settings");
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/MenuSetting.fxml"));
-        Parent boardScene = loader.load();
 
-//        MenuSettingController settingsView = loader.getController();
-//        settingsView.setInitVolume();
+        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/MenuSetting.fxml"));
+
+        // MenuSettingController settingsView = loader.getController();
+        // settingsView.setInitVolume();
 
         Scene scene = new Scene(boardScene);
         dialog.setScene(scene);
@@ -192,11 +184,6 @@ public class StartSceneController implements Initializable {
         boardScene.requestFocus();
         NewGameInputDialogController.setStage(dialog);
     }
-
-    public static BoardSceneController getBoardSceneController(){
-        return boardSceneController;
-    }
-
 }
 
 //    public void playMusic() {

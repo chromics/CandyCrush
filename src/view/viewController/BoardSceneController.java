@@ -2,8 +2,6 @@ package view.viewController;
 
 import java.util.*;
 
-import data.constant.GameMode;
-import data.constant.Level;
 import javafx.application.Platform;
 import javafx.util.Duration;
 import javafx.animation.PauseTransition;
@@ -25,6 +23,9 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Translate;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
@@ -48,14 +49,14 @@ public class BoardSceneController implements Initializable {
     private final static Image SELECT_MARK_IMAGE = new Image(Constant.decorations.get("patchSelectMark"));
     private final static Image ICE_BLOCK_IMAGE = new Image(Constant.decorations.get("iceBlock"));
     private final static String INFINITY_SYMBOL = "\u221E";
-    private static Duration animation_Duration;
+    private static int animation_Duration_In_Millis = Constant.ANIMATION_DURATION.getNum();
+    private static boolean wait_For_Animation = false;
     private static Scene scene;
     
+    private boolean specialMode;
     private Pane[][] paneArray;
     private ImageView[][] fruitsViewArray;
-    private int saveFileNumber = 1;
-    private boolean saveFileExists;
-    private String saveData = "";
+    private ImageView[][] iceBlockViewArray;
     private BoardPoint selectedPoint1;
     private BoardPoint selectedPoint2;
     private Board board;
@@ -66,7 +67,7 @@ public class BoardSceneController implements Initializable {
     private int board_Row_Size;
     private int board_Col_Size;
     private AudioClip sFX;
-    private Clip music;
+    private Clip music;    
     public static MusicController musicController;
 
     @FXML
@@ -78,7 +79,17 @@ public class BoardSceneController implements Initializable {
     @FXML
     private Label movesLeftLabel;
     @FXML
+    private Button swapButton;
+    @FXML
+    private Button nextButton;
+    @FXML
     private Button hintsButton;
+    @FXML
+    private Button shuffleButton;
+    @FXML
+    private Button settingsButton;
+    @FXML
+    private Button homeButton;
     @FXML
     private Label levelNumLabel;
     @FXML
@@ -86,6 +97,10 @@ public class BoardSceneController implements Initializable {
     @FXML
     private Label targetScoreLabel;
     // methodnya gabung sama set current score
+    @FXML
+    private Label iceBlockLabel;
+    @FXML
+    private Text iceBlockText;
     @FXML
     private ImageView catImageView;
     @FXML
@@ -102,7 +117,7 @@ public class BoardSceneController implements Initializable {
     // INITIALIZE
     public void initialize(URL location, ResourceBundle resourceBundle) {
         selectedPoint1 = null;
-        selectedPoint2 = null;        
+        selectedPoint2 = null;  
     }
     public static AnchorPane getBoardPane() {
         return boardPane;
@@ -121,15 +136,18 @@ public class BoardSceneController implements Initializable {
         grid = board.getGrid();
         paneArray = new Pane[board_Row_Size][board_Col_Size];
         fruitsViewArray = new ImageView[board_Row_Size][board_Col_Size];
+        iceBlockViewArray = new ImageView[board_Row_Size][board_Col_Size];
+        
+        setPictureSize();        
+        setBoardViewConstrain();
 
-        setPictureSize(gameData.getBoard_Row_Size(), gameData.getBoard_Col_Size());        
-
+        //Initiate the Pane of each gridPane Cell
         for(int row = 0; row < board_Row_Size; row++){
             for(int col = 0; col < board_Col_Size; col++){
                 setGridViewAt(row, col);
             }
         }
-        // initiate boardView with getBoard_Row_Size() & col
+        
         initiatePiecesView();
     }
 
@@ -143,53 +161,97 @@ public class BoardSceneController implements Initializable {
             fruitsViewArray[row][col].setFitWidth(pictureSize);
             fruitsViewArray[row][col].setFitHeight(pictureSize);
 
-            paneArray[row][col] = new Pane(patchView, fruitsViewArray[row][col]);
+            iceBlockViewArray[row][col] = new ImageView();
+            iceBlockViewArray[row][col].setFitWidth(pictureSize);
+            iceBlockViewArray[row][col].setFitHeight(pictureSize);
 
-            Button fruitButton = new Button();
+            if (specialMode && grid[row][col].has_Ice_Block()) {
+                iceBlockViewArray[row][col].setImage(ICE_BLOCK_IMAGE);
+            }
+
+            paneArray[row][col] = new Pane(patchView, iceBlockViewArray[row][col], fruitsViewArray[row][col]);
             BoardPoint currentPoint = new BoardPoint(row, col);
-            fruitButton.setOnAction(e -> buttonHandler(currentPoint));
-            fruitButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-            fruitButton.setGraphic(paneArray[row][col]);
-            fruitButton.maxWidth(Double.MAX_VALUE);
-            fruitButton.maxHeight(Double.MAX_VALUE);
-            fruitButton.setPadding(Insets.EMPTY);
+            paneArray[row][col].setOnMouseClicked(e -> buttonHandler(currentPoint));
         
             GridPane.setHalignment(paneArray[row][col], HPos.CENTER);
             GridPane.setHgrow(paneArray[row][col], Priority.ALWAYS);
             GridPane.setValignment(paneArray[row][col], VPos.CENTER);
             GridPane.setVgrow(paneArray[row][col], Priority.ALWAYS);
         
-            this.boardView.add(fruitButton, col, row);
+            this.boardView.add(paneArray[row][col], col, row);
+
+            //Initiate the visibility area of each cell
+            int visibleAreaWidth = pictureSize * 2;
+            int visibleAreaHeight = (row + 1 - gameData.get_Highest_Playable_Cell_At_Col(col)) * pictureSize - 1;
+
+            Rectangle visibleArea = new Rectangle(visibleAreaWidth, visibleAreaHeight);
+            visibleArea.setFill(Color.BLUE);
+            visibleArea.setLayoutX(-pictureSize);
+            visibleArea.setLayoutY(-visibleAreaHeight + pictureSize);
+
+            paneArray[row][col].setClip(visibleArea);
         }
     }
 
     public void initiatePiecesView(){
+        grid = board.getGrid();
+
         for (int row = 0; row < gameData.getBoard_Row_Size(); row++) {
             for (int col = 0; col < gameData.getBoard_Col_Size(); col++) {
                 if (grid[row][col].containPiece()) {
-                    setPieceImageAt(grid[row][col].getPiece().getImagePath(), new BoardPoint(row, col));
+                    setPieceImageAt(grid[row][col].getPiece().getName(), new BoardPoint(row, col));
                 }
             }
         }
     }
 
-    public void setPictureSize(int board_Row_Size, int board_Col_Size){
+    public void setPictureSize () {
+
         int board_Max_Size = Math.max(board_Row_Size, board_Col_Size);
 
         pictureSize = Constant.pictureSizeList.get(board_Max_Size);
         System.out.println("Picture Size : " + pictureSize);
     }
 
-    public void set_Game_Info(GameController gameController){
+    public void setBoardViewConstrain () {
 
+        int board_Max_Size = Math.max(board_Row_Size, board_Col_Size);
+        for (int i = 0; i < board_Max_Size; i++) {
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            columnConstraints.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
+            columnConstraints.setMinWidth(10.0);
+            columnConstraints.setPrefWidth(100.0);
+            boardView.getColumnConstraints().add(columnConstraints);
+
+            RowConstraints rowConstraints = new RowConstraints();
+            rowConstraints.setMinHeight(10.0);
+            rowConstraints.setPrefHeight(30.0);
+            rowConstraints.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
+            boardView.getRowConstraints().add(rowConstraints);
+        }
+
+        if (board_Row_Size < board_Col_Size) {
+            double changeY = (double)(board_Col_Size - board_Row_Size) / 2 * pictureSize;
+
+            boardView.setLayoutY(boardView.getLayoutY() + changeY);
+        }
+        else if (board_Row_Size > board_Col_Size) {
+            double changeX = (double)(board_Row_Size - board_Col_Size) / 2 * pictureSize;
+    
+            boardView.setLayoutX(boardView.getLayoutX() + changeX);
+        }
+    }
+
+    public void set_Game_Info(GameController gameController){
+        System.out.println("Set_Board_Scene_Controller_Game_Info");
         this.gameController = gameController;
-        gameData = this.gameController.getGameData();
+        gameData = gameController.getGameData();
         
         board = gameData.getBoard();
+        System.out.println("\nPassed Game Board : \n" + gameData.getBoard().txtBoard());
         board_Row_Size = gameData.getBoard_Row_Size();
         board_Col_Size = gameData.getBoard_Col_Size();
-
-        animation_Duration = new Duration(gameData.get_Animation_Duration_In_Millis());
+        specialMode = gameData.getSpecialMode();
 
         levelNumLabel.setText(Integer.toString(gameData.getLevelNum()));
         currentScoreLabel.setText(Integer.toString(gameData.getScore()) + " / " + gameData.getTargetScore());
@@ -201,52 +263,47 @@ public class BoardSceneController implements Initializable {
         else {
             shuffleLabel.setText(INFINITY_SYMBOL);
         }
+
+        if (! specialMode) {
+            iceBlockLabel.setVisible(false);
+            iceBlockText.setVisible(false);
+        }
+        else {
+            iceBlockLabel.setText(gameData.getIceBlockDestroyed() + " / " + gameData.getTotalIceBlock());
+        }
     }
 
     //-----------------------------------------------------------------------------------------------
     // Update Image Methods
     //-----------------------------------------------------------------------------------------------
-    public void setPieceImageAt (String imagePath, BoardPoint point) {
+    public void setPieceImageAt (String pieceName, BoardPoint point) {
 
         if (board.is_Cell_Playable(point)) {
-
-            Image newImage = null;
-            if(imagePath != null){
-                newImage = new Image(imagePath);
-            }
-            fruitsViewArray[point.getRow()][point.getCol()].setImage(newImage);
+            fruitsViewArray[point.getRow()][point.getCol()].setImage(Constant.piecesImageHashMap.get(pieceName));
         }
     }
     public void setIceBlockAt (BoardPoint point) {    
         
         if (board.is_Cell_Playable(point)) {
-
-            ImageView iceBlockView = new ImageView(ICE_BLOCK_IMAGE);
-            iceBlockView.setFitWidth(pictureSize);
-            iceBlockView.setFitHeight(pictureSize);
-            
-            paneArray[point.getRow()][point.getCol()].getChildren().add(iceBlockView);
+            iceBlockViewArray[point.getRow()][point.getCol()].setImage(ICE_BLOCK_IMAGE);
         }
     }
     public void removeIceBlockAt (BoardPoint point) {
-
+        
         if (board.is_Cell_Playable(point)) {
-
-            int lastIndex = paneArray[point.getRow()][point.getCol()].getChildren().size() - 1;
-            paneArray[point.getRow()][point.getCol()].getChildren().remove(lastIndex);
+            iceBlockViewArray[point.getRow()][point.getCol()].setImage(null);
         }
     }
     public void swapImage (BoardPoint point1, BoardPoint point2) {
-        Piece piece1 = board.getPieceAt(point1);
-        Piece piece2 = board.getPieceAt(point2);
-        String imagePath1 = (piece1 == null)? null : piece1.getImagePath();
-        String imagePath2 = (piece2 == null)? null : piece2.getImagePath();
-        
-        swapAnimation(point1, point2);
-        swapAnimation(point2, point1);
-        
-        setPieceImageAt(imagePath1, point1);
-        setPieceImageAt(imagePath2, point2);
+        // insert audioclip        
+        translateAnimation(point1, point2);
+        translateAnimation(point2, point1);
+
+        // setPieceImageAt(pieceName1, point1);
+        // setPieceImageAt(pieceName2, point2);
+    }
+    public void fallImage (BoardPoint src, BoardPoint dest) {
+        translateAnimation(src, dest);
     }
     public void removeImage(BoardPoint point){
         setPieceImageAt(null, point);
@@ -261,31 +318,64 @@ public class BoardSceneController implements Initializable {
         int selectMarkIndex = paneArray[point.getRow()][point.getCol()].getChildren().size() - 1;
         paneArray[point.getRow()][point.getCol()].getChildren().remove(selectMarkIndex);
     }
-    public void swapAnimation (BoardPoint src, BoardPoint dest) {
-        // System.out.println("Animation played from : " + src.toString() + " to " + dest.toString());
-        // TranslateTransition swapTransition  = new TranslateTransition(ANIMATION_DURATION, fruitsViewArray[dest.getRow()][dest.getCol()]);
-        // swapTransition.setByX(board.getDistanceX(src, dest) * pictureSize);
-        // swapTransition.setByY(board.getDistanceY(src, dest) * pictureSize);
+    public void translateAnimation (BoardPoint src, BoardPoint dest) {
+        System.out.println("Animation played from : " + src.toString() + " to " + dest.toString());
 
-        // swapTransition.play();
+        int distanceX = board.getDistanceX(src, dest);
+        int distanceY = board.getDistanceY(src, dest);
 
-        // PauseTransition pause = new PauseTransition(ANIMATION_DURATION);
-        // pause.play();
-    }
-    public void generatePieceViewAt(String imagePath, BoardPoint dest){
-        BoardPoint src = new BoardPoint(0, dest.getCol());
-        swapAnimation(src, dest);
+        System.out.println("Distance X : " + distanceX);
+        System.out.println("Distance Y : " + distanceY);
 
-        setPieceImageAt(imagePath, dest);
+        String pieceName = null;
+        if (grid[dest.getRow()][dest.getCol()].getPiece() != null) {
+
+            pieceName = grid[dest.getRow()][dest.getCol()].getPiece().getName();
+        }
+
+        String finalPieceName = pieceName;
+
+        ImageView tempView = new ImageView(Constant.piecesImageHashMap.get(pieceName));
+        tempView.setFitWidth(pictureSize);
+        tempView.setFitHeight(pictureSize);
+
+        if (distanceX > 0 || distanceY > 0) {
+            paneArray[dest.getRow()][dest.getCol()].getChildren().add(2, tempView);
+
+            tempView.setLayoutX(tempView.getLayoutX() - (pictureSize * distanceX));
+            tempView.setLayoutY(tempView.getLayoutY() - (pictureSize * distanceY));
+        }
+        else {
+            paneArray[src.getRow()][src.getCol()].getChildren().add(2, tempView);
+        }
+        if (board.is_Within_Boundary(src)) {
+            setPieceImageAt(null, src);
+        }
+        
+        int duration_Factor = Math.max(Math.abs(distanceX), Math.abs(distanceY));
+
+        Duration animation_Duration = Duration.millis(animation_Duration_In_Millis * duration_Factor);
+
+        TranslateTransition swapTransition  = new TranslateTransition(animation_Duration, tempView);
+        swapTransition.setToX(board.getDistanceX(src, dest) * pictureSize);
+        swapTransition.setToY(board.getDistanceY(src, dest) * pictureSize);
+
+        swapTransition.setOnFinished(event -> {
+            if (distanceX > 0 || distanceY > 0) {
+                paneArray[dest.getRow()][dest.getCol()].getChildren().remove(2);
+            }
+            else {
+                paneArray[src.getRow()][src.getCol()].getChildren().remove(2);
+            }
+            setPieceImageAt(finalPieceName, dest);
+            System.out.println("Transition Finished");
+        });
+                
+        swapTransition.play();
     }
     //===============================================================================================
     
 
-    //-----------------------------------------------------------------------------------------------
-    // Swap Methods
-    //-----------------------------------------------------------------------------------------------
-    
-    //===============================================================================================
     // SWAP
     public void swap(ActionEvent event) {
         if(gameData.anyMatch()){
@@ -297,21 +387,13 @@ public class BoardSceneController implements Initializable {
         }
         else if(gameData.hasnotFall()){
 
-            catDialog("longBox","Press \"Next\" first to remove matches!", 505, 140);
+            catDialog("longBox","Press \"Next\" first to drop pieces!", 505, 140);
             setCatTimer("longBox",1500);
 
             resetSelectedPoint();
         }
         else if(selectedPoint1 != null && selectedPoint2 != null){
-            gameController.swapPieceOnBoard(selectedPoint1, selectedPoint2);
-            if (gameData.anyMatch()) {
-                SFXController.initializePlay("SFX/swapSFX.wav");
-                SFXController.play();
-            }
-            if (!gameData.anyMatch()) {
-                catDialog("longBox","No match found.", 505, 140);
-                setCatTimer("longBox",1500);
-            }
+            new Thread(() -> gameController.swapPieceOnBoard(selectedPoint1, selectedPoint2)).start();
         }
         else{
             catDialog("longBox","Please select at least two points!", 505, 140);
@@ -322,24 +404,25 @@ public class BoardSceneController implements Initializable {
     
     // NEXT STEP
     public void next(ActionEvent event) {
+        resetSelectedPoint();
+
         if(gameData.anyMatch()){
+            new Thread(() -> gameController.removeMatches()).start();
             SFXController.initializePlay("SFX/matchEliminateSFX.wav");
             SFXController.play();
 
             gameController.removeMatches();
         }
         else if(gameData.hasnotFall()){
+            new Thread(() -> gameController.fall()).start();
             SFXController.initializePlay("SFX/fallSFX.wav");
             SFXController.play();
-
-            gameController.fall();
         }
         else{
+            // UtilView.generateErrorAlert("No effect", "Create match first");
             catDialog("longBox","Create match first!", 505, 140);
             setCatTimer("longBox",1500);
         }
-
-        resetSelectedPoint();
     }
 
     // Hints
@@ -347,7 +430,15 @@ public class BoardSceneController implements Initializable {
         SFXController.initializePlay("SFX/buttonClickSFX.wav");
         SFXController.play();
 
-        if (gameData.anyHint()) {
+        if (gameData.anyMatch()) {
+            catDialog("longBox","Press \"Next\" first to remove matches !", 505, 140);
+            setCatTimer("longBox",1500);
+        }
+        else if (gameData.hasnotFall()) {
+            catDialog("longBox","Press \"Next\" first to drop Pieces !", 505, 140);
+            setCatTimer("longBox",1500);
+        }
+        else if (gameData.anyHint()) {
             BoardPoint[] hintPosition = gameData.getHint();
             int remainingHints = gameData.getRemainingHints();
     
@@ -361,23 +452,26 @@ public class BoardSceneController implements Initializable {
             remainingHints--;
             gameData.setRemainingHints(remainingHints);
         }
+        else {
+            catDialog("longBox","No Hint !", 505, 140);
+            setCatTimer("longBox",1500);
+        }
     }
     
     // SHUFFLE
-    public void shuffle(ActionEvent event) {
+    public void shuffle (ActionEvent event) {
         SFXController.initializePlay("SFX/swapSFX.wav");
         SFXController.play();
 
         if (gameData.anyShuffle()) {
             int shuffleLeft = gameData.getRemainingShuffle();
 
-            boardView.getChildren().clear();
-
             resetSelectedPoint();
             gameData.resetMatchData();
             gameData.resetFallData();
 
             gameController.initBoard();
+            System.out.println("Controller Board : \n" + board.txtBoard());
             initiatePiecesView();
             
             shuffleLeft--; //Decrease remaining Shuffle
@@ -429,7 +523,79 @@ public class BoardSceneController implements Initializable {
     public void deductMovesLeft() {
         movesLeftLabel.setText(Integer.toString(gameData.getRemainingStep()));
     }
+    public void update_Ice_Block_Destroyed() {
+        iceBlockLabel.setText(gameData.getIceBlockDestroyed() + " / " + gameData.getTotalIceBlock());
+    }
+
     
+    //-----------------------------------------------------------------------------------------------
+    // Button Activation & Deactivation
+    //-----------------------------------------------------------------------------------------------
+    
+    // Activate Swap & Next Button
+    public void activate_Swap_Next_Button () {
+        swapButton.setDisable(false);
+        nextButton.setDisable(false);
+    }
+    
+    // Activate user ability to interact with board
+    public void activate_Board_Select_Point () {
+        // Activate Button Handler
+        wait_For_Animation = false;
+    }
+    
+    // Activate Shuffle & Hint Button
+    public void activate_Shuffle_Hint_Button () {
+        shuffleButton.setDisable(false);
+        hintsButton.setDisable(false);
+    }
+    
+    // Activate Home & Settings Button
+    public void activate_Home_Settings_Button () {
+        homeButton.setDisable(false);
+        settingsButton.setDisable(false);
+    }
+
+    public void activate_All_Buttons () {
+        activate_Home_Settings_Button();
+        activate_Shuffle_Hint_Button();
+        activate_Swap_Next_Button();
+        activate_Board_Select_Point();
+    }
+
+    // Dectivate Swap & Next Button
+    public void deactivate_Swap_Next_Button () {
+        swapButton.setDisable(true);
+        nextButton.setDisable(true);
+    }
+    
+    // Dectivate user ability to interact with board
+    public void deactivate_Board_Select_Point () {
+        // Deactivate Button Handler
+        wait_For_Animation = true;
+    }
+    
+    // Dectivate Shuffle & Hint Button
+    public void deactivate_Shuffle_Hint_Button () {
+        shuffleButton.setDisable(true);
+        hintsButton.setDisable(true);
+    }
+    
+    // Dectivate Home & Settings Button
+    public void deactivate_Home_Settings_Button () {
+        homeButton.setDisable(true);
+        settingsButton.setDisable(true);
+    }
+
+    public void deactivate_All_Buttons () {
+        deactivate_Home_Settings_Button();
+        deactivate_Shuffle_Hint_Button();
+        deactivate_Swap_Next_Button();
+        deactivate_Board_Select_Point();
+    }
+    //===============================================================================================
+    
+
     public void saveExit(ActionEvent event) throws Exception {
         SFXController.initializePlay("SFX/buttonClickSFX.wav");
         SFXController.play();
@@ -438,13 +604,13 @@ public class BoardSceneController implements Initializable {
         // Alert
         System.out.println("Save Exit Alert");
         Alert alert = new Alert(AlertType.CONFIRMATION);
-
+        
         Image dialogIcon = new Image(Constant.catHashMap.get("sadCat"));
         ImageView dialogView = new ImageView(dialogIcon);
         dialogView.setFitHeight(80);
         dialogView.setFitWidth(100);
         alert.getDialogPane().setGraphic(dialogView);
-        
+
         alert.setTitle("Save & Exit");
         alert.setHeaderText("You're about to exit the current game!");
         alert.setContentText("Do you want to save?");
@@ -498,13 +664,17 @@ public class BoardSceneController implements Initializable {
         SFXController.initializePlay("SFX/selectSFX.wav");
         SFXController.play();
 
-        if(board.any_piece(point)){
+        if(board.any_piece(point) && ! wait_For_Animation){
 
             if (selectedPoint1 != null) {
                 if (selectedPoint2 == null){
                     if(board.calculateDistance(selectedPoint1, point) == 1){
                         addSelectMarkImage(point);
                         selectedPoint2 = point;
+
+                        if (gameData.getAutomaticMode()) {
+                            new Thread(() -> gameController.swapPieceOnBoard(selectedPoint1, selectedPoint2)).start();
+                        }
                     }
                     else {
                         removeSelectMarkImage(selectedPoint1);
@@ -546,8 +716,6 @@ public class BoardSceneController implements Initializable {
         Parent startScene = loader.load();
         WinSceneController controller = loader.getController();
 
-        controller.setGameController(gameController);
-
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
@@ -557,13 +725,11 @@ public class BoardSceneController implements Initializable {
         Parent startScene = loader.load();
         LoseSceneController controller = loader.getController();
 
-        controller.setGameController(gameController);
-
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
     }
-    public void finalWin(ActionEvent event) throws Exception {
+    public void finalWin() throws Exception {
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/FinalWinScene.fxml"));
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
@@ -572,13 +738,19 @@ public class BoardSceneController implements Initializable {
 
     // special win/lose scenarios
     public void specialWin() throws Exception {
-        Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/SpecialWinScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/SpecialWinScene.fxml"));
+        Parent startScene = loader.load();
+        WinSceneController controller = loader.getController();
+
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
     }
     public void specialLose() throws Exception {
-        Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/SpecialLoseScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/SpecialLoseScene.fxml"));
+        Parent startScene = loader.load();
+        LoseSceneController controller = loader.getController();
+
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();

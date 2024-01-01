@@ -11,6 +11,14 @@ public enum GameMode {
         new ArrayList<>(){{
             add(Level.LEVEL_1);
             add(Level.LEVEL_2);
+            add(Level.LEVEL_3);
+            add(Level.LEVEL_4);
+            add(Level.LEVEL_5);
+            add(Level.LEVEL_6);
+            add(Level.LEVEL_7);
+            add(Level.LEVEL_8);
+            add(Level.LEVEL_9);
+            add(Level.LEVEL_10);
         }}
     ),
     Special_Game_Mode(
@@ -19,6 +27,14 @@ public enum GameMode {
         new ArrayList<>(){{
             add(Level.LEVEL_C1);
             add(Level.LEVEL_C2);
+            add(Level.LEVEL_C3);
+            add(Level.LEVEL_C4);
+            add(Level.LEVEL_C5);
+            add(Level.LEVEL_C6);
+            add(Level.LEVEL_C7);
+            add(Level.LEVEL_C8);
+            add(Level.LEVEL_C9);
+            add(Level.LEVEL_C10);
         }}
     );
     

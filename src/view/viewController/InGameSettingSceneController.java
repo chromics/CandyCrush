@@ -34,6 +34,7 @@ public class InGameSettingSceneController implements Initializable {
                 VolumeController.setBoardSceneMusicVolume(sliderMusic.getValue());
                 BoardSceneController.musicController.setVolume(sliderMusic.getValue());
                 BoardSceneController.musicController.setMusicVolume();
+            }
         });
     }
 

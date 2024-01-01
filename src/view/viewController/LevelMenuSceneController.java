@@ -18,14 +18,9 @@ import view.Main;
 public class LevelMenuSceneController {
     private static Stage stage;
     private Scene scene;
-    private static int currentLevelNum;
 
     public static void setStage(Stage dialogStage) {
         stage = dialogStage;
-    }
-
-    public static int getCurrentLevelNum() {
-        return currentLevelNum;
     }
 
     public void selectLevel(ActionEvent event) throws Exception {
@@ -37,7 +32,9 @@ public class LevelMenuSceneController {
         int levelIndex = Integer.parseInt(buttonID.replaceAll("[^0-9]", "")) - 1;
         System.out.println("Level Index : " + levelIndex);
 
-        StartSceneController.newGame(levelIndex, event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
+        Main.setLevelIndex(levelIndex);
+
+        StartSceneController.newGame(event, getClass().getResource("/view/fxml/BoardScene.fxml"), getClass().getResource("/view/fxml/ObjectiveDialogBox.fxml"));
     }
 
     public void home() throws Exception {

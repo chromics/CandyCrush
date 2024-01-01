@@ -18,11 +18,42 @@ import javafx.stage.Stage;
 import javafx.scene.image.*;
 import javafx.stage.Window;
 import view.viewController.*;
+
+import controller.GameController;
+import data.constant.GameMode;
 import data.GameData;
 
 public class Main extends Application {
     public static Stage stage;
-    private static GameData gameData;
+    private static GameController gameController = new GameController();
+
+    //-----------------------------------------------------------------------------------------------
+    // GameController
+    //-----------------------------------------------------------------------------------------------
+    public static void setGameMode (GameMode gameMode) {
+        gameController.getGameData().setGameMode(gameMode);
+    }
+    public static void setLevelIndex (int levelIndex) {
+        gameController.getGameData().setLevelIndex(levelIndex);
+    }
+    public static void loadGame (GameData gameData) {
+        gameController.setGameData(gameData);
+    }
+    public static void initiateNewGame () {
+        gameController.initNewGame();
+    }
+    public static void setBoardSceneController (BoardSceneController boardSceneController) {
+        gameController.setBoardSceneController(boardSceneController);
+    }
+    public static void restartLevel () {
+        gameController.getGameData().restartLevel();
+        gameController.initNewGame();
+    }
+    public static void nextLevel () {
+        gameController.getGameData().nextLevel();
+        gameController.initNewGame();
+    }
+    //===============================================================================================
 
     @Override
     public void start(Stage primaryStage) throws Exception{

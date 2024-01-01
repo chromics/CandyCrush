@@ -18,19 +18,33 @@ public enum MapTemplate implements Serializable{
             // grid[5][4].setNotPlayable();
         }
     }, 
-    I{
+    OCTAGON{
         @Override
         public void initiate_Unplayable_Cell(Cell[][] grid, int board_Row_Size, int board_Col_Size){
-            
+                grid[0][0].setNotPlayable();
+                grid[0][1].setNotPlayable();
+                grid[1][0].setNotPlayable();
+
+                grid[board_Row_Size - 1][0].setNotPlayable();
+                grid[board_Row_Size - 2][0].setNotPlayable();
+                grid[board_Row_Size - 1][1].setNotPlayable();
+
+                grid[0][board_Col_Size - 1].setNotPlayable();
+                grid[0][board_Col_Size - 2].setNotPlayable();
+                grid[1][board_Col_Size - 1].setNotPlayable();
+
+                grid[board_Row_Size - 1][board_Col_Size - 1].setNotPlayable();
+                grid[board_Row_Size - 2][board_Col_Size - 1].setNotPlayable();
+                grid[board_Row_Size - 1][board_Col_Size - 2].setNotPlayable();
         }
     }, 
-    HEART{
+    M{
         @Override
         public void initiate_Unplayable_Cell(Cell[][] grid, int board_Row_Size, int board_Col_Size){
-            
+            // grid[]
         }
     }, 
-    CIRCLE{
+    T{
         @Override
         public void initiate_Unplayable_Cell(Cell[][] grid, int board_Row_Size, int board_Col_Size){
             

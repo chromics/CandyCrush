@@ -120,19 +120,21 @@ public class LoadSceneController implements Initializable {
             
             GameData loadedGameData = SaveLoadController.loadGame(selectedGameFileName);
 
-            BoardSceneController view = loader.getController();
-            GameController gameController = new GameController(view, loadedGameData);
+            Main.setBoardSceneController(loader.getController());
+            Main.loadGame(loadedGameData);
         
             Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
             scene = new Scene(boardScene);
             Main.stage.setScene(this.scene);
             Main.stage.show();
 
+            //! deleteFile(event);
             StartSceneController.stopMusic();
             StartSceneController.stopWind();
 
             VolumeController.setBoardSceneMusicVolume(70);
             BoardSceneController.initMusic();
+
         } 
         else {
             UtilView.generateErrorAlert("No Effect", "Please select a file to be loaded");
