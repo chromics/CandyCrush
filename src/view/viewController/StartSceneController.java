@@ -1,5 +1,6 @@
 package view.viewController;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -28,36 +29,37 @@ import view.viewController.BoardSceneController;
 
 import javax.sound.sampled.*;
 
-public class StartSceneController {
+public class StartSceneController implements Initializable {
 
     private static Scene scene;
     private static BoardSceneController boardSceneController;
-    private static Clip music;
-    private static Clip wind;
-
     private static GameMode currentGameMode;
 
-    public static void initializeMusic() throws Exception {
-        AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(MusicController.class.getResource("/data/constant/audio/springDay.wav")));
-        music = AudioSystem.getClip();
-        music.open(audioInput);
-        music.loop(Clip.LOOP_CONTINUOUSLY);
-    }
-    public static void initializeWind() throws Exception {
-        AudioInputStream audioInput = AudioSystem.getAudioInputStream(Objects.requireNonNull(MusicController.class.getResource("/data/constant/audio/windSFX.wav")));
-        wind = AudioSystem.getClip();
-        wind.open(audioInput);
-        wind.loop(Clip.LOOP_CONTINUOUSLY);
-    }
+    public static MusicController musicController;
+    public static MusicController windController;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        musicController.setMusicVolume();
+        windController.setMusicVolume();
+    }
+    public static void initMusic() throws Exception {
+        musicController = new MusicController(VolumeController.getStartSceneMusicVolume());
+        musicController.initMusicController("/data/constant/audio/springDay.wav");
+        musicController.playMusic();
+
+        windController = new MusicController(VolumeController.getStartSceneWindVolume());
+        windController.initMusicController("/data/constant/audio/windSFX.wav");
+        windController.playMusic();
+    }
+    public static void stopMusic() {
+        musicController.stopMusic();
+    }
+    public static void stopWind() {
+        windController.stopMusic();
+    }
     public static GameMode getCurrentGameMode() {
         return currentGameMode;
-    }
-    public static Clip getMusic() {
-        return music;
-    }
-    public static Clip getWind() {
-        return wind;
     }
     public static void setCurrentGameMode(GameMode gameMode) {
         currentGameMode = gameMode;
@@ -74,8 +76,11 @@ public class StartSceneController {
         Main.stage.show();
         gameObjective(event, dialogURL);
 
-        MusicController.stopMusic(music);
-        MusicController.stopMusic(wind);
+        musicController.stopMusic();
+        windController.stopMusic();
+
+        VolumeController.setBoardSceneMusicVolume(70);
+        BoardSceneController.initMusic();
     }
 //    public static void newCustomGame(ActionEvent event, URL mainURL, URL dialogURL, int gridWidth, int gridHeight, int movesCount, int shuffleCount, int targetScore, Clip BGM, GameMode gamemode) throws Exception {
 //        FXMLLoader loader = new FXMLLoader(mainURL);
@@ -135,6 +140,7 @@ public class StartSceneController {
         Main.stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         scene = new Scene(boardScene);
         Main.stage.setScene(scene);
+        boardScene.requestFocus();
         Main.stage.show();
     }
 
@@ -153,7 +159,12 @@ public class StartSceneController {
         dialog.getIcons().add(dialogIcon);
         dialog.setTitle("Volume Settings");
 
-        Parent boardScene = FXMLLoader.load(getClass().getResource("/view/fxml/MenuSetting.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/MenuSetting.fxml"));
+        Parent boardScene = loader.load();
+
+//        MenuSettingController settingsView = loader.getController();
+//        settingsView.setInitVolume();
+
         Scene scene = new Scene(boardScene);
         dialog.setScene(scene);
         dialog.show();

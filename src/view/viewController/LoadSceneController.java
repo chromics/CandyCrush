@@ -10,11 +10,16 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.geometry.Insets;
@@ -34,10 +39,10 @@ public class LoadSceneController implements Initializable {
     private Button selectedButton;
     private String selectedGameFileName;
     private Map<String, String> fileNameList;
-    private ObservableList<Button> loadList;
+    private ObservableList<HBox> loadList;
     
     @FXML
-    private ListView<Button> loadListView;
+    private ListView<HBox> loadListView;
 
     public void initialize(URL location, ResourceBundle resourceBundle) {
         try {
@@ -74,6 +79,7 @@ public class LoadSceneController implements Initializable {
         System.out.println();
 
         for(String fileName : fileNameList.keySet()){
+
             Button selectFile = new Button();
             selectFile.setOnAction(e -> {
                 selectGameFile(selectFile, fileName);
@@ -84,15 +90,20 @@ public class LoadSceneController implements Initializable {
             selectFile.setWrapText(true);
             selectFile.setFont(font);
 
-            selectFile.maxWidth(Double.MAX_VALUE);
-            selectFile.maxHeight(Double.MAX_VALUE);
-            selectFile.setPadding(Insets.EMPTY);
+            selectFile.setAlignment(Pos.CENTER_LEFT);
+            selectFile.setMaxWidth(Double.MAX_VALUE);
+            selectFile.setMaxHeight(Double.MAX_VALUE);
+//            selectFile.setPadding(Insets.EMPTY);
 
-            loadList.add(selectFile);
+            HBox hBox = new HBox();
+            HBox.setHgrow(selectFile, Priority.ALWAYS);
+            hBox.getChildren().add(selectFile);
+//            hBox.setMinWidth(1000);
+
+            loadList.add(hBox);
 
             SaveLoadController.loadGame(fileName);
         }
-
         loadListView.setItems(loadList);
     }
 
@@ -117,8 +128,8 @@ public class LoadSceneController implements Initializable {
             Main.stage.setScene(this.scene);
             Main.stage.show();
 
-            MusicController.stopMusic(StartSceneController.getMusic());
-            MusicController.stopMusic(StartSceneController.getWind());
+            StartSceneController.stopMusic();
+            StartSceneController.stopWind();
         } 
         else {
             UtilView.generateErrorAlert("No Effect", "Please select a file to be loaded");

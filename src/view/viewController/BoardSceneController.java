@@ -67,6 +67,7 @@ public class BoardSceneController implements Initializable {
     private int board_Col_Size;
     private AudioClip sFX;
     private Clip music;
+    private static MusicController musicController;
 
     @FXML
     private GridPane boardView;
@@ -416,7 +417,6 @@ public class BoardSceneController implements Initializable {
         
         InGameSettingSceneController settingsView = loader.getController();
         settingsView.setGameController(gameController);
-        
 
         Scene scene = new Scene(boardScene);
         dialog.setScene(scene);
@@ -460,19 +460,7 @@ public class BoardSceneController implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             // Save
             System.out.println("Save Action");
-            // SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
-            // SaveLoadControllerSer.saveGame(gameData);
             SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
-            // SaveLoadController.save_Game(gameData, "SaveName");
-            
-            Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            saveAlert.setTitle("Success!");
-            saveAlert.setHeaderText("Save successful!");
-            saveAlert.setContentText("Your file has been successfully saved.");
-            saveAlert.setX(Main.stage.getX() + 625);
-            saveAlert.setY(Main.stage.getY() - 55);
-            saveAlert.showAndWait();
-            
             backToStartScene();
         }
         else if (result.isPresent() && result.get() == ButtonType.NO){
@@ -490,12 +478,8 @@ public class BoardSceneController implements Initializable {
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
-
-        StartSceneController.initializeMusic();
-        MusicController.playMusic(StartSceneController.getMusic());
-
-        StartSceneController.initializeWind();
-        MusicController.playMusic(StartSceneController.getWind());
+        BoardSceneController.stopMusic();
+        StartSceneController.initMusic();
     }
     
     public void resetSelectedPoint(){
@@ -651,7 +635,6 @@ public class BoardSceneController implements Initializable {
         }
 
     }
-
     public void setCatTimer(String boxType, long delay) {
         TimerTask task = new TimerTask()
         {
@@ -662,6 +645,14 @@ public class BoardSceneController implements Initializable {
 
         };
         catDialogTimer.schedule(task,delay);
+    }
+    public static void initMusic() throws Exception {
+        musicController = new MusicController(VolumeController.getBoardSceneMusicVolume());
+        musicController.initMusicController("/data/constant/audio/springDay.wav");
+        musicController.playMusic();
+    }
+    public static void stopMusic() {
+        musicController.stopMusic();
     }
 
 }

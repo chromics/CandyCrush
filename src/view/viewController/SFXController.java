@@ -17,9 +17,9 @@ public class SFXController {
         }
     }
 
-    public static void setInitVolume(float volume) {
-        FloatControl gainControl = (FloatControl) sfxClip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(20f * (float) Math.log10(volume));
+    public static void setInitVolume(float value) {
+        FloatControl volume = (FloatControl) sfxClip.getControl(FloatControl.Type.MASTER_GAIN);
+        volume.setValue(value);
     }
 
     public static void play() {

@@ -3,38 +3,33 @@ package view.viewController;
 import controller.GameController;
 import data.constant.GameMode;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Pagination;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 import javafx.util.Callback;
-import view.Main;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import javafx.scene.image.ImageView;
-import java.awt.Image;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.scene.control.MenuItem;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 public class CustomGameInputDialogController implements Initializable {
     @FXML
@@ -55,6 +50,16 @@ public class CustomGameInputDialogController implements Initializable {
     private AnchorPane pane;
     @FXML
     private Button selectMapButton;
+    @FXML
+    private MenuButton musicMenuButton;
+    @FXML
+    private MenuItem track1;
+    @FXML
+    private MenuItem track2;
+    @FXML
+    private MenuItem track3;
+    @FXML
+    private Label trackLabel;
 
     private int gridWidth;
     private int gridHeight;
@@ -71,6 +76,25 @@ public class CustomGameInputDialogController implements Initializable {
         initializeTemplateImages();
         templatePagination.setDisable(true);
         selectMapButton.setDisable(true);
+
+        track1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeTrack(event);
+            }
+        });
+        track2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeTrack(event);
+            }
+        });
+        track3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeTrack(event);
+            }
+        });
     }
 
     public void generateMap() {
@@ -143,7 +167,6 @@ public class CustomGameInputDialogController implements Initializable {
     }
 
     public VBox createPage(int index) {
-
         try {
             File dir = new File(CustomGameInputDialogController.class.getResource("templateImages").toURI());
             filesJpg = dir.listFiles();
@@ -179,5 +202,10 @@ public class CustomGameInputDialogController implements Initializable {
         System.out.println("template selected!");
     }
 
+    public void changeTrack(ActionEvent event) {
+        MenuItem sourceItem = (MenuItem) (event.getSource());
+        String menuLabel = sourceItem.getText();
+        trackLabel.setText("[ " + menuLabel + " ]");
+    }
 
 }

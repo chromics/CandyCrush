@@ -19,8 +19,8 @@
             <Image url="@../../data/constant/image/highVolumeIcon.png" />
          </image>
       </ImageView>
-      <Slider fx:id="sliderMusic" layoutX="6.0" layoutY="21.0" prefHeight="13.0" prefWidth="127.0" value="50.0" />
-      <Slider fx:id="sliderSFX" layoutX="6.0" layoutY="47.0" prefHeight="13.0" prefWidth="127.0" value="50.0" />
+      <Slider fx:id="musicSlider" layoutX="6.0" layoutY="21.0" prefHeight="13.0" prefWidth="127.0" value="70.0" />
+      <Slider fx:id="windSlider" layoutX="6.0" layoutY="47.0" prefHeight="13.0" prefWidth="127.0" value="70.0" />
       <Label layoutX="10.0" layoutY="34.0" prefHeight="13.0" prefWidth="65.0" text="SFX Volume">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />

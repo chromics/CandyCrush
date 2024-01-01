@@ -9,12 +9,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.viewController.NewGameInputDialogController">
    <children>
-      <Label layoutX="35.0" layoutY="20.0" style="-fx-font-family: Minecraftia;" text="select a game mode...">
+      <Label layoutX="35.0" layoutY="20.0" style="-fx-font-family: Minecraftia;" text="select a game mode..." textFill="#5e0f0f">
          <font>
             <Font name="HP Simplified Hans Regular" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="normalModeToggle" contentDisplay="RIGHT" layoutX="38.0" layoutY="63.0" mnemonicParsing="false" onAction="#setGameMode" prefHeight="57.0" prefWidth="146.0" style="-fx-font-family: Minecraftia;" stylesheets="@/data/constant/styles2.css" text="Normal mode" textAlignment="RIGHT" wrapText="true">
+      <Button fx:id="normalModeToggle" contentDisplay="RIGHT" layoutX="38.0" layoutY="63.0" mnemonicParsing="false" onAction="#setGameMode" prefHeight="57.0" prefWidth="146.0" style="-fx-font-family: Minecraftia;" stylesheets="@/data/constant/styles2.css" text="Normal mode" textAlignment="RIGHT" textFill="#5e0f0f" wrapText="true">
          <graphic>
             <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -26,7 +26,7 @@
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="specialModeToggle" contentDisplay="RIGHT" layoutX="200.0" layoutY="63.0" mnemonicParsing="false" onAction="#setGameMode" prefHeight="57.0" prefWidth="146.0" style="-fx-font-family: Minecraftia;" stylesheets="@/data/constant/styles2.css" text="Special mode" textAlignment="RIGHT" wrapText="true">
+      <Button fx:id="specialModeToggle" contentDisplay="RIGHT" layoutX="200.0" layoutY="63.0" mnemonicParsing="false" onAction="#setGameMode" prefHeight="57.0" prefWidth="146.0" style="-fx-font-family: Minecraftia;" stylesheets="@/data/constant/styles2.css" text="Special mode" textAlignment="RIGHT" textFill="#5e0f0f" wrapText="true">
          <graphic>
             <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -38,7 +38,7 @@
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="customLevel" alignment="CENTER" contentDisplay="RIGHT" layoutX="361.0" layoutY="63.0" mnemonicParsing="false" onAction="#customizeLevel" prefHeight="57.0" prefWidth="146.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles2.css" text="Custom Level" textAlignment="RIGHT" wrapText="true">
+      <Button fx:id="customLevel" alignment="CENTER" contentDisplay="RIGHT" layoutX="361.0" layoutY="63.0" mnemonicParsing="false" onAction="#customizeLevel" prefHeight="57.0" prefWidth="146.0" style="-fx-font-family: Minecraftia;" styleClass="centered-text" stylesheets="@/data/constant/styles2.css" text="Custom Level" textAlignment="RIGHT" textFill="#5e0f0f" wrapText="true">
          <graphic>
             <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>

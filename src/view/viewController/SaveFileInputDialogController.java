@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import controller.SaveLoadController;
+import data.constant.Constant;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.lang.reflect.Method;
@@ -69,21 +72,29 @@ public class SaveFileInputDialogController {
         SFXController.initializePlay("SFX/buttonClickSFX.wav");
         SFXController.play();
 
-
         String fileName = textField.getText();
-        System.out.println("Input Filed Name : " + fileName);
-        if (fileName == null) {
+        System.out.println("Input File Name : " + fileName);
+        if (fileName.isBlank()) {
             inputError();
+            return;
         }
 
         SaveLoadController.save_Game(BoardSceneController.getGameData(), fileName);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        javafx.scene.image.Image dialogIcon = new Image(Constant.catHashMap.get("meowCat"));
+        ImageView dialogView = new ImageView(dialogIcon);
+        dialogView.setFitHeight(80);
+        dialogView.setFitWidth(80);
+        alert.getDialogPane().setGraphic(dialogView);
+
         alert.setTitle("Success!");
-        alert.setHeaderText("Save successful!");
-        alert.setContentText("Your file has been successfully saved.");
-        alert.setX(Main.stage.getX() + 625);
+        alert.setHeaderText("Your file has been successfully saved!");
+        alert.setContentText("Your file has been successfully saved at: " + SaveLoadController.getCurrentFilePath());
+        alert.setX(Main.stage.getX() + 600);
         alert.setY(Main.stage.getY() - 55);
+
         alert.showAndWait();
 
         System.out.println("save fired!");

@@ -23,7 +23,7 @@
          <font>
             <Font size="9.0" />
          </font></CheckBox>
-      <Label layoutX="38.0" layoutY="58.0" style="-fx-font-family: Minecraftia;" text="Custom grid size :" />
+      <Label layoutX="38.0" layoutY="58.0" style="-fx-font-family: Minecraftia;" text="Board size :" />
       <TextField fx:id="shuffleCountTextField" layoutX="38.0" layoutY="131.0" prefHeight="25.0" prefWidth="138.0" promptText="ex. '3'" stylesheets="@/data/constant/styles5.css" />
       <Label layoutX="38.0" layoutY="110.0" style="-fx-font-family: Minecraftia;" text="Shuffle count :" />
       <TextField fx:id="targetScoreTextField" layoutX="37.0" layoutY="233.0" prefHeight="25.0" prefWidth="138.0" promptText="ex. '1000'" stylesheets="@/data/constant/styles5.css" />
@@ -32,27 +32,27 @@
       <Label layoutX="37.0" layoutY="162.0" style="-fx-font-family: Minecraftia;" text="Moves count :" />
       <Pagination fx:id="templatePagination" layoutX="217.0" layoutY="110.0" pageCount="3" prefHeight="130.0" prefWidth="143.0" style="-fx-background-color: #FFFFFF;" />
       <Button layoutX="219.0" layoutY="312.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#generateMap" prefHeight="42.0" prefWidth="143.0" style="-fx-font-family: Minecraftia;" text="Generate map" underline="true" wrapText="true" />
-      <CheckBox fx:id="customMapCheckbox" layoutX="217.0" layoutY="84.0" mnemonicParsing="false" onAction="#toggleTemplateMap" prefHeight="4.0" prefWidth="143.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles5.css" text="Custom maps">
+      <CheckBox fx:id="customMapCheckbox" layoutX="217.0" layoutY="84.0" mnemonicParsing="false" onAction="#toggleTemplateMap" prefHeight="4.0" prefWidth="143.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles5.css" text="Template maps">
          <font>
             <Font size="9.0" />
          </font></CheckBox>
-      <MenuButton layoutX="36.0" layoutY="273.0" mnemonicParsing="false" prefHeight="12.0" prefWidth="142.0" style="-fx-font-family: Minecraftia;" text="Customize BGM">
+      <MenuButton layoutX="36.0" layoutY="273.0" mnemonicParsing="false" prefHeight="12.0" prefWidth="142.0" style="-fx-font-family: Minecraftia;" text="BGM Track 🎶">
         <items>
-          <MenuItem mnemonicParsing="false" text="Spring Day" />
-          <MenuItem mnemonicParsing="false" text="Default Theme" />
-            <MenuItem mnemonicParsing="false" text="Special Theme ✨" />
+          <MenuItem fx:id="track1" mnemonicParsing="false" onAction="#changeTrack" text="Spring Day" />
+          <MenuItem fx:id="track2" mnemonicParsing="false" onAction="#changeTrack" text="Default Theme" />
+            <MenuItem fx:id="track3" mnemonicParsing="false" onAction="#changeTrack" text="Special Theme ✨" />
         </items>
          <font>
             <Font size="8.0" />
          </font>
       </MenuButton>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="61.0" layoutX="35.0" layoutY="324.0" stroke="WHITE" strokeType="INSIDE" width="143.0" />
-      <Label layoutX="53.0" layoutY="353.0" maxHeight="200.0" maxWidth="200.0" prefHeight="25.0" prefWidth="132.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles5.css" text="🎶 [ Default Theme ] 🎶" textAlignment="CENTER" wrapText="true">
+      <Label fx:id="trackLabel" alignment="CENTER" layoutX="40.0" layoutY="349.0" maxHeight="200.0" maxWidth="200.0" prefHeight="25.0" prefWidth="132.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles5.css" text="[ Default Theme ]" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <Label layoutX="63.0" layoutY="331.0" maxHeight="200.0" maxWidth="200.0" prefHeight="17.0" prefWidth="132.0" style="-fx-font-family: Minecraftia;" stylesheets="@/data/constant/styles5.css" text="Now selected :" textAlignment="CENTER" wrapText="true">
+      <Label layoutX="65.0" layoutY="337.0" maxHeight="200.0" maxWidth="200.0" prefHeight="17.0" prefWidth="132.0" style="-fx-font-family: Minecraftia;" stylesheets="@/data/constant/styles5.css" text="Now selected :" textAlignment="CENTER" underline="true" wrapText="true">
          <font>
             <Font size="10.0" />
          </font>
