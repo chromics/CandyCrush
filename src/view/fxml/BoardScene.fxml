@@ -5,9 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -42,17 +40,17 @@
       </GridPane>
       <Text layoutX="486.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Moves  left :">
          <font>
-            <Font name="HP Simplified Hans Regular" size="18.0" />
+            <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Text>
       <Text layoutX="486.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Score :">
          <font>
-            <Font name="HP Simplified Hans Regular" size="18.0" />
+            <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Text>
       <Text fx:id="iceBlockText" layoutX="486.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Ice Block :">
          <font>
-            <Font name="HP Simplified Hans Regular" size="18.0" />
+            <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Text>
       <Button fx:id="swapButton" layoutX="489.0" layoutY="379.0" mnemonicParsing="false" onAction="#swap" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Swap" textFill="#5e0f0f">
@@ -89,19 +87,19 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label fx:id="movesLeftLabel" layoutX="621.0" layoutY="92.0" style="-fx-font-family: Minecraftia;" text="-" textFill="#5e0f0f">
+      <Label fx:id="movesLeftLabel" layoutX="600.0" layoutY="97.0" style="-fx-font-family: Minecraftia;" text="-" textFill="#5e0f0f">
          <font>
-            <Font name="HP Simplified Hans Regular" size="18.0" />
+            <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="currentScoreLabel" layoutX="575.0" layoutY="60.0" style="-fx-font-family: Minecraftia;" text="-" textFill="#5e0f0f">
+      <Label fx:id="currentScoreLabel" layoutX="562.0" layoutY="65.0" style="-fx-font-family: Minecraftia;" text="-" textFill="#5e0f0f">
          <font>
-            <Font name="HP Simplified Hans Regular" size="18.0" />
+            <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="iceBlockLabel" layoutX="595.0" layoutY="31.0" style="-fx-font-family: Minecraftia;" text="-">
+      <Label fx:id="iceBlockLabel" layoutX="589.0" layoutY="35.0" style="-fx-font-family: Minecraftia;" text="-">
          <font>
-            <Font name="HP Simplified Hans Regular" size="18.0" />
+            <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Label>
       <Label fx:id="shuffleLabel" layoutX="743.0" layoutY="18.0" style="-fx-font-family: Minecraft;" text="3">

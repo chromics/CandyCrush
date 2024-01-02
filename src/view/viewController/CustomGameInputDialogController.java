@@ -19,6 +19,7 @@ import javafx.util.Callback;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +33,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 public class CustomGameInputDialogController implements Initializable {
-    @FXML
-    private TextField gridSizeTextField;
+//    @FXML
+//    private TextField gridSizeTextField;
     @FXML
     private TextField movesCountTextField;
     @FXML
@@ -60,6 +61,26 @@ public class CustomGameInputDialogController implements Initializable {
     private MenuItem track3;
     @FXML
     private Label trackLabel;
+    @FXML
+    private MenuButton widthMenuButton;
+    @FXML
+    private MenuButton heightMenuButton;
+    @FXML
+    private MenuItem w1;
+    @FXML
+    private MenuItem w2;
+    @FXML
+    private MenuItem w3;
+    @FXML
+    private MenuItem w4;
+    @FXML
+    private MenuItem h1;
+    @FXML
+    private MenuItem h2;
+    @FXML
+    private MenuItem h3;
+    @FXML
+    private MenuItem h4;
 
     private int gridWidth;
     private int gridHeight;
@@ -76,7 +97,6 @@ public class CustomGameInputDialogController implements Initializable {
         initializeTemplateImages();
         templatePagination.setDisable(true);
         selectMapButton.setDisable(true);
-
         track1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -95,31 +115,88 @@ public class CustomGameInputDialogController implements Initializable {
                 changeTrack(event);
             }
         });
+
+        w1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeGridWidthSize(event);
+            }
+        });
+        w2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeGridWidthSize(event);
+            }
+        });
+        w3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeGridWidthSize(event);
+            }
+        });
+        w4.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeGridWidthSize(event);
+            }
+        });
+
+        h1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeGridHeightSize(event);
+            }
+        });
+        h2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeGridHeightSize(event);
+            }
+        });
+        h3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeGridHeightSize(event);
+            }
+        });
+        h4.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                changeGridHeightSize(event);
+            }
+        });
+
     }
 
     public void generateMap() {
-        if (gridSizeTextField.getText() == null) {
-            UtilView.generateErrorAlert("Error!", "Custom grid size field left empty!");
-        }
-        else if (gridSizeTextField != null) {
-            String gridSize = gridSizeTextField.getText();
-            int gridSizeNum = Integer.parseInt(gridSize.replaceAll("[^0-9]", ""));
-            gridWidth = Integer.parseInt(Integer.toString(gridSizeNum).substring(0, 1));
-            gridHeight = Integer.parseInt(Integer.toString(gridSizeNum).substring(1, 2));
-        }
+//        if (gridSizeTextField.getText() == null) {
+//            UtilView.generateErrorAlert("Error!", "Custom grid size field left empty!");
+//        }
+//        else if (gridSizeTextField != null) {
+//            String gridSize = gridSizeTextField.getText();
+//            int gridSizeNum = Integer.parseInt(gridSize.replaceAll("[^0-9]", ""));
+//            gridWidth = Integer.parseInt(Integer.toString(gridSizeNum).substring(0, 1));
+//            gridHeight = Integer.parseInt(Integer.toString(gridSizeNum).substring(1, 2));
+//        }
 
         if (movesCountTextField.getText() == null) {
             UtilView.generateErrorAlert("Error!", "Moves count field left empty!");
         }
-        else if (movesCountTextField.getText() != null) {
+        if (!isInteger(movesCountTextField.getText())) {
+            UtilView.generateErrorAlert("Error!", "Please fill in integer in moves count field.");
+        }
+        else if (movesCountTextField.getText() != null && isInteger(movesCountTextField.getText())) {
             String movesCountStr = movesCountTextField.getText();
             movesCount = Integer.parseInt(movesCountStr);
         }
 
         if (shuffleCountTextField.getText() == null) {
-            UtilView.generateErrorAlert("Error!", "Moves count field left empty!");
+            UtilView.generateErrorAlert("Error!", "Shuffle count field left empty!");
         }
-        else if (shuffleCountTextField.getText() != null) {
+        if (!isInteger(shuffleCountTextField.getText())) {
+            UtilView.generateErrorAlert("Error!", "Please fill in integer in shuffle count field.");
+        }
+        else if (shuffleCountTextField.getText() != null && isInteger(shuffleCountTextField.getText())) {
             String shuffleCountStr = shuffleCountTextField.getText();
             shuffleCount = Integer.parseInt(shuffleCountStr);
         }
@@ -127,7 +204,10 @@ public class CustomGameInputDialogController implements Initializable {
         if (targetScoreTextField.getText() == null) {
             UtilView.generateErrorAlert("Error!", "Target score field left empty!");
         }
-        else if (targetScoreTextField.getText() != null) {
+        if (!isInteger(targetScoreTextField.getText())) {
+            UtilView.generateErrorAlert("Error!", "Please fill in integer in target score field.");
+        }
+        else if (targetScoreTextField.getText() != null && isInteger(targetScoreTextField.getText())) {
             String targetScoreStr = targetScoreTextField.getText();
             targetScore = Integer.parseInt(targetScoreStr);
         }
@@ -140,18 +220,28 @@ public class CustomGameInputDialogController implements Initializable {
 //            StartSceneController.newTemplatedGame();
         }
         else {
+            gridWidth = Integer.parseInt(widthMenuButton.getText());
+            gridHeight = Integer.parseInt(heightMenuButton.getText());
 //            StartSceneController.newCustomGame();
         }
 
-    }
+        System.out.println(gridWidth);
+        System.out.println(gridHeight);
+        System.out.println(movesCount);
+        System.out.println(shuffleCount);
+        System.out.println(targetScore);
+        System.out.println(gameMode);
 
+    }
     public void toggleTemplateMap() {
         if (customMapCheckbox.isSelected()) {
-            gridSizeTextField.setDisable(true);
+            widthMenuButton.setDisable(true);
+            heightMenuButton.setDisable(true);
             templatePagination.setDisable(false);
             selectMapButton.setDisable(false);
         } else if (!customMapCheckbox.isSelected()) {
-            gridSizeTextField.setDisable(false);
+            widthMenuButton.setDisable(false);
+            heightMenuButton.setDisable(false);
             templatePagination.setDisable(true);
             selectMapButton.setDisable(true);
         }
@@ -206,6 +296,29 @@ public class CustomGameInputDialogController implements Initializable {
         MenuItem sourceItem = (MenuItem) (event.getSource());
         String menuLabel = sourceItem.getText();
         trackLabel.setText("[ " + menuLabel + " ]");
+    }
+
+    public void changeGridWidthSize(ActionEvent event) {
+        MenuItem sourceItem = (MenuItem) (event.getSource());
+        String menuLabel = sourceItem.getText();
+        widthMenuButton.setText(menuLabel);
+    }
+    public void changeGridHeightSize(ActionEvent event) {
+        MenuItem sourceItem = (MenuItem) (event.getSource());
+        String menuLabel = sourceItem.getText();
+        heightMenuButton.setText(menuLabel);
+    }
+
+    public static boolean isInteger(String s) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+//            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
+        return true;
     }
 
 }

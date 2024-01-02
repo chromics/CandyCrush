@@ -18,25 +18,24 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="gridSizeTextField" layoutX="38.0" layoutY="79.0" prefHeight="25.0" prefWidth="138.0" promptText="ex. '8 x 8'" stylesheets="@/data/constant/styles5.css" />
-      <CheckBox fx:id="specialItemCheckbox" layoutX="217.0" layoutY="62.0" mnemonicParsing="false" prefHeight="2.0" prefWidth="143.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles5.css" text="Allow special items">
+      <CheckBox fx:id="specialItemCheckbox" layoutX="216.0" layoutY="62.0" mnemonicParsing="false" prefHeight="2.0" prefWidth="143.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles5.css" text="Allow special items">
          <font>
             <Font size="9.0" />
          </font></CheckBox>
       <Label layoutX="38.0" layoutY="58.0" style="-fx-font-family: Minecraftia;" text="Board size :" />
-      <TextField fx:id="shuffleCountTextField" layoutX="38.0" layoutY="131.0" prefHeight="25.0" prefWidth="138.0" promptText="ex. '3'" stylesheets="@/data/constant/styles5.css" />
-      <Label layoutX="38.0" layoutY="110.0" style="-fx-font-family: Minecraftia;" text="Shuffle count :" />
-      <TextField fx:id="targetScoreTextField" layoutX="37.0" layoutY="233.0" prefHeight="25.0" prefWidth="138.0" promptText="ex. '1000'" stylesheets="@/data/constant/styles5.css" />
-      <Label layoutX="37.0" layoutY="213.0" style="-fx-font-family: Minecraftia;" text="Target score :" />
-      <TextField fx:id="movesCountTextField" layoutX="37.0" layoutY="182.0" prefHeight="25.0" prefWidth="138.0" promptText="ex. '30'" stylesheets="@/data/constant/styles5.css" />
-      <Label layoutX="37.0" layoutY="162.0" style="-fx-font-family: Minecraftia;" text="Moves count :" />
+      <TextField fx:id="shuffleCountTextField" layoutX="38.0" layoutY="145.0" prefHeight="25.0" prefWidth="138.0" promptText="ex. '3'" stylesheets="@/data/constant/styles5.css" />
+      <Label layoutX="38.0" layoutY="124.0" style="-fx-font-family: Minecraftia;" text="Shuffle count :" />
+      <TextField fx:id="targetScoreTextField" layoutX="37.0" layoutY="247.0" prefHeight="25.0" prefWidth="138.0" promptText="ex. '1000'" stylesheets="@/data/constant/styles5.css" />
+      <Label layoutX="37.0" layoutY="227.0" style="-fx-font-family: Minecraftia;" text="Target score :" />
+      <TextField fx:id="movesCountTextField" layoutX="37.0" layoutY="196.0" prefHeight="25.0" prefWidth="138.0" promptText="ex. '30'" stylesheets="@/data/constant/styles5.css" />
+      <Label layoutX="37.0" layoutY="176.0" style="-fx-font-family: Minecraftia;" text="Moves count :" />
       <Pagination fx:id="templatePagination" layoutX="217.0" layoutY="110.0" pageCount="3" prefHeight="130.0" prefWidth="143.0" style="-fx-background-color: #FFFFFF;" />
       <Button layoutX="219.0" layoutY="312.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#generateMap" prefHeight="42.0" prefWidth="143.0" style="-fx-font-family: Minecraftia;" text="Generate map" underline="true" wrapText="true" />
-      <CheckBox fx:id="customMapCheckbox" layoutX="217.0" layoutY="84.0" mnemonicParsing="false" onAction="#toggleTemplateMap" prefHeight="4.0" prefWidth="143.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles5.css" text="Template maps">
+      <CheckBox fx:id="customMapCheckbox" layoutX="216.0" layoutY="84.0" mnemonicParsing="false" onAction="#toggleTemplateMap" prefHeight="4.0" prefWidth="143.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles5.css" text="Template maps">
          <font>
             <Font size="9.0" />
          </font></CheckBox>
-      <MenuButton layoutX="36.0" layoutY="273.0" mnemonicParsing="false" prefHeight="12.0" prefWidth="142.0" style="-fx-font-family: Minecraftia;" text="BGM Track 🎶">
+      <MenuButton layoutX="36.0" layoutY="285.0" mnemonicParsing="false" prefHeight="12.0" prefWidth="142.0" style="-fx-font-family: Minecraftia;" text="BGM Track 🎶">
         <items>
           <MenuItem fx:id="track1" mnemonicParsing="false" onAction="#changeTrack" text="Spring Day" />
           <MenuItem fx:id="track2" mnemonicParsing="false" onAction="#changeTrack" text="Default Theme" />
@@ -62,5 +61,23 @@
             <Font size="8.0" />
          </font>
       </Button>
+      <Label layoutX="38.0" layoutY="102.0" text="width" />
+      <Label layoutX="109.0" layoutY="102.0" text="height" />
+      <MenuButton fx:id="widthMenuButton" layoutX="38.0" layoutY="77.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="47.0" text="W">
+        <items>
+          <MenuItem fx:id="w1" mnemonicParsing="false" text="7" />
+          <MenuItem fx:id="w2" mnemonicParsing="false" text="8" />
+            <MenuItem fx:id="w3" mnemonicParsing="false" text="9" />
+            <MenuItem fx:id="w4" mnemonicParsing="false" text="10" />
+        </items>
+      </MenuButton>
+      <MenuButton fx:id="heightMenuButton" layoutX="109.0" layoutY="77.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="47.0" text="H">
+         <items>
+            <MenuItem fx:id="h1" mnemonicParsing="false" text="7" />
+            <MenuItem fx:id="h2" mnemonicParsing="false" text="8" />
+            <MenuItem fx:id="h3" mnemonicParsing="false" text="9" />
+            <MenuItem fx:id="h4" mnemonicParsing="false" text="10" />
+         </items>
+      </MenuButton>
    </children>
 </AnchorPane>
