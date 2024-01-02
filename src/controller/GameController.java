@@ -70,6 +70,21 @@ public class GameController extends Thread {
         boardSceneController.initiateBoard();
 
         specialMode = gameData.getSpecialMode();
+
+        gameData.setIceBlockDestroyed(gameData.getTotalIceBlock());
+    }
+
+    public void initCustomGame () {
+        gameData.restartCustomLevel();
+
+        boardSceneController.set_Game_Info(this);
+
+        board = gameData.getBoard();
+        initBoard();
+
+        boardSceneController.initiateBoard();
+
+        specialMode = gameData.getSpecialMode();
     }
 
     //Board Initiator
@@ -275,9 +290,9 @@ public class GameController extends Thread {
 
                 if (specialMode 
                     && gameData.getScore() >= gameData.getTargetScore() 
-                    && gameData.getIceBlockDestroyed() == gameData.getTotalIceBlock()) {
+                    && gameData.getIceBlockDestroyed() >= gameData.getTotalIceBlock()) {
 
-                    if (gameData.getLevelNum() == gameData.getNumOfLevel()) {
+                    if (gameData.isCustomLevel() || gameData.getLevelNum() == gameData.getNumOfLevel()) {
                         boardSceneController.catDialog("longBox","You Win !", 505, 140);
                         boardSceneController.setCatTimer("longBox",5000);
                         Util.threadSleep(1000);
@@ -292,7 +307,7 @@ public class GameController extends Thread {
                 }
                 if (! specialMode && gameData.getScore() >= gameData.getTargetScore()) {
                     
-                    if (gameData.getLevelNum() == gameData.getNumOfLevel()) {
+                    if (gameData.isCustomLevel() || gameData.getLevelNum() == gameData.getNumOfLevel()) {
                         boardSceneController.catDialog("longBox","You Win !", 505, 140);
                         boardSceneController.setCatTimer("longBox",5000);
                         Util.threadSleep(1000);
@@ -310,13 +325,13 @@ public class GameController extends Thread {
                     if (specialMode) {
                         boardSceneController.catDialog("longBox","No Remaining Step T_T", 505, 140);
                         boardSceneController.setCatTimer("longBox",5000);
-                        Util.threadSleep(2000);
+                        Util.threadSleep(1000);
                         boardSceneController.specialLose();
                     }
                     else {
                         boardSceneController.catDialog("longBox","No Remaining Step T_T", 505, 140);
                         boardSceneController.setCatTimer("longBox",5000);
-                        Util.threadSleep(2000);
+                        Util.threadSleep(1000);
                         boardSceneController.lose();
                     }
                 }
@@ -349,7 +364,7 @@ public class GameController extends Thread {
     //===============================================================================================
     
     
-    public GameData getGameData(){
+    public GameData getGameData () {
         return gameData;
     }
 }

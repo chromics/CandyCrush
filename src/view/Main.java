@@ -1,5 +1,6 @@
 package view;
 
+import java.util.Map;
 import java.util.Optional;
 
 import controller.SaveLoadController;
@@ -21,6 +22,7 @@ import view.viewController.*;
 
 import controller.GameController;
 import data.constant.GameMode;
+import data.constant.MapTemplate;
 import data.GameData;
 
 public class Main extends Application {
@@ -46,13 +48,26 @@ public class Main extends Application {
         gameController.setBoardSceneController(boardSceneController);
     }
     public static void restartLevel () {
-        gameController.getGameData().restartLevel();
-        gameController.initNewGame();
+
+        if (gameController.getGameData().isCustomLevel()) {
+            gameController.initCustomGame();
+        }
+        else {
+            gameController.getGameData().restartLevel();
+            gameController.initNewGame();
+        }
     }
     public static void nextLevel () {
         gameController.getGameData().nextLevel();
         gameController.initNewGame();
     }
+    public static void customGame (GameMode gameMode, int board_Row_Size, int board_Col_Size, int initStep, int initShuffle, int targetScore, MapTemplate mapTemplate)  {
+        gameController.getGameData().init_Custom_Level(gameMode, mapTemplate, board_Row_Size, board_Col_Size, initStep, initShuffle, targetScore);
+        gameController.initCustomGame();
+    }
+    public static GameMode getGameMode () { return gameController.getGameData().getGameMode(); }
+    public static boolean savedBefore () { return (! gameController.getGameData().getSaveName().equals("null")); }
+    public static String getSaveName () { return gameController.getGameData().getSaveName(); }
     //===============================================================================================
 
     @Override

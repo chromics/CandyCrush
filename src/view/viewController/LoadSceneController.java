@@ -29,6 +29,7 @@ import java.util.HashMap;
 
 import view.Main;
 import data.GameData;
+import data.constant.GameMode;
 import controller.GameController;
 import controller.SaveLoadController;
 import controller.SaveLoadControllerSer;
@@ -128,12 +129,19 @@ public class LoadSceneController implements Initializable {
             Main.stage.setScene(this.scene);
             Main.stage.show();
 
-            //! deleteFile(event);
+            //Delete Old File
+            deleteFile(event);
+            
             StartSceneController.stopMusic();
             StartSceneController.stopWind();
 
             VolumeController.setBoardSceneMusicVolume(70);
-            BoardSceneController.initMusic();
+            if (Main.getGameMode() == GameMode.Special_Game_Mode) {
+                BoardSceneController.initSpecialMusic();
+            }
+            else if (Main.getGameMode() == GameMode.Normal_Game_Mode) {
+                BoardSceneController.initMusic();
+            }
 
         } 
         else {
@@ -149,11 +157,12 @@ public class LoadSceneController implements Initializable {
             System.out.print("Delete File : ");
             System.out.println(selectedGameFileName);
 
-            loadList.remove(selectedButton);
+            loadList.remove(selectedButton.getParent());
             fileNameList.remove(selectedGameFileName);
             SaveLoadController.overwrite_File_Name_List(fileNameList);
             SaveLoadController.remove_Game_File(selectedGameFileName);
 
+            loadList.remove(selectedButton.getParent());
         } else {
             UtilView.generateErrorAlert("No Effect", "Please select a file to be deleted");
         }

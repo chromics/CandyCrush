@@ -27,7 +27,7 @@ public class SaveLoadController {
     private final static String FILE_NAME_LIST_PATH = "src\\save\\FileName.txt";
 
     private final static String SAVE_NAME_LABEL = "File_Name: ";
-    private final static String BOARD_ROW_SIZE_LABEL = "\nBoard_Row_Size: ";
+    private final static String BOARD_ROW_SIZE_LABEL = "Board_Row_Size: ";
     private final static String BOARD_COL_SIZE_LABEL = "\nBoard_Col_Size: ";
     private final static String MAP_TEMPLATE_LABEL = "\nMap_Template: ";
     private final static String GAME_MODE_LABEL = "\nGame_Mode: ";
@@ -158,7 +158,7 @@ public class SaveLoadController {
         }
         
     }
-    public static void save_Game (GameData gameData, String inputName) {
+    public static String save_Game (GameData gameData, String inputName) {
         LocalDateTime currentTime = LocalDateTime.now();
 
         String fileDate = format_File_Date(currentTime);
@@ -171,6 +171,8 @@ public class SaveLoadController {
 
         append_File_Name(fileName, displayName);
         save_Game_File(gameData, fileName);
+
+        return fileName;
     }
     //===============================================================================================
     

@@ -71,7 +71,12 @@ public class StartSceneController implements Initializable {
         windController.stopMusic();
 
         VolumeController.setBoardSceneMusicVolume(70);
-        BoardSceneController.initMusic();
+        if (Main.getGameMode() == GameMode.Special_Game_Mode) {
+            BoardSceneController.initSpecialMusic();
+        }
+        else if (Main.getGameMode() == GameMode.Normal_Game_Mode) {
+            BoardSceneController.initMusic();
+        }
     }
 //    public static void newCustomGame(ActionEvent event, URL mainURL, URL dialogURL, int gridWidth, int gridHeight, int movesCount, int shuffleCount, int targetScore, Clip BGM, GameMode gamemode) throws Exception {
 //        FXMLLoader loader = new FXMLLoader(mainURL);

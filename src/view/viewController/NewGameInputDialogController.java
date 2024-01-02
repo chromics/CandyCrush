@@ -97,5 +97,8 @@ public class NewGameInputDialogController {
         dialog.show();
 
         stage.close();
+        
+        CustomGameInputDialogController.setStage(dialog);
+        boardScene.requestFocus();
     }
 }

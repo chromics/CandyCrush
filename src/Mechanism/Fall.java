@@ -22,7 +22,7 @@ public class Fall {
             BoardPoint dest = new BoardPoint(lowest_Empty_Cell_At_Col, col);
             BoardPoint src = dest.getAdjacentPoint(Orientation.UP);
 
-            while (board.is_Within_Boundary(src)) {
+            while (src.getRow() >= gameData.get_Highest_Playable_Cell_At_Col(col)) {
 
                 if (board.any_piece(dest)) {
                     dest = dest.getAdjacentPoint(Orientation.UP);
@@ -42,7 +42,7 @@ public class Fall {
                 src = src.getAdjacentPoint(Orientation.UP);
             }
 
-            while (board.is_Within_Boundary(dest)) {
+            while (dest.getRow() >= gameData.get_Highest_Playable_Cell_At_Col(col)) {
 
                 if (board.is_Cell_Playable(dest) && ! board.any_piece(dest)) {
 
