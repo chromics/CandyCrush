@@ -91,7 +91,7 @@ public class SaveFileInputDialogController {
 
         alert.setTitle("Success!");
         alert.setHeaderText("Your file has been successfully saved!");
-        alert.setContentText("Your file has been successfully saved at: " + SaveLoadController.getCurrentFilePath());
+        // alert.setContentText("Your file has been successfully saved at: " + SaveLoadController.getCurrentFilePath());
         alert.setX(Main.stage.getX() + 600);
         alert.setY(Main.stage.getY() - 55);
 

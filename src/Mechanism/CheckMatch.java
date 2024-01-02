@@ -31,29 +31,19 @@ public class CheckMatch {
         int board_Col_Size = gameData.getBoard_Col_Size();
         Cell[][] grid = board.getGrid();
 
-        // BoardPoint startPoint;
-        // BoardPoint currentPoint;
-
-        // startPoint = new BoardPoint(1, 1);
-        // currentPoint = new BoardPoint(2, 2);
-
-        // for(int row = 0; row < board_Row_Size; row++){
-            //     startPoint = new BoardPoint(row, 0);
-            //     for(int col = 0; col < board_Col_Size; col++){
-                //         currentPoint = new BoardPoint(row, col);
-                
-                //         if(col == board_Col_Size - 1 || ! board.is_Equal_To_Adjacent(currentPoint, Orientation.RIGHT)){
-                    //             save_Match_If_Valid(board, gameData, startPoint, currentPoint, Orientation.RIGHT);
-                    //             startPoint = currentPoint.getAdjacentPoint(Orientation.RIGHT);
-                    //         }
-                    //     }
-                    // }
         //Horizontal Check
         for (int row = 0; row < board_Row_Size; row++) {
             int startCol = 0;
             for (int col = 0; col < board_Col_Size; col++) {
 
-                if (grid[row][col].containSpecialPiece()) {
+                if (col == board_Col_Size - 1) {
+                    BoardPoint startPoint = new BoardPoint(row, startCol);
+                    BoardPoint endPoint = new BoardPoint(row, col);
+
+                    save_Match_If_Valid(board, gameData, startPoint, endPoint, Orientation.RIGHT);
+                    startCol = col;
+                }
+                else if (grid[row][col].containSpecialPiece()) {
                     if (col > 0
                         && col < board_Col_Size - 1
                         && ! grid[row][col-1].equalPiece(grid[row][col+1])) {
@@ -62,10 +52,10 @@ public class CheckMatch {
                         BoardPoint endPoint = new BoardPoint(row, col);
 
                         save_Match_If_Valid(board, gameData, startPoint, endPoint, Orientation.RIGHT);
-                        startCol = col + 1;
+                        startCol = col;
                     }
                 }
-                else if(col == board_Col_Size - 1 || ! grid[row][col].equalPiece(grid[row][col+1])){
+                else if(! grid[row][col].equalPiece(grid[row][col+1])){
                     BoardPoint startPoint = new BoardPoint(row, startCol);
                     BoardPoint endPoint = new BoardPoint(row, col);
 
@@ -80,7 +70,14 @@ public class CheckMatch {
             int startRow = 0;
             for(int row = 0; row < board_Row_Size; row++){
                 
-                if (grid[row][col].containSpecialPiece()) {
+                if (row == board_Row_Size - 1) {
+                    BoardPoint startPoint = new BoardPoint(startRow, col);
+                    BoardPoint endPoint = new BoardPoint(row, col);
+                    
+                    save_Match_If_Valid(board, gameData, startPoint, endPoint, Orientation.DOWN);
+                    startRow = row + 1;
+                }
+                else if (grid[row][col].containSpecialPiece()) {
                     if (row > 0
                         && row < board_Row_Size - 1
                         && ! grid[row-1][col].equalPiece(grid[row+1][col])) {
@@ -89,10 +86,10 @@ public class CheckMatch {
                         BoardPoint endPoint = new BoardPoint(row, col);
                         
                         save_Match_If_Valid(board, gameData, startPoint, endPoint, Orientation.DOWN);
-                        startRow = row + 1;
+                        startRow = row;
                     }
                 }
-                else if (row == board_Row_Size - 1 || ! grid[row][col].equalPiece(grid[row+1][col])) {
+                else if (! grid[row][col].equalPiece(grid[row+1][col])) {
                     // System.out.printf("%s | Start Point : (%d,%d),\tCurrent Point : (%d,%d)\n", board.getPieceAt(currentPoint).getName(), startPoint.getRow(), startPoint.getCol(), currentPoint.getRow(), currentPoint.getCol());
                     BoardPoint startPoint = new BoardPoint(startRow, col);
                     BoardPoint endPoint = new BoardPoint(row, col);
@@ -102,18 +99,6 @@ public class CheckMatch {
                 }
             }
         }
-        // for(int col = 0; col < board_Col_Size; col++){
-        //     startPoint = new BoardPoint(0, col);
-        //     for(int row = 0; row < board_Row_Size; row++){
-        //         currentPoint = new BoardPoint(row, col);
-
-        //         if(row == board_Row_Size - 1 || ! board.is_Equal_To_Adjacent(currentPoint, Orientation.DOWN)){
-        //             // System.out.printf("%s | Start Point : (%d,%d),\tCurrent Point : (%d,%d)\n", board.getPieceAt(currentPoint).getName(), startPoint.getRow(), startPoint.getCol(), currentPoint.getRow(), currentPoint.getCol());
-        //             save_Match_If_Valid(board, gameData, startPoint, currentPoint, Orientation.DOWN);
-        //             startPoint = currentPoint.getAdjacentPoint(Orientation.DOWN);
-        //         }
-        //     }
-        // }
     }
 
     public static void save_Match_If_Valid( Board board, GameData gameData, BoardPoint startPoint, BoardPoint endPoint, Orientation orientation ){

@@ -8,7 +8,7 @@ public class Util {
         return arr[randomIndex];
     }
 
-    public static void pauseExecution (int milliseconds) {
+    public static void threadSleep (int milliseconds) {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {

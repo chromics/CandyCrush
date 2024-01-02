@@ -2,8 +2,7 @@ package controller;
 
 import java.util.Map;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import javafx.application.Platform;
 
 import mechanism.CheckMatch;
 import mechanism.Remove;
@@ -15,64 +14,74 @@ import model.piece.Piece;
 import model.BoardPoint;
 import data.GameData;
 import data.MatchData;
-import data.constant.GameMode;
+import data.constant.Constant;
 import view.viewController.BoardSceneController;
-import view.viewController.UtilView;
 
-public class GameController {
-    private BoardSceneController view;
+public class GameController extends Thread {
+    private BoardSceneController boardSceneController;
     private Board board;
-    private GameData gameData; 
-    private GameMode gameMode;
+    private GameData gameData;
+    private boolean specialMode;
+    private int extra_Duration = Constant.EXTRA_DURATION.getNum();
+    private int animation_Duration = Constant.ANIMATION_DURATION.getNum();
+    private int automatic_Break_Duration = Constant.AUTOMATIC_BREAK_DURATION.getNum();
     
     //-----------------------------------------------------------------------------------------------
-    // Constructor & Initiator
+    // Constructor & Game Initiator
     //-----------------------------------------------------------------------------------------------
-    public GameController(GameMode gameMode, int levelIndex, BoardSceneController view){
-        initiate_Game_Data(gameMode, levelIndex);
-        view.set_Game_Info(this);
-        
-        this.view = view;
-        this.gameMode = gameMode;
-        this.board = gameData.getBoard();
-        initBoard();
-
-        // for(int row = 0; row < gameData.getBoard_Row_Size(); row++){
-        //     for (int col = 0; col < gameData.getBoard_Col_Size(); col++){
-        //         view.setIceBlockAt(new BoardPoint(row, col));
-        //     }
-        // }
-        // view.removeIceBlockAt(new BoardPoint(1, 1));
-        System.out.println("Initiate Game Controller : " + gameData.getGameMode().toString());
+    public GameController () {
+        gameData = new GameData();
     }
-
-    public GameController(BoardSceneController view, GameData gameData){
-        this.view = view;
+        
+    // Load Game
+    public void setGameData (GameData gameData) {
         this.gameData = gameData;
         this.board = gameData.getBoard();
         
-        view.set_Game_Info(this);
-        view.initiateBoard();
+        boardSceneController.set_Game_Info(this);
+        boardSceneController.initiateBoard();
+        
+        specialMode = gameData.getSpecialMode();
 
-        if (gameData.getSpecialMode() && gameData.anyMatch()) {
+        if (specialMode && gameData.anyMatch()) {
             generate_Special_Pieces();
         }
+        
 
         System.out.println("Load Game Controller : " + gameData.getGameMode().toString());
     }
-    
-    public void initiate_Game_Data(GameMode gameMode, int levelIndex){
-        gameData = new GameData(gameMode, levelIndex);
+
+    // New Game
+    public void setBoardSceneController (BoardSceneController boardSceneController) {
+        System.out.println("Set Board Scene Controller");
+        this.boardSceneController = boardSceneController;
     }
-    
-    public void initBoard(){
+    public void initNewGame () {
+        System.out.println("Init New Game");
+
+        gameData.init_Main_Data();
+        gameData.init_Additional_Data();
+        
+        boardSceneController.set_Game_Info(this);
+
+        board = gameData.getBoard();
+        initBoard();
+
+        boardSceneController.initiateBoard();
+
+        specialMode = gameData.getSpecialMode();
+    }
+
+    //Board Initiator
+    public void initBoard () {
         do{
             board.initBoard();
             scanMatches();
         }while(gameData.anyMatch());
         gameData.resetMatchData();
         HintFinder.findHint(gameData);
-        view.initiateBoard();
+
+        System.out.println("\nInitiated Board : \n" + board.txtBoard());
     }
     //===============================================================================================
 
@@ -81,34 +90,47 @@ public class GameController {
     // Basic Game Mechanism
     //-----------------------------------------------------------------------------------------------
     public void swapPieceOnBoard(BoardPoint point1, BoardPoint point2){
-        view.resetSelectedPoint();
+        System.out.println("\nSwap Action Start");
+        Platform.runLater(() -> boardSceneController.deactivate_All_Buttons());
+        Platform.runLater(() -> boardSceneController.resetSelectedPoint());
 
         board.swapPiece(point1, point2);
-        view.swapImage(point1, point2);
+        Platform.runLater(() -> boardSceneController.swapImage(point1, point2));
         scanMatches();
 
-        // Util.pauseExecution(1000);
+        Util.threadSleep(extra_Duration + animation_Duration);
+        System.out.println("\nSwap Action Finish");
         
         if(! gameData.anyMatch()){
-            // view.resetSelectedPoint();
+            
+            // boardSceneController.resetSelectedPoint();
+            System.out.println("\nSwap Action Start");
             board.swapPiece(point1, point2);
-            view.swapImage(point1, point2);
+            Platform.runLater(() -> boardSceneController.swapImage(point1, point2));
+            Util.threadSleep(extra_Duration + animation_Duration);
+            System.out.println("\nSwap Action Finish");
+
+            // UtilboardSceneController.generateErrorAlert("No Effect", "No Match Found");
+            Platform.runLater(() -> boardSceneController.catDialog("longBox","No Match Found", 505, 140));
+            Platform.runLater(() -> boardSceneController.setCatTimer("longBox",2000));
         }
         else{
             gameData.resetHint();
-            gameData.decreaseStepLeft();
-            view.deductMovesLeft();
+            gameData.decreaseRemainingStep();
+            Platform.runLater(() -> boardSceneController.deductMovesLeft());
+
             System.out.println("Moves Left : " + gameData.getRemainingStep());
             
             if(gameData.getAutomaticMode()){
                 automaticModeAction();
             }
         }
+        Platform.runLater(() -> boardSceneController.activate_All_Buttons());
     }
     public void scanMatches(){
         CheckMatch.scan_and_save_matches(board, gameData);
 
-        if (gameData.getSpecialMode()) {
+        if (specialMode) {
             generate_Special_Pieces();
         }
 
@@ -117,21 +139,27 @@ public class GameController {
     public void removeMatches(){
         int scoreGained = gameData.getScoreGained();
         
-        Remove.removePieces(board, gameData, view);
+        Remove.removePieces(board, gameData, boardSceneController);
         
         gameData.updateScore(scoreGained);
-        view.addScore();
+        Platform.runLater(() -> boardSceneController.addScore());
+        
         System.out.println("\nRemove Done");
         System.out.println("Score : " + gameData.getScore());
         System.out.println();
-
-        if (gameData.getSpecialMode()) {
+        
+        if (specialMode) {
+            Platform.runLater(() -> boardSceneController.update_Ice_Block_Destroyed());
             System.out.println("Placing Special Pieces");
             place_Special_Pieces();
         }
     }
     public void fall(){
-        Fall.fall(board, gameData, view);
+        Platform.runLater(() -> boardSceneController.deactivate_All_Buttons());
+
+        System.out.println("Fall Start");
+        Fall.fall(board, gameData, boardSceneController);
+
         System.out.println("\nFall Done\n");
         scanMatches();
 
@@ -145,17 +173,28 @@ public class GameController {
 
             if(! gameData.anyHint()){
                 if(gameData.anyShuffle()){
-                    UtilView.generateErrorAlert("No Match Can be Formed Anymore", "Please use shuffle");
+                    // UtilboardSceneController.generateErrorAlert("No Match Can be Formed Anymore", "Please use shuffle");
+                    Platform.runLater(() -> boardSceneController.catDialog("longBox","Please use Shuffle !", 505, 140));
+                    Platform.runLater(() -> boardSceneController.setCatTimer("longBox",5000));
                 }
                 else{
-                    try{
-                        view.lose();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    Platform.runLater(() -> {
+                        try {
+                            boardSceneController.catDialog("longBox","Dead End, No Shuffle Left !", 505, 140);
+                            boardSceneController.setCatTimer("longBox",5000);
+                            Util.threadSleep(2000);
+                            boardSceneController.lose();
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    
                 }
             }
         }
+
+        Platform.runLater(() -> boardSceneController.activate_All_Buttons());
     }
     //===============================================================================================
 
@@ -165,13 +204,23 @@ public class GameController {
     //-----------------------------------------------------------------------------------------------
     public void changeAutomaticMode(){
         gameData.setAutomaticMode(gameData.getAutomaticMode() == false); //Turn On if Off, Turn Off if On
+        
+        if (gameData.getAutomaticMode()) {
+            automaticModeAction();
+        }
+
         System.out.println("Set Automatic Mode : " + gameData.getAutomaticMode());
     }
     public void automaticModeAction(){
+        if (gameData.hasnotFall()) {
+            fall();
+        }
         while(gameData.anyMatch()){
             removeMatches();
             fall();
+            Util.threadSleep(automatic_Break_Duration);
         }
+        Platform.runLater(() -> boardSceneController.activate_All_Buttons());
     }
     //===============================================================================================
 
@@ -199,12 +248,13 @@ public class GameController {
             for (BoardPoint point : newSpecialPieces.keySet()) {
                 Piece newSpecialPiece = newSpecialPieces.get(point);
                 board.setPiece(point, newSpecialPiece);
-                view.setPieceImageAt(newSpecialPiece.getImagePath(), point);
+                Platform.runLater(() -> boardSceneController.setPieceImageAt(newSpecialPiece.getName(), point));
+                Util.threadSleep(extra_Duration);
 
-                gameData.deductFallDataAt(point.getCol());
                 System.out.println("New " + newSpecialPieces.get(point) + " at " + point);
                 System.out.println("Board at " + point + " : " + board.getPieceAt(point).getName());
-                System.out.println("Board at " + point + " : " + board.getPieceAt(point).getImagePath());
+
+                System.out.println("\nBoard :\n" + board.txtBoard());
             }
 
             gameData.resetnewSpecialPieces();
@@ -220,32 +270,81 @@ public class GameController {
     // Win Methods
     //-----------------------------------------------------------------------------------------------
     public void checkWin() throws Exception {
-        if(gameData.getScore() >= gameData.getTargetScore()){
-            view.win();
-        }
-        else if(gameData.getRemainingStep() <= 0){
-            view.lose();
-        }
+        Platform.runLater(() -> {
+            try {
+
+                if (specialMode 
+                    && gameData.getScore() >= gameData.getTargetScore() 
+                    && gameData.getIceBlockDestroyed() == gameData.getTotalIceBlock()) {
+
+                    if (gameData.getLevelNum() == gameData.getNumOfLevel()) {
+                        boardSceneController.catDialog("longBox","You Win !", 505, 140);
+                        boardSceneController.setCatTimer("longBox",5000);
+                        Util.threadSleep(1000);
+                        boardSceneController.specialFinalWin();
+                    }
+                    else {
+                        boardSceneController.catDialog("longBox","You Win !", 505, 140);
+                        boardSceneController.setCatTimer("longBox",5000);
+                        Util.threadSleep(1000);
+                        boardSceneController.specialWin();
+                    }
+                }
+                if (! specialMode && gameData.getScore() >= gameData.getTargetScore()) {
+                    
+                    if (gameData.getLevelNum() == gameData.getNumOfLevel()) {
+                        boardSceneController.catDialog("longBox","You Win !", 505, 140);
+                        boardSceneController.setCatTimer("longBox",5000);
+                        Util.threadSleep(1000);
+                        boardSceneController.finalWin();
+                    }
+                    else {
+                        boardSceneController.catDialog("longBox","You Win !", 505, 140);
+                        boardSceneController.setCatTimer("longBox",5000);
+                        Util.threadSleep(1000);
+                        boardSceneController.win();
+                    }
+                }
+                else if (gameData.getRemainingStep() <= 0) {
+                    
+                    if (specialMode) {
+                        boardSceneController.catDialog("longBox","No Remaining Step T_T", 505, 140);
+                        boardSceneController.setCatTimer("longBox",5000);
+                        Util.threadSleep(2000);
+                        boardSceneController.specialLose();
+                    }
+                    else {
+                        boardSceneController.catDialog("longBox","No Remaining Step T_T", 505, 140);
+                        boardSceneController.setCatTimer("longBox",5000);
+                        Util.threadSleep(2000);
+                        boardSceneController.lose();
+                    }
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
-    public void nextLevel (BoardSceneController view) {
-        this.view = view;
+    public void nextLevel (BoardSceneController boardSceneController) {
 
-        int nextLevelIndex = gameData.getLevelIndex() + 1;
-        initiate_Game_Data(gameMode, nextLevelIndex);
-        view.set_Game_Info(this);
-
+        gameData.nextLevel();
+        
         this.board = gameData.getBoard();
         initBoard();
+        
+        this.boardSceneController = boardSceneController;
+        Platform.runLater(() -> boardSceneController.set_Game_Info(this));
     }
-    public void restartLevel (BoardSceneController view) {
-        this.view = view;
-
-        int currentLevelIndex = gameData.getLevelIndex();
-        initiate_Game_Data(gameMode, currentLevelIndex);
-        view.set_Game_Info(this);
-
+    public void restartLevel (BoardSceneController boardSceneController) {
+        
+        gameData.restartLevel();
+        
         this.board = gameData.getBoard();
         initBoard();
+
+        this.boardSceneController = boardSceneController;
+        Platform.runLater(() -> boardSceneController.set_Game_Info(this));
     }
     //===============================================================================================
     

@@ -1,6 +1,5 @@
 package data;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
@@ -8,6 +7,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.io.*;
 
+import model.Cell;
 import model.Board;
 import model.piece.HorizontalBomb;
 import model.piece.Piece;
@@ -19,19 +19,23 @@ import data.constant.GameMode;
 import data.constant.Level;
 
 public class GameData implements Serializable{
-    private static Duration animation_Duration = Duration.ofMillis(500);
+    private String saveName = "null";
+    private int[] highest_Playable_Cell_At_Col;
     private List<MatchData> matchDatas;
-    private int[] fallData; //Number of Empty Cell per Column
+    private int[] fallData; //Lowest Empty Cell at each column
     private BoardPoint[] hint;
     private Map<BoardPoint, Piece> newSpecialPieces;
     private Board board;
     private Level level;
+    private int numOfLevel;
     private int levelIndex;
     private GameMode gameMode;
-    private final int BOARD_ROW_SIZE;
-    private final int BOARD_COL_SIZE;
+    private int board_Row_Size;
+    private int board_Col_Size;
     private int score;
     private int targetScore;
+    private int ice_Block_Destroyed;
+    private int total_Ice_Block;
     private int remainingStep;
     private int remainingHints;
     private int remainingShuffle;
@@ -40,50 +44,48 @@ public class GameData implements Serializable{
     private boolean specialMode;
     
     //-----------------------------------------------------------------------------------------------
-    // Constructor
+    // Constructor & Initiator
     //-----------------------------------------------------------------------------------------------
-    public GameData(GameMode gameMode, int levelIndex){
-        //Level Settings
-        this.gameMode = gameMode;
-        this.automaticMode = gameMode.getAutomaticMode();
-        this.specialMode = gameMode.getSpecialMode();
-        this.level = gameMode.getLevelList().get(levelIndex);
-        this.levelIndex = level.getLevelIndex();
-        this.BOARD_ROW_SIZE = level.getBoard_Row_Size();
-        this.BOARD_COL_SIZE = level.getBoard_Col_Size();
-        this.targetScore = level.getTargetScore();
-        this.remainingStep = level.getInitStep();
-        this.remainingHints = level.getInitHints();
-        this.remainingShuffle = level.getInitShuffle();
-        this.mapTemplate = level.getMapTemplate();
-        score = 0;
+    public GameData () {
+        //Empty Constructor
+    }
 
+    public void init_Main_Data () {
+        //Level Settings
+        automaticMode = gameMode.getAutomaticMode();
+        specialMode = gameMode.getSpecialMode();
+        numOfLevel = gameMode.getLevelList().size();
+        level = gameMode.getLevelList().get(levelIndex);
+        levelIndex = level.getLevelIndex();
+        board_Row_Size = level.getBoard_Row_Size();
+        board_Col_Size = level.getBoard_Col_Size();
+        targetScore = level.getTargetScore();
+        remainingStep = level.getInitStep();
+        remainingHints = level.getInitHints();
+        remainingShuffle = level.getInitShuffle();
+        mapTemplate = level.getMapTemplate();
+        score = 0;
+        ice_Block_Destroyed = 0;
+        total_Ice_Block = 0;
+    }
+    public void init_Additional_Data () {
         //Initiate Board
-        board = new Board(BOARD_ROW_SIZE, BOARD_COL_SIZE, mapTemplate);
+        board = new Board(board_Row_Size, board_Col_Size, mapTemplate);
+
+        update_Highest_Playable_Row_Data();
+
+        /*
+         * Only initiate the ice block if its a new game not a loaded one
+         */
+        if (specialMode && total_Ice_Block == 0) {
+            board.initiate_Ice_Block(this);
+        }
 
         //Additional Data
-        matchDatas = new ArrayList<>();
-        fallData = new int[BOARD_COL_SIZE];
-        resetFallData();
-
         newSpecialPieces = new HashMap<>();
-
-        printGameData();
-    }
-    public GameData (int board_Row_Size, int board_Col_Size, MapTemplate mapTemplate){
-
-        this.BOARD_ROW_SIZE = board_Row_Size;
-        this.BOARD_COL_SIZE = board_Col_Size;
-        this.mapTemplate = mapTemplate;
-
-        this.board = new Board(board_Row_Size, board_Col_Size, mapTemplate);
-        this.board.initGrid();
-
         matchDatas = new ArrayList<>();
-        fallData = new int[BOARD_COL_SIZE];
+        fallData = new int[board_Col_Size];
         resetFallData();
-
-        newSpecialPieces = new HashMap<>();
     }
     //===============================================================================================
 
@@ -91,36 +93,49 @@ public class GameData implements Serializable{
     //-----------------------------------------------------------------------------------------------
     // Getter
     //-----------------------------------------------------------------------------------------------
-    public List<MatchData> getMatchDatas() { return matchDatas; }
-    public int[] getFallData() { return fallData; }
-    public BoardPoint[] getHint() { return hint; }
-    public Map<BoardPoint, Piece> getnewSpecialPieces() { return newSpecialPieces; }
-    public Board getBoard() { return board; }
-    public int getScore() { return score; }
-    public int getBoard_Row_Size() { return BOARD_ROW_SIZE; }
-    public int getBoard_Col_Size() { return BOARD_COL_SIZE; }
-    public int getTargetScore() { return targetScore; }
-    public int getRemainingStep() { return remainingStep; }
-    public int getRemainingHints() { return remainingHints; }
-    public int getRemainingShuffle() { return remainingShuffle; }
-    public MapTemplate getMapTemplate() { return mapTemplate; }
-    public boolean getAutomaticMode() { return automaticMode; }
-    public boolean getSpecialMode() { return specialMode; }
-    public Level getLevel() { return level; }
-    public int getLevelNum() { return (levelIndex + 1); }
-    public int getLevelIndex() { return levelIndex; }
-    public Level getNextLevel() { return gameMode.getNextLevel(level); }
-    public GameMode getGameMode() { return gameMode; }
-    public Duration get_Animation_Duration() { return animation_Duration; }
-    public int get_Animation_Duration_In_Millis() { return (int)animation_Duration.toMillis(); }
+    public String getSaveName () { return saveName; }
+    public List<MatchData> getMatchDatas () { return matchDatas; }
+    public int[] getFallData () { return fallData; }
+    public BoardPoint[] getHint () { return hint; }
+    public Map<BoardPoint, Piece> getnewSpecialPieces () { return newSpecialPieces; }
+    public Board getBoard () { return board; }
+    public int getScore () { return score; }
+    public int getBoard_Row_Size () { return board_Row_Size; }
+    public int getBoard_Col_Size () { return board_Col_Size; }
+    public int getTargetScore () { return targetScore; }
+    public int getIceBlockDestroyed () { return ice_Block_Destroyed; }
+    public int getTotalIceBlock () { return total_Ice_Block; }
+    public int getRemainingStep () { return remainingStep; }
+    public int getRemainingHints () { return remainingHints; }
+    public int getRemainingShuffle () { return remainingShuffle; }
+    public MapTemplate getMapTemplate () { return mapTemplate; }
+    public boolean getAutomaticMode () { return automaticMode; }
+    public boolean getSpecialMode () { return specialMode; }
+    public Level getLevel () { return level; }
+    public int getNumOfLevel () { return numOfLevel; }
+    public int getLevelNum () { return (levelIndex + 1); }
+    public int getLevelIndex () { return levelIndex; }
+    public Level getNextLevel () { return gameMode.getNextLevel(level); }
+    public GameMode getGameMode () { return gameMode; }
+    public int get_Highest_Playable_Cell_At_Col (int col) { return highest_Playable_Cell_At_Col[col]; }
     //===============================================================================================
     
     
     //-----------------------------------------------------------------------------------------------
     // Setter
     //-----------------------------------------------------------------------------------------------
+    public void setBoard_Row_Size (int board_Row_Size) {
+        this.board_Row_Size = board_Row_Size;
+    }
+    public void setBoard_Col_Size (int board_Col_Size) {
+        this.board_Col_Size = board_Col_Size;
+    }
     public void setGameMode (GameMode gameMode) {
+        System.out.println("Set Game Mode");
         this.gameMode = gameMode;
+    }
+    public void setMapTemplate (MapTemplate mapTemplate) {
+        this.mapTemplate = mapTemplate;
     }
     public void setAutomaticMode (boolean automaticMode) {
         this.automaticMode = automaticMode;
@@ -129,6 +144,7 @@ public class GameData implements Serializable{
         this.specialMode = specialMode;
     }
     public void setLevelIndex (int levelIndex) {
+        System.out.println("Set Level Index");
         this.levelIndex = levelIndex;
         setLevel(gameMode.getLevelList().get(levelIndex));
     }
@@ -141,6 +157,12 @@ public class GameData implements Serializable{
     public void setTargetScore (int targetScore) {
         this.targetScore = targetScore;
     }
+    public void setIceBlockDestroyed (int ice_Block_Destroyed) {
+        this.ice_Block_Destroyed = ice_Block_Destroyed;
+    }
+    public void setTotalIceBlock (int total_Ice_Block) {
+        this.total_Ice_Block = total_Ice_Block;
+    }
     public void setRemainingShuffle (int remainingShuffle) {
         this.remainingShuffle = remainingShuffle;
     }
@@ -150,8 +172,8 @@ public class GameData implements Serializable{
     public void setRemainingHints (int remainingHints) {
         this.remainingHints = remainingHints;
     }
-    public void setAnimationDuration (int milliseconds) {
-        animation_Duration = Duration.ofMillis(milliseconds);
+    public void setSaveName (String saveName) {
+        this.saveName = saveName;
     }
     //===============================================================================================
     
@@ -159,11 +181,35 @@ public class GameData implements Serializable{
     //-----------------------------------------------------------------------------------------------
     // Update Data Methods
     //-----------------------------------------------------------------------------------------------
-    public void decreaseStepLeft(){
+    public void decreaseRemainingStep () {
         this.remainingStep--;
     }
-    public void updateScore(int scoreGained){
+    public void updateScore (int scoreGained) {
         this.score += scoreGained;
+    }
+    public void increase_Ice_Block_Destroyed () {
+        this.ice_Block_Destroyed++;
+    }
+    public void nextLevel () {
+        level = gameMode.getNextLevel(level);
+        levelIndex = level.getLevelIndex();
+    }
+    public void restartLevel () {
+        //Do Nothing
+    }
+    public void update_Highest_Playable_Row_Data() {
+        highest_Playable_Cell_At_Col = new int[board_Col_Size];
+
+        Cell[][] grid = board.getGrid();
+
+        for (int col = 0; col < board_Col_Size; col++) {
+            for (int row = 0; row < board_Row_Size; row++) {
+                if (grid[row][col].isPlayable()) {
+                    highest_Playable_Cell_At_Col[col] = row;
+                    break;
+                }
+            }
+        }
     }
     //===============================================================================================
     
@@ -267,8 +313,11 @@ public class GameData implements Serializable{
     //-----------------------------------------------------------------------------------------------
     // Fall Data (Number of Empty Cell per Column)
     //-----------------------------------------------------------------------------------------------
-    public void updateFallData (int num_Of_Empty_Cell, int col) {
-        fallData[col] = num_Of_Empty_Cell;
+    public void updateFallData (int lowest_Empty_Cell_At_Col, int col) {
+
+        if (lowest_Empty_Cell_At_Col > fallData[col]) {
+            fallData[col] = lowest_Empty_Cell_At_Col;
+        }
     }
     public void increaseFallDataAt (int col) {
         fallData[col]++;
@@ -277,14 +326,14 @@ public class GameData implements Serializable{
         fallData[col]--;
     }
     public void resetFallData () {
-        Arrays.fill(fallData, 0);
+        Arrays.fill(fallData, -1);
     }
     public int getFallDataAtCol(int col){
         return fallData[col];
     }
     public boolean hasnotFall(){
         for(int data : fallData){
-            if(data > 0){
+            if(data > -1){
                 return true;
             }
         }
@@ -320,8 +369,9 @@ public class GameData implements Serializable{
     
     public void printGameData(){
         System.out.println("\nGame Data : ");
-        System.out.println("Board Row Size : " + BOARD_ROW_SIZE);
-        System.out.println("Board Col Size : " + BOARD_COL_SIZE);
+        System.out.println("Save Name : " + saveName);
+        System.out.println("Board Row Size : " + board_Row_Size);
+        System.out.println("Board Col Size : " + board_Col_Size);
         System.out.println("Map Template : " + mapTemplate.toString());
         System.out.println("GameMode : " + gameMode);
         System.out.println("Automatic Mode : " + automaticMode);
@@ -334,7 +384,7 @@ public class GameData implements Serializable{
         System.out.println("Remaining Hints : " + remainingHints);
         System.out.println("Fall Data : " + txtFallData());
         System.out.print("Match Data : " + stringMatchData());
-        System.out.println("Board:\n" + board.txtBoard());
+        System.out.println("\nBoard:\n" + board.txtBoard());
         System.out.println("\n");
     }
 }

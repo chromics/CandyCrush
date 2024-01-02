@@ -8,7 +8,6 @@ import view.Main;
 import controller.GameController;
 
 public class WinSceneController {
-    private GameController gameController;
     private Scene scene;
 
     public void nextLevel() throws Exception {
@@ -19,8 +18,8 @@ public class WinSceneController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));
         Parent boardScene = loader.load();
         
-        BoardSceneController boardSceneController = loader.getController();
-        gameController.nextLevel(boardSceneController);
+        Main.nextLevel();
+        Main.setBoardSceneController(loader.getController());
     
         scene = new Scene(boardScene);
         Main.stage.setScene(scene);
@@ -35,9 +34,5 @@ public class WinSceneController {
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
-    }
-
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
     }
 }

@@ -1,17 +1,31 @@
 package data.constant;
 
 import java.util.HashMap;
+import javafx.scene.image.Image;
 
 // import data.constant.Orientation;
 
 public enum Constant{
-    ;
+    ANIMATION_DURATION(200),
+    AUTOMATIC_BREAK_DURATION(250),
+    REMOVE_BREAK_DURATION(50),
+    EXTRA_DURATION(30);
+
+    private int duration;
+
+    Constant (int duration) {
+        this.duration = duration;
+    }
+
+    public int getNum() {
+        return duration;
+    }
 
     public static HashMap <Integer, Integer> pictureSizeList = new HashMap<>(){{
-        put(7,40);
+        put(7,48);
         put(8,43);
-        put(9,31);
-        put(10,28);
+        put(9,37);
+        put(10,32);
     }};
 
     public static HashMap <String, String> audioHashMap = new HashMap<>() {{
@@ -34,8 +48,8 @@ public enum Constant{
         put("pear", "4");
         put("grape", "5");
         put("blueberry", "6");
-        put("horizontalSleighCat", "7");
-        put("verticalSackCat", "8");
+        put("sleighCat", "7");
+        put("sackCat", "8");
     }};
 
     public static HashMap<String, String> numberToPiece = new HashMap<>(){{
@@ -46,8 +60,8 @@ public enum Constant{
         put("4", "pear");
         put("5", "grape");
         put("6", "blueberry");
-        put("7", "horizontalSleighCat");
-        put("8", "verticalSackCat");
+        put("7", "sleighCat");
+        put("8", "sackCat");
     }}; 
 
     public static String[] fruitsName = { "apple", "banana", "orange", "pear", "blueberry", "grape" };
@@ -60,16 +74,30 @@ public enum Constant{
         put( "orange","data/constant/image/orange.png" );
         put( "pear","data/constant/image/pear.png" );
     }};
+
     public static HashMap<String,String> specialPropsHashMap = new HashMap<>() {{
-        put( "sackCat","data/constant/image/sackCat.png" );
         put( "sleighCat","data/constant/image/sleighCat.png" );
+        put( "sackCat","data/constant/image/sackCat.png" );
     }};
+
+    public static HashMap <String, Image> piecesImageHashMap = new HashMap<>();
+
+    static {
+        for (String fruitName : fruitsHashMap.keySet()) {
+            Image fruitImage = new Image(fruitsHashMap.get(fruitName));
+            piecesImageHashMap.put(fruitName, fruitImage);
+        }
+
+        for (String specialPropName : specialPropsHashMap.keySet()) {
+            Image specialPropImage = new Image(specialPropsHashMap.get(specialPropName));
+            piecesImageHashMap.put(specialPropName, specialPropImage);
+        }
+    }
 
     public static HashMap<String,String> catHashMap = new HashMap<>() {{
         put( "defaultCat","data/constant/image/defaultCat.png" );
         put( "happyCat","data/constant/image/happyCat.png" );
         put( "sadCat","data/constant/image/sadCat.png" );
-        put( "meowCat","data/constant/image/meowCat.png" );
     }};
     public static Orientation[][] potential_Match_Patterns = {
 

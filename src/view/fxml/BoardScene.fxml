@@ -19,7 +19,7 @@
          </image>
       </ImageView>
       <GridPane fx:id="boardView" alignment="CENTER" layoutX="103.0" layoutY="70.0" prefHeight="335.0" prefWidth="335.0">
-        <columnConstraints>
+        <!-- <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -38,7 +38,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+        </rowConstraints> -->
       </GridPane>
       <Text layoutX="486.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Moves  left :">
          <font>
@@ -50,17 +50,22 @@
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Text>
-      <Button layoutX="489.0" layoutY="379.0" mnemonicParsing="false" onAction="#swap" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Swap" textFill="#5e0f0f">
+      <Text fx:id="iceBlockText" layoutX="486.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Minecraftia;" text="Ice Block :">
+         <font>
+            <Font name="HP Simplified Hans Regular" size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="swapButton" layoutX="489.0" layoutY="379.0" mnemonicParsing="false" onAction="#swap" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Swap" textFill="#5e0f0f">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="595.0" layoutY="379.0" mnemonicParsing="false" onAction="#next" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Next" textFill="#5e0f0f">
+      <Button fx:id="nextButton" layoutX="595.0" layoutY="379.0" mnemonicParsing="false" onAction="#next" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family: Minecraft;" stylesheets="@/data/constant/styles3.css" text="Next" textFill="#5e0f0f">
          <font>
             <Font name="HP Simplified Hans Regular" size="15.0" />
          </font>
       </Button>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="29.0" layoutY="21.0" mnemonicParsing="false" onAction="#saveExit" prefHeight="33.0" prefWidth="34.0" text="Save &amp; Exit">
+      <Button fx:id="homeButton" contentDisplay="GRAPHIC_ONLY" layoutX="29.0" layoutY="21.0" mnemonicParsing="false" onAction="#saveExit" prefHeight="33.0" prefWidth="34.0" text="Save &amp; Exit">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
@@ -72,7 +77,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="706.0" layoutY="28.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="33.0" prefWidth="34.0" text="Shuffle">
+      <Button fx:id="shuffleButton" contentDisplay="GRAPHIC_ONLY" layoutX="706.0" layoutY="28.0" mnemonicParsing="false" onAction="#shuffle" prefHeight="33.0" prefWidth="34.0" text="Shuffle">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>
@@ -94,12 +99,17 @@
             <Font name="HP Simplified Hans Regular" size="18.0" />
          </font>
       </Label>
+      <Label fx:id="iceBlockLabel" layoutX="595.0" layoutY="31.0" style="-fx-font-family: Minecraftia;" text="-">
+         <font>
+            <Font name="HP Simplified Hans Regular" size="18.0" />
+         </font>
+      </Label>
       <Label fx:id="shuffleLabel" layoutX="743.0" layoutY="18.0" style="-fx-font-family: Minecraft;" text="3">
          <font>
             <Font name="HP Simplified Hans Regular" size="14.0" />
          </font>
       </Label>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="29.0" layoutY="63.0" mnemonicParsing="false" onAction="#settings" prefHeight="33.0" prefWidth="34.0" text="Save &amp; Exit">
+      <Button fx:id="settingsButton" contentDisplay="GRAPHIC_ONLY" layoutX="29.0" layoutY="63.0" mnemonicParsing="false" onAction="#settings" prefHeight="33.0" prefWidth="34.0" text="Save &amp; Exit">
          <font>
             <Font name="HP Simplified Hans Regular" size="10.0" />
          </font>

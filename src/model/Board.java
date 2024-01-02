@@ -5,6 +5,7 @@ import java.io.*;
 import mechanism.CreateBoard;
 import mechanism.Util;
 import model.piece.*;
+import data.GameData;
 import data.constant.Orientation;
 import data.constant.Constant;
 import data.constant.MapTemplate;
@@ -25,26 +26,52 @@ public class Board implements Serializable{
         this.board_Row_Size = board_Row_Size;
         this.board_Col_Size = board_Col_Size;
         this.mapTemplate = mapTemplate;
+
+        // Initiate first Grid
+        grid = new Cell[board_Row_Size][board_Col_Size];
+        for (int row = 0; row < board_Row_Size; row++) {
+            for (int col = 0; col < board_Col_Size; col++) {
+                grid[row][col] = new Cell();
+            }
+        }
+
+        mapTemplate.initiate_Unplayable_Cell(grid, board_Row_Size, board_Col_Size);
     }
     
-    public void initBoard(){
+    public void initBoard (){
         initGrid();
-        mapTemplate.initiate_Unplayable_Cell(grid, board_Row_Size, board_Col_Size);
-        
         initPieces();
     }
     
-    public void initGrid() {
-        this.grid = new Cell[board_Row_Size][board_Col_Size];
-        for (int i = 0; i < board_Row_Size; i++) {
-            for (int j = 0; j < board_Col_Size; j++) {
-                grid[i][j] = new Cell();
+    public void initGrid () {
+        Cell[][] newGrid = new Cell[board_Row_Size][board_Col_Size];
+
+        for (int row = 0; row < board_Row_Size; row++) {
+            for (int col = 0; col < board_Col_Size; col++) {
+                newGrid[row][col] = new Cell();
+                newGrid[row][col].set_Playable_Status(grid[row][col].get_Playable_Status());
+                newGrid[row][col].set_Ice_Block_Status(grid[row][col].get_Ice_Block_Status());
             }
         }
+
+        this.grid = newGrid;
     }
     
-    public void initPieces() {
+    public void initPieces () {
         CreateBoard.initiateBoard(this);
+    }
+
+    public void initiate_Ice_Block (GameData gameData) {
+        int total_Ice_Block = 0;
+        for (int row = 0; row < board_Row_Size; row++) {
+            for (int col = 0; col < board_Col_Size; col++) {
+                if (grid[row][col].isPlayable()) {
+                    grid[row][col].add_Ice_Block();
+                    total_Ice_Block++;
+                }
+            }
+        }
+        gameData.setTotalIceBlock(total_Ice_Block);
     }
     //===============================================================================================
     
@@ -110,11 +137,11 @@ public class Board implements Serializable{
     }
 
     public int getDistanceX (BoardPoint src, BoardPoint dest) {
-        return (src.getCol() - dest.getCol());
+        return (dest.getCol() - src.getCol());
     }
 
     public int getDistanceY (BoardPoint src, BoardPoint dest) {
-        return (src.getRow() - dest.getRow());
+        return (dest.getRow() - src.getRow());
     }
     
     public boolean is_Within_Boundary (BoardPoint point) {
@@ -166,7 +193,29 @@ public class Board implements Serializable{
                     }
                 }
                 res.append("\n");
-            }
+            }            
+        }
+
+        return res.toString();
+    }
+
+    public String txtIceBlockBoard() {
+        StringBuilder res = new StringBuilder();
+
+        if (grid != null) {
+
+            for (int row = 0; row < board_Row_Size; row++) {
+                for (int col = 0; col < board_Col_Size; col++) {
+                    
+                    if (grid[row][col].has_Ice_Block()) {
+                        res.append("1 ");
+                    }
+                    else {
+                        res.append("0 ");
+                    }
+                }
+                res.append("\n");
+            }         
         }
 
         return res.toString();
