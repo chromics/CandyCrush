@@ -5,9 +5,12 @@ import data.constant.GameMode;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,7 +18,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
+import view.Main;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
@@ -31,6 +36,8 @@ import javafx.scene.control.MenuItem;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
+import data.constant.MapTemplate;
 
 public class CustomGameInputDialogController implements Initializable {
 //    @FXML
@@ -51,16 +58,6 @@ public class CustomGameInputDialogController implements Initializable {
     private AnchorPane pane;
     @FXML
     private Button selectMapButton;
-    @FXML
-    private MenuButton musicMenuButton;
-    @FXML
-    private MenuItem track1;
-    @FXML
-    private MenuItem track2;
-    @FXML
-    private MenuItem track3;
-    @FXML
-    private Label trackLabel;
     @FXML
     private MenuButton widthMenuButton;
     @FXML
@@ -89,32 +86,15 @@ public class CustomGameInputDialogController implements Initializable {
     private int targetScore;
     private Clip BGM;
     private GameMode gameMode;
-    // private Template template;
+    private MapTemplate mapTemplate = MapTemplate.RECTANGULAR;
+    private static Stage stage;
 
     private File[] filesJpg;
 
     public void initialize(URL location, ResourceBundle resourceBundle) {
         initializeTemplateImages();
         templatePagination.setDisable(true);
-        selectMapButton.setDisable(true);
-        track1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                changeTrack(event);
-            }
-        });
-        track2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                changeTrack(event);
-            }
-        });
-        track3.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                changeTrack(event);
-            }
-        });
+
 
         w1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -168,6 +148,10 @@ public class CustomGameInputDialogController implements Initializable {
 
     }
 
+    public static void setStage (Stage dialogStage) {
+        stage = dialogStage;
+    }
+
     public void generateMap() {
 //        if (gridSizeTextField.getText() == null) {
 //            UtilView.generateErrorAlert("Error!", "Custom grid size field left empty!");
@@ -178,6 +162,18 @@ public class CustomGameInputDialogController implements Initializable {
 //            gridWidth = Integer.parseInt(Integer.toString(gridSizeNum).substring(0, 1));
 //            gridHeight = Integer.parseInt(Integer.toString(gridSizeNum).substring(1, 2));
 //        }
+
+        //Select Map
+        int index = templatePagination.getCurrentPageIndex();
+        if (index == 0) {
+            mapTemplate = MapTemplate.OCTAGON;
+        }
+        if (index == 1) {
+            mapTemplate = MapTemplate.T;
+        }
+        if (index == 2) {
+            mapTemplate = MapTemplate.Y;
+        }
 
         if (movesCountTextField.getText() == null) {
             UtilView.generateErrorAlert("Error!", "Moves count field left empty!");
@@ -215,6 +211,10 @@ public class CustomGameInputDialogController implements Initializable {
         if (specialItemCheckbox.isSelected()) {
             gameMode = GameMode.Special_Game_Mode;
         }
+        
+        if (! specialItemCheckbox.isSelected()) {
+            gameMode = GameMode.Normal_Game_Mode;
+        }
 
         if (customMapCheckbox.isSelected()) {
 //            StartSceneController.newTemplatedGame();
@@ -225,25 +225,63 @@ public class CustomGameInputDialogController implements Initializable {
 //            StartSceneController.newCustomGame();
         }
 
-        System.out.println(gridWidth);
-        System.out.println(gridHeight);
-        System.out.println(movesCount);
-        System.out.println(shuffleCount);
-        System.out.println(targetScore);
-        System.out.println(gameMode);
+        System.out.println("Custom Game : ");
+        System.out.println("Board Row Size : " + gridHeight);
+        System.out.println("Board Col Size : " + gridWidth);
+        System.out.println("Init Step : " + movesCount);
+        System.out.println("Init Shuffle : " + shuffleCount);
+        System.out.println("Target Score : " + targetScore);
+        System.out.println("GameMode : " + gameMode);
 
+        if (movesCount > 0 && targetScore > 0 && gameMode != null) {
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));
+                Parent boardScene = loader.load();
+                
+                Main.setBoardSceneController(loader.getController());
+                if (mapTemplate == MapTemplate.RECTANGULAR) {
+                    Main.customGame(gameMode, gridHeight, gridWidth, movesCount, shuffleCount, targetScore, mapTemplate);
+                }
+                else {
+                    Main.customGame(gameMode, 10, 10, movesCount, shuffleCount, targetScore, mapTemplate);
+                } 
+        
+                Scene scene = new Scene(boardScene);
+                Main.stage.setScene(scene);
+                Main.stage.show();
+                
+                // gameObjective(event, dialogURL);
+    
+                StartSceneController.musicController.stopMusic();
+                StartSceneController.windController.stopMusic();
+    
+                VolumeController.setBoardSceneMusicVolume(70);
+                BoardSceneController.initMusic();
+
+                stage.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }   
+        else {
+            UtilView.generateErrorAlert("Error!", "Please insert valid positive integer in Moves Count and Score section!");
+        }     
     }
     public void toggleTemplateMap() {
         if (customMapCheckbox.isSelected()) {
             widthMenuButton.setDisable(true);
             heightMenuButton.setDisable(true);
             templatePagination.setDisable(false);
-            selectMapButton.setDisable(false);
+
+            mapTemplate = MapTemplate.RECTANGULAR;
         } else if (!customMapCheckbox.isSelected()) {
             widthMenuButton.setDisable(false);
             heightMenuButton.setDisable(false);
             templatePagination.setDisable(true);
-            selectMapButton.setDisable(true);
+
+            selectTemplate();
         }
     }
 
@@ -289,13 +327,7 @@ public class CustomGameInputDialogController implements Initializable {
     }
 
     public void selectTemplate() {
-        System.out.println("template selected!");
-    }
-
-    public void changeTrack(ActionEvent event) {
-        MenuItem sourceItem = (MenuItem) (event.getSource());
-        String menuLabel = sourceItem.getText();
-        trackLabel.setText("[ " + menuLabel + " ]");
+        
     }
 
     public void changeGridWidthSize(ActionEvent event) {

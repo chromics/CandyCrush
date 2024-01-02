@@ -42,6 +42,7 @@ public class GameData implements Serializable{
     private MapTemplate mapTemplate;
     private boolean automaticMode;
     private boolean specialMode;
+    private CustomLevel customLevel;
     
     //-----------------------------------------------------------------------------------------------
     // Constructor & Initiator
@@ -86,6 +87,31 @@ public class GameData implements Serializable{
         matchDatas = new ArrayList<>();
         fallData = new int[board_Col_Size];
         resetFallData();
+    }
+    public void init_Custom_Level (GameMode gameMode, MapTemplate mapTemplate, 
+                                    int board_Row_Size, int board_Col_Size,
+                                    int initStep, int initShuffle, int targetScore) {
+
+        customLevel = new CustomLevel(mapTemplate, board_Row_Size, board_Col_Size, targetScore, initStep, initShuffle);
+
+        this.gameMode = gameMode;
+        automaticMode = true;
+        specialMode = gameMode.getSpecialMode();
+        numOfLevel = 1;
+        level = Level.Level_Custom;
+        levelIndex = -1;
+        this.board_Row_Size = board_Row_Size;
+        this.board_Col_Size = board_Col_Size;
+        this.targetScore = targetScore;
+        remainingStep = initStep;
+        remainingHints = -1;
+        remainingShuffle = initShuffle;
+        this.mapTemplate = mapTemplate;
+        score = 0;
+        ice_Block_Destroyed = 0;
+        total_Ice_Block = 0;
+
+        init_Additional_Data();
     }
     //===============================================================================================
 
@@ -196,6 +222,25 @@ public class GameData implements Serializable{
     }
     public void restartLevel () {
         //Do Nothing
+    }
+    public void restartCustomLevel () {
+        automaticMode = true;
+        specialMode = gameMode.getSpecialMode();
+        numOfLevel = 1;
+        level = Level.Level_Custom;
+        levelIndex = -1;
+        this.board_Row_Size = customLevel.getBoard_Row_Size();
+        this.board_Col_Size = customLevel.getBoard_Col_Size();
+        this.targetScore = customLevel.getTargetScore();
+        remainingStep = customLevel.getInitStep();
+        remainingHints = -1;
+        remainingShuffle = customLevel.getInitShuffle();
+        this.mapTemplate = customLevel.getMapTemplate();
+        score = 0;
+        ice_Block_Destroyed = 0;
+        total_Ice_Block = 0;
+
+        init_Additional_Data();
     }
     public void update_Highest_Playable_Row_Data() {
         highest_Playable_Cell_At_Col = new int[board_Col_Size];
@@ -367,6 +412,14 @@ public class GameData implements Serializable{
     }
     //===============================================================================================
     
+    
+    //-----------------------------------------------------------------------------------------------
+    // Custom Level
+    //-----------------------------------------------------------------------------------------------
+    public boolean isCustomLevel () {
+        return (customLevel != null);
+    }
+    //===============================================================================================
     public void printGameData(){
         System.out.println("\nGame Data : ");
         System.out.println("Save Name : " + saveName);

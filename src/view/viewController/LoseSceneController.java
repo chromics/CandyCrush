@@ -17,8 +17,8 @@ public class LoseSceneController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));
         Parent boardScene = loader.load();
         
-        Main.restartLevel();
         Main.setBoardSceneController(loader.getController());
+        Main.restartLevel();
     
         scene = new Scene(boardScene);
         Main.stage.setScene(scene);

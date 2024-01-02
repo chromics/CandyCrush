@@ -50,22 +50,49 @@ public class SaveFileInputDialogController {
      }
 
     public static void generateSaveFileNameTextField(String sourceClass) throws Exception {
-         boolean tru = true;
-         if (tru) {
-             source = sourceClass;
 
-             dialog = new Stage();
-             dialog.initModality(Modality.APPLICATION_MODAL);
-             dialog.initOwner(Main.stage);
-             dialog.setResizable(false);
-             dialog.setX(Main.stage.getX() - 150);
-             dialog.setY(Main.stage.getY() + 150);
+            source = sourceClass;
+        if (! Main.savedBefore()) {
 
-             Parent saveFileInputDialog = FXMLLoader.load(SaveFileInputDialogController.class.getResource("/view/fxml/SaveFileInputDialog.fxml"));
-             Scene scene = new Scene(saveFileInputDialog);
-             dialog.setScene(scene);
-             dialog.showAndWait();
-         }
+            dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initOwner(Main.stage);
+            dialog.setResizable(false);
+            dialog.setX(Main.stage.getX() - 150);
+            dialog.setY(Main.stage.getY() + 150);
+
+            Parent saveFileInputDialog = FXMLLoader.load(SaveFileInputDialogController.class.getResource("/view/fxml/SaveFileInputDialog.fxml"));
+            Scene scene = new Scene(saveFileInputDialog);
+            dialog.setScene(scene);
+            dialog.showAndWait();
+        }
+        else {
+            String filePath = SaveLoadController.save_Game(BoardSceneController.getGameData(), Main.getSaveName());
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+            javafx.scene.image.Image dialogIcon = new Image(Constant.catHashMap.get("meowCat"));
+            ImageView dialogView = new ImageView(dialogIcon);
+            dialogView.setFitHeight(80);
+            dialogView.setFitWidth(80);
+            alert.getDialogPane().setGraphic(dialogView);
+
+            alert.setTitle("Success!");
+            alert.setHeaderText("Your file has been successfully saved!");
+            alert.setContentText("Your file has been successfully saved at: " + filePath);
+            alert.setX(Main.stage.getX() + 600);
+            alert.setY(Main.stage.getY() - 55);
+
+            if (source.equals("mainStage")) {
+            System.out.println("Close Main Stage");
+            Main.stage.close();
+            }
+            else if (source.equals("homeButton")) {
+                System.out.println("Back To Start Screen");
+                BoardSceneController.backToStartScene();
+            }
+        }
+         
     }
     
     public void save() throws Exception {
@@ -79,7 +106,7 @@ public class SaveFileInputDialogController {
             return;
         }
 
-        SaveLoadController.save_Game(BoardSceneController.getGameData(), fileName);
+        String filePath = SaveLoadController.save_Game(BoardSceneController.getGameData(), fileName);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
@@ -91,7 +118,7 @@ public class SaveFileInputDialogController {
 
         alert.setTitle("Success!");
         alert.setHeaderText("Your file has been successfully saved!");
-        // alert.setContentText("Your file has been successfully saved at: " + SaveLoadController.getCurrentFilePath());
+        alert.setContentText("Your file has been successfully saved at: " + filePath);
         alert.setX(Main.stage.getX() + 600);
         alert.setY(Main.stage.getY() - 55);
 

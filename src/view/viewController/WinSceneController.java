@@ -18,8 +18,8 @@ public class WinSceneController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/BoardScene.fxml"));
         Parent boardScene = loader.load();
         
-        Main.nextLevel();
         Main.setBoardSceneController(loader.getController());
+        Main.nextLevel();
     
         scene = new Scene(boardScene);
         Main.stage.setScene(scene);

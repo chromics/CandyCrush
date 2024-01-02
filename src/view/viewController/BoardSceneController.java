@@ -289,7 +289,9 @@ public class BoardSceneController implements Initializable {
         }
     }
     public void removeIceBlockAt (BoardPoint point) {
-        
+        SFXController.initializePlay("SFX/iceBreakSFX.wav");
+        SFXController.play();
+
         if (board.is_Cell_Playable(point)) {
             iceBlockViewArray[point.getRow()][point.getCol()].setImage(null);
         }
@@ -627,7 +629,7 @@ public class BoardSceneController implements Initializable {
             // Save
             System.out.println("Save Action");
             SaveFileInputDialogController.generateSaveFileNameTextField("homeButton");
-            backToStartScene();
+
         }
         else if (result.isPresent() && result.get() == ButtonType.NO){
             // Exit
@@ -639,8 +641,8 @@ public class BoardSceneController implements Initializable {
         SaveLoadController.save_Game(gameData, fileName);
     }
 
-    public void backToStartScene() throws Exception {
-        Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/StartScene.fxml"));
+    public static void backToStartScene() throws Exception {
+        Parent startScene = FXMLLoader.load(BoardSceneController.class.getResource("/view/fxml/StartScene.fxml"));
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
         Main.stage.show();
@@ -712,6 +714,9 @@ public class BoardSceneController implements Initializable {
 
     // normal win/lose scenarios
     public void win() throws Exception {
+        SFXController.initializePlay("SFX/victorySFX.wav");
+        SFXController.play();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/WinScene.fxml"));
         Parent startScene = loader.load();
         WinSceneController controller = loader.getController();
@@ -721,6 +726,9 @@ public class BoardSceneController implements Initializable {
         Main.stage.show();
     }
     public void lose() throws Exception {
+        SFXController.initializePlay("SFX/loseSFX.wav");
+        SFXController.play();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/LoseScene.fxml"));
         Parent startScene = loader.load();
         LoseSceneController controller = loader.getController();
@@ -730,6 +738,9 @@ public class BoardSceneController implements Initializable {
         Main.stage.show();
     }
     public void finalWin() throws Exception {
+        SFXController.initializePlay("SFX/victorySFX.wav");
+        SFXController.play();
+
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/FinalWinScene.fxml"));
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
@@ -738,6 +749,9 @@ public class BoardSceneController implements Initializable {
 
     // special win/lose scenarios
     public void specialWin() throws Exception {
+        SFXController.initializePlay("SFX/victorySFX.wav");
+        SFXController.play();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/SpecialWinScene.fxml"));
         Parent startScene = loader.load();
         WinSceneController controller = loader.getController();
@@ -747,6 +761,9 @@ public class BoardSceneController implements Initializable {
         Main.stage.show();
     }
     public void specialLose() throws Exception {
+        SFXController.initializePlay("SFX/loseSFX.wav");
+        SFXController.play();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/SpecialLoseScene.fxml"));
         Parent startScene = loader.load();
         LoseSceneController controller = loader.getController();
@@ -756,6 +773,9 @@ public class BoardSceneController implements Initializable {
         Main.stage.show();
     }
     public void specialFinalWin() throws Exception {
+        SFXController.initializePlay("SFX/victorySFX.wav");
+        SFXController.play();
+
         Parent startScene = FXMLLoader.load(getClass().getResource("/view/fxml/FinalSpecialWinScene.fxml"));
         scene = new Scene(startScene);
         Main.stage.setScene(scene);
@@ -820,11 +840,17 @@ public class BoardSceneController implements Initializable {
     }
     public static void initMusic() throws Exception {
         musicController = new MusicController(VolumeController.getBoardSceneMusicVolume());
-        musicController.initMusicController("/data/constant/audio/colors.wav");
+        musicController.initMusicController("/data/constant/audio/colors.wav"); 
         musicController.playMusic();
     }
     public static void stopMusic() {
         musicController.stopMusic();
+    }
+
+    public static void initSpecialMusic() throws Exception {
+        musicController = new MusicController(VolumeController.getBoardSceneMusicVolume());
+        musicController.initMusicController("/data/constant/audio/christmas.wav");
+        musicController.playMusic();
     }
 
 }
